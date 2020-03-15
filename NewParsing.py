@@ -1,16 +1,15 @@
 # 1 reading the input file from txt to a raw
 
 import re
-import pandas as pd
 
 # set up regular expressions
 # use https://regexper.com to visualise these if required
 rx_dict = {
-    'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<node_player>.*( )?.*?) actions (?P<types>.*)'),
-    'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<arguments>.*)'),
-    'root_node': re.compile(r'node / chance actions (?P<arguments>.*)'),
-    'infoset': re.compile(r'infoset (?P<history>.*?) nodes (?P<arguments>.*)'),
-    'leaves': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? leaf payoffs (?P<arguments>.*)'),
+    'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<player>.*( )?.*?) actions (?P<actions>.*)'),
+    'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<actions>.*)'),
+    'root_node': re.compile(r'node / chance actions (?P<actions>.*)'),
+    'infoset': re.compile(r'infoset (?P<history>.*?) nodes (?P<nodes>.*)'),
+    'leaves': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? leaf payoffs (?P<payoffs>.*)'),
 }
 
 
