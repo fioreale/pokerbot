@@ -4,6 +4,8 @@ import re
 
 # set up regular expressions
 # use https://regexper.com to visualise these if required
+import game_model
+
 rx_dict = {
     'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)?(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<player>.*( )?.*?) actions (?P<actions>.*)'),
     'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<actions>.*)'),
@@ -50,24 +52,32 @@ def parse_file(filepath):
         line = file_object.readline()
         while line:
             # at each line check for a match with a regex
-            key, match = _parse_line(line)
+            key, match = parse_line(line)
 
             # extract school name
-            if key == 'history_node':
-                history = match.group('history')
-                arguments = match.group('arguments')
-
             if key == 'root_node':
-                arguments = match.group('arguments')
+                actions = match.group('actions')
+                root = game_model.Node.setRoot(actions)
 
-            if key == 'infoset':
-                history = match.group('history')
-                arguments = match.group('arguments')
 
-            # extract grade
-            if key == 'grade':
-                grade = match.group('grade')
-                grade = int(grade)
+
+            if key == 'history_node':
+                chance1 = match.group('chance1')
+                history1 = match.group('history1')
+                chance2 = match.group('chance2')
+                history2 = match.group('history2')
+                player = match.group('player')
+                actions = match.group('arguments')
+
+            if key == 'chance_node':
+
+            if key == 'leaf_node':
+
+            # if key == 'infoset':
+            #     history = match.group('history')
+            #     arguments = match.group('arguments')
+
+
 
             # # identify a table header
             # if key == 'name_score':

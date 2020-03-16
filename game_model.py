@@ -37,12 +37,16 @@ class Node(object):
         self.action = []
         self.children = []
         self.infoset = []
+        self.signals = []
         self.parent = None
-        self.card1 = None
+        self.card1 = None # possible to be added just on the root node without creating to much space for every node
         self.card2 = None
         self.card3 = None
         self.payoff1 = None  # if terminal
         self.payoff2 = None
+
+    def setRoot(actions):
+        value = actions.split()
 
     def nextNode(action):
 
