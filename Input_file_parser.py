@@ -7,11 +7,15 @@ import re
 import game_model
 
 rx_dict = {
-    'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)?(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<player>.*( )?.*?) actions (?P<actions>.*)'),
-    'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<actions>.*)'),
-    'leaf_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? leaf payoffs (?P<payoffs>.*)'),
+    #'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)?(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<player>.*( )?.*?) actions (?P<actions>.*)'),
+    #'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<actions>.*)'),
+    #'leaf_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? leaf payoffs (?P<payoffs>.*)'),
     'root_node': re.compile(r'node / chance actions (?P<actions>.*)'),
     'infoset': re.compile(r'infoset (?P<history>.*?) nodes (?P<nodes>.*)'),
+
+    'chance_node': re.compile(r'node (?P<history>.*?) chance actions (?P<actions>.*)'),
+    'action_node': re.compile(r'node (?P<history>.*?) actions (?P<actions>.*)'),
+    'leaf_node': re.compile(r'node (?P<history>.*?) leaf payoffs (?P<payoffs>.*)'),
 }
 
 
@@ -59,6 +63,10 @@ def parse_file(filepath):
                 actions = match.group('actions')
                 root = game_model.Node.setRoot(actions)
 
+            if key == 'action_node':
+                history = match.group('history')
+                actions = match.group('actions')
+                game_model.Node.setActionNode(history, actions, root)
 
 
             if key == 'history_node':
@@ -70,6 +78,8 @@ def parse_file(filepath):
                 actions = match.group('arguments')
 
             if key == 'chance_node':
+                actions = match.group('actions')
+                game_model.Node.createChanceNode(history, actions, root)
 
             if key == 'leaf_node':
 
