@@ -1,13 +1,17 @@
+# 1 reading the input file from txt to a raw
+
 import re
-import pandas as pd
 
 # set up regular expressions
 # use https://regexper.com to visualise these if required
 rx_dict = {
-    'history_node': re.compile(r'node (?P<history>(/.*:.*?)*) (?P<node_player>.*( )?.*?) (?P<type>.*?) (?P<arguments>.*)'),
-    'root_node': re.compile(r'node / chance actions (?P<arguments>.*)'),
-    'infoset': re.compile(r'infoset (?P<history>.*?) nodes (?P<arguments>.*)'),
+    'action_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)?(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? (?P<player>.*( )?.*?) actions (?P<actions>.*)'),
+    'chance_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? chance actions (?P<actions>.*)'),
+    'leaf_node': re.compile(r'node /(?P<chance1>C.*?)(?P<history1>/.*?)(/(?P<chance2>(C.*?))(?P<history2>(/.*?)))? leaf payoffs (?P<payoffs>.*)'),
+    'root_node': re.compile(r'node / chance actions (?P<actions>.*)'),
+    'infoset': re.compile(r'infoset (?P<history>.*?) nodes (?P<nodes>.*)'),
 }
+
 
 def parse_line(line):
     """
@@ -22,6 +26,7 @@ def parse_line(line):
             return key, match
     # if there are no matches
     return None, None
+
 
 def parse_file(filepath):
     """
@@ -49,33 +54,41 @@ def parse_file(filepath):
 
             # extract school name
             if key == 'history_node':
-                school = match.group('school')
+                history = match.group('history')
+                arguments = match.group('arguments')
+
+            if key == 'root_node':
+                arguments = match.group('arguments')
+
+            if key == 'infoset':
+                history = match.group('history')
+                arguments = match.group('arguments')
 
             # extract grade
             if key == 'grade':
                 grade = match.group('grade')
                 grade = int(grade)
 
-            # identify a table header
-            if key == 'name_score':
-                # extract type of table, i.e., Name or Score
-                value_type = match.group('name_score')
-                line = file_object.readline()
-                # read each line of the table until a blank line
-                while line.strip():
-                    # extract number and value
-                    number, value = line.strip().split(',')
-                    value = value.strip()
-                    # create a dictionary containing this row of data
-                    row = {
-                        'School': school,
-                        'Grade': grade,
-                        'Student number': number,
-                        value_type: value
-                    }
-                    # append the dictionary to the data list
-                    data.append(row)
-                    line = file_object.readline()
+            # # identify a table header
+            # if key == 'name_score':
+            #     # extract type of table, i.e., Name or Score
+            #     value_type = match.group('name_score')
+            #     line = file_object.readline()
+            #     # read each line of the table until a blank line
+            #     while line.strip():
+            #         # extract number and value
+            #         number, value = line.strip().split(',')
+            #         value = value.strip()
+            #         # create a dictionary containing this row of data
+            #         row = {
+            #             'School': school,
+            #             'Grade': grade,
+            #             'Student number': number,
+            #             value_type: value
+            #         }
+            #         # append the dictionary to the data list
+            #         data.append(row)
+            #         line = file_object.readline()
 
             line = file_object.readline()
 
@@ -88,6 +101,7 @@ def parse_file(filepath):
         # upgrade Score from float to integer
         data = data.apply(pd.to_numeric, errors='ignore')
     return data
+
 
 if __name__ == '__main__':
     key, match = parse_line('node /C:JQ player 1 actions c r')
