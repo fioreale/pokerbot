@@ -3,6 +3,7 @@ from tree_elements.node import Node
 
 
 class TerminalNode(Node):
+
     def __init__(self):
         Node.__init__(self)
         self.payoffs = {}
@@ -17,3 +18,14 @@ class TerminalNode(Node):
             payoffs_list = i.split('=')
             self.payoffs[payoffs_list[0]] = float(payoffs_list[1])
         return self
+
+    def print_tree(self, level):
+        l = 0
+        while (l < level):
+            print('    ', end='')
+            l += 1
+        player = 1
+        for payoff in self.payoffs.values():
+            print(str(player) + '=' + str(payoff), end = ' ')
+            player += 1
+        print('\n')
