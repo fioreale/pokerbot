@@ -2,14 +2,14 @@ import utilities
 
 
 class Node:
-    def __init__(self):
+    def __init__(self):         # class initializator
         self.history = []
         self.children = {}
         self.actions = []
         self.parent = None
         self.cards = []
 
-    def node_finder(self, history):
+    def node_finder(self, history):     # recursive function that traverse the history and returns its last node
         if len(history) == 0:
             return self
         else:
