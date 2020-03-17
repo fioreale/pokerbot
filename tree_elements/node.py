@@ -19,7 +19,7 @@ class Node:
         self.children[history[-1]] = node
 
     def appendCards(self, cards):
-        if len(self.cards)>1:
+        if len(self.cards) > 1:
             self.cards.append(utilities.in_chars(cards[0]))
         else:
             return ValueError("No cards in the player hand")
@@ -30,4 +30,14 @@ class Node:
     def setCards(self, cards):
         self.cards = cards
 
-
+    def print_tree(self, level):
+        l = 0
+        while (l < level):
+            print('    ', end = '')
+            l += 1
+        if len(self.history) > 0:
+            print(self.history[-1])
+        else:
+            print('C')
+        for i in self.children.values():
+            i.print_tree(level + 1)
