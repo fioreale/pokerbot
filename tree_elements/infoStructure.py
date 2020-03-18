@@ -10,10 +10,13 @@ class InfoStructure:  # list of information sets of player1 and player2
         list.append(infoset)
 
     def assignInfoSet(self, infoset):
-        assigned = utilities.in_chars(infoset.name.split(':')[-2])[-1]
-        if assigned == '1':
-            self.appendInfoSet(self.infoSets1, infoset)
-        elif assigned == '2':
-            self.appendInfoSet(self.infoSets2, infoset)
-        else:
+        if len(infoset.name) < 4:
             self.appendInfoSet(self.chances, infoset)
+        else:
+            assigned = utilities.in_chars(infoset.name.split(':')[-2])[-1]
+            if assigned == '1':
+                self.appendInfoSet(self.infoSets1, infoset)
+            elif assigned == '2':
+                self.appendInfoSet(self.infoSets2, infoset)
+            else:
+                self.appendInfoSet(self.chances, infoset)
