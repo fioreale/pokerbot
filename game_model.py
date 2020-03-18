@@ -19,17 +19,7 @@
 #     def __init__(self):
 #         self.name = None
 #         self.probability = None
-#
-#
-# class InfoStructure:  # list of information sets of player1 and player2
-#     def __init__(self):
-#         self.infoSets1 = []
-#         self.infoSets2 = []
-#
-#
-# class InfoSet:  # list of nodes for each information set
-#     def __init__(self):
-#         self.infoNodes = []
+
 import utilities
 
 
