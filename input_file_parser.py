@@ -1,10 +1,11 @@
 import os
 import re
 
-
+from tree_elements.infoSet import InfoSet
 from tree_elements.nature_node import NatureNode
 from tree_elements.action_node import ActionNode
 from tree_elements.terminal_node import TerminalNode
+from tree_elements.infoStructure import InfoStructure
 
 rx_dict = {                                             # regex to identify
     'root_node': re.compile(r'node / chance actions (?P<actions>.*)'),
@@ -26,7 +27,7 @@ def parse_line(line):                                   # match regex in the lin
 def parse_file(filepath):
     with open(filepath, 'r') as file_object:
         lines = file_object.readlines()
-        ordered_lines = sorted(lines)
+        ordered_lines = sorted(lines)                   # sorting lines
         root = NatureNode()
         for line in ordered_lines:                      # at each line check for a match with a regex
             key, match = parse_line(line)
@@ -53,14 +54,25 @@ def parse_file(filepath):
                 actions = match.group('payoffs')
                 leaf_node = TerminalNode()
                 leaf_node.createTerminalNode(history, actions, root)
-
-            # if key == 'infoset':
-            #     history = match.group('history')
-            #     arguments = match.group('arguments')
-
     return root
+
+def parse_infoset(filepath, tree):
+    with open(filepath, 'r') as file_object:
+        lines = file_object.readlines()
+        ordered_lines = sorted(lines)
+        infoStructure = InfoStructure()
+        for line in ordered_lines:
+            key, match = parse_line(line)
+            if key == 'infoset':
+                history = match.group('history')
+                nodes = match.group('nodes')
+                newInfoSet = InfoSet()
+                newInfoSet.createInfoSet(history, nodes, tree)
+                infoStructure.assignInfoSet(newInfoSet)
+    return infoStructure
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
+    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
     tree.print_tree(0)

@@ -2,12 +2,13 @@ import utilities
 
 
 class Node:
-    def __init__(self):         # class initializator
+    def __init__(self):         # class initializer
         self.history = []
-        self.children = {}
         self.actions = []
+        self.children = {}
         self.parent = None
         self.cards = []
+        self.infoSet = None
 
     def node_finder(self, history):     # recursive function that traverse the history and returns its last node
         if len(history) == 0:
@@ -31,10 +32,10 @@ class Node:
         self.cards = cards
 
     def print_tree(self, level):
-        l = 0
-        while (l < level):
-            print('    ', end = '')
-            l += 1
+        height = 0
+        while height < level:
+            print('|    ', end='')
+            height += 1
         if len(self.history) > 0:
             print(self.history[-1])
         else:

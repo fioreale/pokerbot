@@ -20,7 +20,7 @@ class NatureNode(Node):
             self.signals[k] = self.signals[k] / sum
         return self
 
-    def createChanceNode(self, history, actions, root):
+    def createChanceNode(self, history, actions, root):                     # TODO these actions are not actions of the player
         history_list = history.split('/')[1:]                               # deleted first empty element of the history
         self.history = history_list
         self.parent = root.node_finder(history_list[:-1])                   # called node finder without last element (ASK LUCIANO!)
