@@ -17,15 +17,3 @@ class TerminalNode(Node):
             payoffs_list = i.split('=')
             self.payoffs[payoffs_list[0]] = float(payoffs_list[1])  # dictionary indexed by player name
         return self
-
-    def print_tree(self, level):                                    # override of the parent function to print payoffs
-        height = 0
-        while height < level:
-            print('|    ', end='')
-            height += 1
-
-        player = 1
-        for payoff in self.payoffs.values():
-            print(str(player) + '=' + str(payoff), end=' ')
-            player += 1
-        print('\n')

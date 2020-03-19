@@ -30,15 +30,3 @@ class Node:
 
     def setCards(self, cards):
         self.cards = cards
-
-    def print_tree(self, level):
-        height = 0
-        while height < level:
-            print('|    ', end='')
-            height += 1
-        if len(self.history) > 0:
-            print(self.history[-1])
-        else:
-            print('C')
-        for i in self.children.values():
-            i.print_tree(level + 1)

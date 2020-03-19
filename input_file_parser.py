@@ -1,5 +1,6 @@
 import os
 import re
+import utilities
 
 from tree_elements.infoSet import InfoSet
 from tree_elements.nature_node import NatureNode
@@ -73,6 +74,6 @@ def parse_infoset(filepath, tree):
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
-    tree.print_tree(0)
+    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'), tree)
+    utilities.visualize(tree, 0)
