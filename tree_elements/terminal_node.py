@@ -5,7 +5,7 @@ class TerminalNode(Node):
 
     def __init__(self):
         Node.__init__(self)
-        self.payoffs = {}
+        self.payoffs = [None, None]
 
     def createTerminalNode(self, history, payoffs, root):           # initialize a terminal node instance
         history_list = history.split('/')[1:]                       # deleted first empty element of the history
@@ -15,5 +15,11 @@ class TerminalNode(Node):
         payoffs_list = payoffs.split()
         for i in payoffs_list:
             payoffs_list = i.split('=')
-            self.payoffs[payoffs_list[0]] = float(payoffs_list[1])  # dictionary indexed by player name
+            if payoffs_list == 'P1':
+                self.payoffs[0] = float(payoffs_list[1])  # dictionary indexed by player name
+            else:
+                self.payoffs[1] = float(payoffs_list[1])
         return self
+
+    def compute_utilities(self):
+        return self.payoffs

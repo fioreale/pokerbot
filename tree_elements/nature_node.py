@@ -5,6 +5,7 @@ class NatureNode(Node):
     def __init__(self):
         Node.__init__(self)
         self.signals = {}
+        self.player = 'C'
 
     def createRootNode(self, actions):
         self.history = []
