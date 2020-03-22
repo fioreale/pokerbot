@@ -46,6 +46,7 @@ def parse_file(filepath):
 
             if key == 'chance_node':
                 history = match.group('history')
+                # actions contains all the actions after the keyword 'action'
                 actions = match.group('actions')
                 chance_node = NatureNode()
                 chance_node.createChanceNode(history, actions, root)
@@ -74,6 +75,8 @@ def parse_infoset(filepath, tree):
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'), tree)
+    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
     utilities.visualize(tree, 0)
+    cluster_table = utilities.clustering_table_creation(tree)
+    utilities.print_cluster_table(tree)
