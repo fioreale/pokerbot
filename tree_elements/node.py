@@ -55,3 +55,6 @@ class Node:
                     max_utility = utility
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
+
+    def getPlayer(self):
+        return self.player

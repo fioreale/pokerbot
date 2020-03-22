@@ -70,13 +70,26 @@ def parse_infoset(filepath, tree):
                 nodes = match.group('nodes')
                 newInfoSet = InfoSet()
                 newInfoSet.createInfoSet(history, nodes, tree)
-                infoStructure.assignInfoSet(newInfoSet)
+                infoStructure.assignInfoSet(newInfoSet, tree)
     return infoStructure
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
+    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'), tree)
     utilities.visualize(tree, 0)
-    cluster_table = utilities.clustering_table_creation(tree)
-    utilities.print_cluster_table(tree)
+
+    #k=0
+    # for i in infoSets.infoSets1 :
+    #     for j in i.infoNodes.values():
+    #         print(str(k) + ' ' + j.getPlayer())
+    #         k+=1
+    # k=0
+    # for i in infoSets.infoSets2 :
+    #     for j in i.infoNodes.values():
+    #         print(str(k) + ' ' + j.getPlayer())
+    #         k+=1
+
+    
+        #cluster_table = utilities.clustering_table_creation(tree)
+   #utilities.print_cluster_table(tree)
