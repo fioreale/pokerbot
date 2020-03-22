@@ -1,5 +1,7 @@
 from tree_elements.terminal_node import TerminalNode
-import matplotlib.pyplot as plt
+from tree_elements.infoStructure import InfoStructure
+from tree_elements.infoSet import InfoSet
+#import matplotlib.pyplot as plt
 
 
 def in_chars(string):
@@ -32,6 +34,41 @@ def visualize(el, level):
                 num += 1
     else:
         return
+
+def visualize_infoset(el, infoset, level):
+    if level == 1:
+        print(bcolors.WARNING + 'Printing ' + infoset.name + bcolors.ENDC)
+    if el.children is not None:
+        for key, value in el.children.items():
+            for node_level in infoset.infoNodes.values():
+                if node_level.history[0:level] == value.history[0:]:
+                    if len(infoset.name.split('/')[1:]) == level:
+                        print('{:<15}'.format(bcolors.BOLD + bcolors.FAIL + '[' + value.history[-1] + ']'), end='' + bcolors.ENDC)
+                    else:
+                        print('{:<15}'.format(value.history[-1] + '  ->'), end='')
+                    if len(infoset.name.split('/')[1:]) > level:
+                        visualize_infoset(value, infoset, level + 1)
+                    num = 0
+                    print('')
+                    while num < level-1:
+                        print('{:>15}'.format(' |'), end='')
+                        num += 1
+            # if value.history[-1]:
+            #     print('{:<15}'.format(bcolors.OKBLUE + value.history[-1] + bcolors.ENDC), end='')
+            # else:
+            #     print('{:<15}'.format(value.history[-1] + '  ->'), end='')
+
+    else:
+        return
+
+def visualize_InfoStructure(tree, infostruscture):
+    print(bcolors.BOLD + bcolors.UNDERLINE + 'Printing Information Sets of Player 1' + bcolors.ENDC)
+    for info_set in infostruscture.infoSets1:
+        visualize_infoset(tree, info_set, 1)
+    print(bcolors.BOLD + bcolors.UNDERLINE + '\n\nPrinting Information Sets of Player 2' + bcolors.ENDC)
+    for info_set in infostruscture.infoSets2:
+        visualize_infoset(tree, info_set, 1)
+
 
 # function that builds the table where to compute the clusters
 # returns a dictionary indexed per action and utility which returns a list of nodes
@@ -102,9 +139,6 @@ def print_cluster_table(node):
     #fig.xlabel("Number")
     #fig.ylabel("Extract Root of Number")
     plt.show()
-
-
-
 
 # old code used to reverse the dictionary used to build the cluster table
 def search_node(dictionary, action, utility):

@@ -75,9 +75,10 @@ def parse_infoset(filepath, tree):
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'), tree)
-    utilities.visualize(tree, 0)
+    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
+    utilities.visualize_InfoStructure(tree, infoSets)
+    #utilities.visualize(tree, 0)
 
     #k=0
     # for i in infoSets.infoSets1 :
