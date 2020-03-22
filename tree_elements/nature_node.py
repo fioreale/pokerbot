@@ -37,3 +37,4 @@ class NatureNode(Node):
         for k in self.signals:                                              # normalization of the signals
             self.signals[k] = self.signals[k] / sum
         return self
+
