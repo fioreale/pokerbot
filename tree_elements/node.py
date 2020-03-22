@@ -36,21 +36,22 @@ class Node:
         self.cards = cards
 
     def compute_utilities(self):
+        max_utility = [0.0, 0.0]
         # cycle through each action to retrieve the child node utilities
         # returned utilities are a list [utility_player_1, utility_player_2]
         for action in self.actions:
-            self.utilities[action] = self.children[self.player + ':' + action].compute_utilities()
+            self.utilities[action] = self.children['P' + self.player + ':' + action].compute_utilities()
         # initialization of the list max_utility where  we're gonna save the best utility for this node
-        max_utility = self.utilities[self.actions[0]]
+            max_utility = self.utilities[self.actions[0]]
         # cycle through the computed utilities to compute the best one
-        for utility in self.utilities.items():
+        for key, utility in self.utilities.items():
             # computation of best utility for first player
             if self.player == '1':
-                if utility[0] > max_utility[0]:
+                if float(utility[0]) > max_utility[0]:
                     max_utility = utility
             # computation of best utility for second player
             if self.player == '2':
-                if utility[1] > max_utility[1]:
+                if float(utility[1]) > max_utility[1]:
                     max_utility = utility
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
