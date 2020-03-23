@@ -11,7 +11,7 @@ class TerminalNode(Node):
         history_list = history.split('/')[1:]                       # deleted first empty element of the history
         self.history = history_list
         self.parent = root.node_finder(history_list[:-1])           # called node finder without last element
-        self.parent.appendChild(self, history_list)
+        self.parent.append_child(self, history_list)
         payoffs_list = payoffs.split()
         for i in payoffs_list:
             payoffs_list = i.split('=')
