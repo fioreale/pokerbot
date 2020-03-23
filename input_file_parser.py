@@ -70,7 +70,7 @@ def parse_line(line):
 # def parse_file(filepath: str) -> Node:
 # input parameters: str filepath = path of the file to parse
 # output: Node root = root node of the game tree
-def parse_file(filepath):
+def parse_tree(filepath):
     with open(filepath, 'r') as file_object:
         # reads each line of the file
         lines = file_object.readlines()
@@ -116,32 +116,40 @@ def parse_file(filepath):
                 # history is passed in the form: '/C:99/P1:raise2/P2:raise2/P1:c'
                 # payoffs are passed in the form: '1=0.000000 2=0.000000'
                 leaf_node = TerminalNode()
-                leaf_node.createTerminalNode(history, actions, root)
+                leaf_node.create_terminal_node(history, actions, root)
     return root
 
-def parse_infoset(filepath, tree):
+
+def parse_infoset(filepath, tree_root):
     with open(filepath, 'r') as file_object:
+        # reads each line of the file
         lines = file_object.readlines()
+        # sorts the lines in alphabetical order
         ordered_lines = sorted(lines)
-        infoStructure = InfoStructure()
+        # initializes the InfoStructure object with empty parameters
+        info_structure = InfoStructure()
+        # cycle through each line od the file
         for line in ordered_lines:
             key, match = parse_line(line)
             if key == 'infoset':
                 history = match.group('history')
                 nodes = match.group('nodes')
-                newInfoSet = InfoSet()
-                newInfoSet.createInfoSet(history, nodes, tree)
-                infoStructure.assignInfoSet(newInfoSet, tree)
-    return infoStructure
+                # create an infoset with all his parameters
+                new_info_set = InfoSet()
+                # history is passed in the form: '/?9/P1:c/P2:c/C:T/P1:raise4'
+                # nodes is passed in the form: '/C:99/P1:c/P2:c/C:T/P1:raise4 /C:T9/P1:c/P2:c/C:T/P1:raise4 ...'
+                new_info_set.createInfoSet(history, nodes, tree_root)
+                info_structure.assign_info_set(new_info_set, tree_root)
+    return info_structure
 
 
 if __name__ == '__main__':
-    tree = parse_file(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
+    tree = parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
     utilities.visualize_InfoStructure(tree, infoSets)
-    #utilities.visualize(tree, 0)
+    # utilities.visualize(tree, 0)
 
-    #k=0
+    # k=0
     # for i in infoSets.infoSets1 :
     #     for j in i.infoNodes.values():
     #         print(str(k) + ' ' + j.getPlayer())
@@ -152,6 +160,5 @@ if __name__ == '__main__':
     #         print(str(k) + ' ' + j.getPlayer())
     #         k+=1
 
-    
-        #cluster_table = utilities.clustering_table_creation(tree)
-   #utilities.print_cluster_table(tree)
+    # cluster_table = utilities.clustering_table_creation(tree)
+    # utilities.print_cluster_table(tree)

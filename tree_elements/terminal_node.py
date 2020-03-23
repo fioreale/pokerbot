@@ -7,7 +7,7 @@ class TerminalNode(Node):
         Node.__init__(self)
         self.payoffs = [None, None]
 
-    def createTerminalNode(self, history, payoffs, root):           # initialize a terminal node instance
+    def create_terminal_node(self, history, payoffs, root):           # initialize a terminal node instance
         history_list = history.split('/')[1:]                       # deleted first empty element of the history
         self.history = history_list
         self.parent = root.node_finder(history_list[:-1])           # called node finder without last element
