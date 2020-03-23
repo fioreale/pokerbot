@@ -13,7 +13,7 @@ class NatureNode(Node):
         for i in actions:
             splitted_signals = i.split('=')
             self.signals[str(splitted_signals[0])] = float(splitted_signals[1])
-            self.actions.append(splitted_signals[1])
+            self.actions.append(str(splitted_signals[0]))
         sum = 0
         for j in self.signals:
             sum += self.signals[j]
@@ -30,7 +30,7 @@ class NatureNode(Node):
         for i in actions_list:
             splitted_action = i.split('=')
             self.signals[splitted_action[0]] = float(splitted_action[1])
-            self.actions.append(splitted_action[1])
+            self.actions.append(str(splitted_action[0]))
         sum = 0
         for j in self.signals:
             sum += self.signals[j]

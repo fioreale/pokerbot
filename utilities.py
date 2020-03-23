@@ -1,6 +1,4 @@
 from tree_elements.terminal_node import TerminalNode
-from tree_elements.infoStructure import InfoStructure
-from tree_elements.infoSet import InfoSet
 import matplotlib.pyplot as plt
 
 
@@ -84,22 +82,20 @@ def clustering_table_creation(root):
             else:
                 index = 1
             # action contains
-            computed_utility = int(node.children['P' + node.player + ':' + action].compute_utilities()[index])
+            computed_utility = int(node.children['P' + node.player + ':' + action].compute_utilities()[index]*1000000)
             if (action, computed_utility) not in cluster_table.keys():
                 cluster_table[(action, computed_utility)] = []
                 cluster_table[(action, computed_utility)].append(node)
             else:
                 cluster_table[(action, computed_utility)].append(node)
-    print('checco leader')
+
     return cluster_table
     # old code to reverse the dictionary
     # for node, action, utility in cluster_table.items():
     #   cluster_table[action, utility] = search_node(cluster_table, action, utility)
 
 
-def print_cluster_table(node):
-    cluster_table = clustering_table_creation(node)
-    # kuhn
+def print_cluster_table(cluster_table):
 
     # x axis value list.
     x_number_list = []
@@ -112,12 +108,12 @@ def print_cluster_table(node):
     for (action, utility), node_list in cluster_table.items():
         if action == 'c':
             for node in node_list:
-                x_number_list.append(utility)
+                x_number_list.append(float(utility)/1000000)
                 n.append(node.history)
 
-        if action == 'r':
+        if action == 'r' or action == 'raise2':
             for node in node_list:
-                y_number_list.append(utility)
+                y_number_list.append(float(utility)/1000000)
                 # n.append(node.history)
 
     fig, ax = plt.subplots()
@@ -133,11 +129,11 @@ def print_cluster_table(node):
         ax.annotate(txt, (x_number_list[i], y_number_list[i]))
 
     # Set chart title.
-    #ax.title("Extract Number Root ")
+    # ax.title("Extract Number Root ")
 
     # Set x, y label text.
-    #fig.xlabel("Number")
-    #fig.ylabel("Extract Root of Number")
+    # fig.xlabel("Number")
+    # fig.ylabel("Extract Root of Number")
     plt.show()
 
 # old code used to reverse the dictionary used to build the cluster table
