@@ -1,5 +1,7 @@
 import os
 import re
+
+import clustering
 import utilities
 
 from tree_elements.infoSet import InfoSet
@@ -144,8 +146,8 @@ def parse_infoset(filepath, tree_root):
 
 
 if __name__ == '__main__':
-    tree = parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
+    tree = parse_tree(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
+    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
     utilities.visualize_InfoStructure(tree, infoSets)
     # utilities.visualize(tree, 0)
 
@@ -160,5 +162,8 @@ if __name__ == '__main__':
     #         print(str(k) + ' ' + j.getPlayer())
     #         k+=1
 
-    # cluster_table = utilities.clustering_table_creation(tree)
-    # utilities.print_cluster_table(tree)
+    cluster_table = utilities.clustering_table_creation(tree)
+    utilities.print_cluster_table(cluster_table)
+    clustering.k_means(cluster_table, 2)
+
+
