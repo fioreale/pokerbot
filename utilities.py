@@ -1,7 +1,7 @@
 from tree_elements.terminal_node import TerminalNode
 from tree_elements.infoStructure import InfoStructure
 from tree_elements.infoSet import InfoSet
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 def in_chars(string):
