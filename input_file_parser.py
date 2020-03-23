@@ -89,7 +89,7 @@ def parse_tree(filepath):
                 actions = match.group('actions')
                 # create the root node with all his parameters
                 # actions are passed in the form: '99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000'
-                root.createRootNode(actions)
+                root.create_root_node(actions)
 
             if key == 'action_node':
                 history = match.group('history')
@@ -100,7 +100,7 @@ def parse_tree(filepath):
                 # player is passed in the form: '1'
                 # actions are passed in the form: 'c f'
                 action_node = ActionNode()
-                action_node.createActionNode(history, player, actions, root)
+                action_node.create_action_node(history, player, actions, root)
 
             if key == 'chance_node':
                 history = match.group('history')
@@ -109,7 +109,7 @@ def parse_tree(filepath):
                 # history is passed in the form: '/C:99/P1:raise2/P2:raise2/P1:c'
                 # actions are passed in the form: 'T=2.000000 J=2.000000'
                 chance_node = NatureNode()
-                chance_node.createChanceNode(history, actions, root)
+                chance_node.create_chance_node(history, actions, root)
 
             if key == 'leaf_node':
                 history = match.group('history')
@@ -140,7 +140,7 @@ def parse_infoset(filepath, tree_root):
                 new_info_set = InfoSet()
                 # history is passed in the form: '/?9/P1:c/P2:c/C:T/P1:raise4'
                 # nodes is passed in the form: '/C:99/P1:c/P2:c/C:T/P1:raise4 /C:T9/P1:c/P2:c/C:T/P1:raise4 ...'
-                new_info_set.createInfoSet(history, nodes, tree_root)
+                new_info_set.create_info_set(history, nodes, tree_root)
                 info_structure.assign_info_set(new_info_set, tree_root)
     return info_structure
 

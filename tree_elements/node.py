@@ -8,7 +8,7 @@ class Node:
         self.children = {}
         self.parent = None
         self.cards = []
-        self.infoSet = None
+        self.info_set = None
         self.player = None
         self.utilities = {} # utilities dictionary used  to compute backward induction outcomes
         self.utilities_per_action = {} # dictionary where we save all the possible utilities for each single action
@@ -20,19 +20,19 @@ class Node:
         else:
             return self.children[history[0]].node_finder(history[1:])
 
-    def appendChild(self, node, history):
+    def append_child(self, node, history):
         self.children[history[-1]] = node
 
-    def appendCards(self, cards):
+    def append_cards(self, cards):
         if len(self.cards) > 1:
             self.cards.append(utilities.in_chars(cards[0]))
         else:
             return ValueError("No cards in the player hand")
 
-    def getCards(self):
+    def get_cards(self):
         return self.cards
 
-    def setCards(self, cards):
+    def set_cards(self, cards):
         self.cards = cards
 
     def compute_utilities(self):
@@ -59,5 +59,5 @@ class Node:
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
 
-    def getPlayer(self):
+    def get_player(self):
         return self.player
