@@ -1,10 +1,6 @@
-import os
 import re
 
-import clustering
-import utilities
-
-from tree_elements.infoSet import InfoSet
+from tree_elements.infoset import InfoSet
 from tree_elements.nature_node import NatureNode
 from tree_elements.action_node import ActionNode
 from tree_elements.terminal_node import TerminalNode
@@ -88,7 +84,7 @@ def parse_tree(filepath):
             if key == 'root_node':
                 actions = match.group('actions')
                 # create the root node with all his parameters
-                # actions are passed in the form: '99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000'
+                # actions are passed in the form: '99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000...'
                 root.create_root_node(actions)
 
             if key == 'action_node':
@@ -141,29 +137,7 @@ def parse_infoset(filepath, tree_root):
                 # history is passed in the form: '/?9/P1:c/P2:c/C:T/P1:raise4'
                 # nodes is passed in the form: '/C:99/P1:c/P2:c/C:T/P1:raise4 /C:T9/P1:c/P2:c/C:T/P1:raise4 ...'
                 new_info_set.create_info_set(history, nodes, tree_root)
+                # the new infoset is added to the InfoStructure of the tree
                 info_structure.assign_info_set(new_info_set, tree_root)
+    # return the complete infostructure of the game tree
     return info_structure
-
-
-if __name__ == '__main__':
-    tree = parse_tree(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
-    infoSets = parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
-    utilities.visualize_InfoStructure(tree, infoSets)
-    # utilities.visualize(tree, 0)
-
-    # k=0
-    # for i in infoSets.infoSets1 :
-    #     for j in i.infoNodes.values():
-    #         print(str(k) + ' ' + j.getPlayer())
-    #         k+=1
-    # k=0
-    # for i in infoSets.infoSets2 :
-    #     for j in i.infoNodes.values():
-    #         print(str(k) + ' ' + j.getPlayer())
-    #         k+=1
-
-    cluster_table = utilities.clustering_table_creation(tree)
-    utilities.print_cluster_table(cluster_table)
-    clustering.k_means(cluster_table, 2)
-
-

@@ -1,40 +1,82 @@
 from tree_elements.node import Node
 
+# class used to represent the chance nodes in the tree
+
 
 class NatureNode(Node):
     def __init__(self):
         Node.__init__(self)
+        # signals is a dictionary indexed by name of the possible action and stores the value of the probability
+        # of that action to be chosen.
+        # Example: {['JK' : 0.2000; ... ]}
         self.signals = {}
+        # the player of this nodes is always the chance player
         self.player = 'C'
 
+    # function to set up the values of the root node
+    # actions contains the list of possible actions with their corresponding probabilities.
+    # Example: '99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000 ... '
     def create_root_node(self, actions):
+        # history is initialized as an empty list as there are no nodes that leads to the root node
         self.history = []
+        # the list of actions is split by spaces
         actions = actions.split()
-        for i in actions:
-            splitted_signals = i.split('=')
-            self.signals[str(splitted_signals[0])] = float(splitted_signals[1])
-            self.actions.append(str(splitted_signals[0]))
-        sum = 0
+        for action in actions:
+            # each action is split in name and non-normalized probability value
+            split_signals = action.split('=')
+            # signal_action_name contains the name of action
+            signal_action_name = str(split_signals[0])
+            # signal_action_value contains the non-normalized probability value
+            signal_action_value = float(split_signals[1])
+            # the non-normalized probability value is saved in the dictionary indexed by the action name
+            self.signals[signal_action_name] = signal_action_value
+            # the action name is saved in the list of actions available for the current node
+            self.actions.append(signal_action_name)
+        support_sum = 0         # support variable used to compute the normalized probabilities
+        # cycle through the dictionary of signals
         for j in self.signals:
-            sum += self.signals[j]
-        for k in self.signals:                                              # normalization of the signals
-            self.signals[k] = self.signals[k] / sum
+            support_sum += self.signals[j]      # compute the sum of all non-normalized probability values
+        # cycle through the dictionary of signals
+        for k in self.signals:
+            # overwrite each non-normalized probability with its normalized value
+            self.signals[k] = self.signals[k] / support_sum
         return self
 
-    def create_chance_node(self, history, actions, root):                     
-        history_list = history.split('/')[1:]                               # deleted first empty element of the history
+    # function to set up the values of the chance nodes in the middle of the tree
+    # history contains the path of nodes that leads to the node to be created
+    # Example: '/C:99/P1:raise2/P2:raise2/P1:c'
+    def create_chance_node(self, history, actions, root):
+        # history contains a list of string that identifies the nodes that leads to the current node
+        # the first element is discarded because it is an empty string
+        history_list = history.split('/')[1:]
+        # the list of nodes is saved in the local history variable
         self.history = history_list
-        self.parent = root.node_finder(history_list[:-1])                   # called node finder without last element (ASK LUCIANO!)
+        # to retrieve the parent of the current node we perform a search through the game tree
+        # the last element of the tree is discarded because it is the current node, we need the father
+        self.parent = root.node_finder(history_list[:-1])
+        # the current node is added to the list of children of the parent. history_list contains all the nodes leading
+        # to the current node, parent node will use the last element of the list history_list[-1]
+        # to index its dictionary of children
         self.parent.append_child(self, history_list)
+        # actions contains a list of action split by spaces
         actions_list = actions.split()
-        for i in actions_list:
-            splitted_action = i.split('=')
-            self.signals[splitted_action[0]] = float(splitted_action[1])
-            self.actions.append(str(splitted_action[0]))
-        tot = 0
+        for action in actions_list:
+            # each action is split in name and non-normalized probability value
+            split_action = action.split('=')
+            # signal_action_name contains the name of action
+            chance_action_name = split_action[0]
+            # signal_action_value contains the non-normalized probability value
+            chance_action_value = float(split_action[1])
+            # the non-normalized probability value is saved in the dictionary indexed by the action name
+            self.signals[chance_action_name] = chance_action_value
+            # the action name is saved in the list of actions available for the current node
+            self.actions.append(str(chance_action_name))
+        total_sum_support = 0       # support variable used to compute the normalized probabilities
+        # cycle through the dictionary of signals
         for j in self.signals:
-            tot += self.signals[j]
-        for k in self.signals:                                              # normalization of the signals
-            self.signals[k] = self.signals[k] / tot
+            total_sum_support += self.signals[j]        # compute the sum of all non-normalized probability values
+        # cycle through the dictionary of signals
+        for k in self.signals:
+            # overwrite each non-normalized probability with its normalized value
+            self.signals[k] = self.signals[k] / total_sum_support
         return self
-

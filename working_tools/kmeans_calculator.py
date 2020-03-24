@@ -51,11 +51,11 @@ def k_means(table, clusters):
             tuple_node_utilities[0] = node
             tuple_node_utilities[1] = utilities[nodes.index(node)]
             # creation of a new entry in the dictionary and store the new value
-            if node.infoSet.name not in infosets.keys():
-                infosets[node.infoSet.name] = []
-                infosets[node.infoSet.name].append(tuple_node_utilities)
+            if node.infoset.name not in infosets.keys():
+                infosets[node.infoset.name] = []
+                infosets[node.infoset.name].append(tuple_node_utilities)
             else:
-                infosets[node.infoSet.name].append(tuple_node_utilities)
+                infosets[node.infoset.name].append(tuple_node_utilities)
 
     # initialization of centroids structure = dictionary indexed by infoset object and storing the values
     # of the cluster coordinates
