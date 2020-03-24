@@ -11,7 +11,6 @@ class Node:
         self.children = {}
         # variable where we save the parent node
         self.parent = None
-        self.cards = []     # TODO delete cards
         # variable where we save the infoset to which this node belongs
         self.infoset = None
         # variable where we save the player that plays in this node
@@ -38,17 +37,6 @@ class Node:
 
     def append_child(self, node, history):
         self.children[history[-1]] = node
-
-    # TODO delete cards
-    # def append_cards(self, cards):
-    #     if len(self.cards) > 1:
-    #         self.cards.append(tree_visualizer.in_chars(cards[0]))
-    #     else:
-    #         return ValueError("No cards in the player hand")
-
-    # TODO delete cards
-    def get_cards(self):
-        return self.cards
 
     # function used to perform backward induction
     def compute_utilities(self):
