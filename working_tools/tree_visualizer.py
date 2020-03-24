@@ -1,9 +1,5 @@
 from tree_elements.terminal_node import TerminalNode
 
-# TODO used only in cards method, to be deleted
-def in_chars(string):
-    return [char for char in string]
-
 
 class bcolors:
     HEADER = '\033[95m'

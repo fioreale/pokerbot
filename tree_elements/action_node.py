@@ -31,6 +31,4 @@ class ActionNode(Node):
         self.actions = actions.split()
         # player stores the player that plays the current node
         self.player = player
-        # TODO delete cards
-        self.cards = self.parent.get_cards()
         return self
