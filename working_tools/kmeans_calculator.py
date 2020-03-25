@@ -93,11 +93,11 @@ def k_means(cluster_table, number_of_clusters):
     # return the coordinates of the new centroids
 
     grouped_infosets = {}
-    infosets_names = []
+    infosets_names = list()
 
     for i in range(0, number_of_clusters):
         grouped_infosets[i] = InfoSet()
-        infosets_names.append([])
+        infosets_names.append('')
 
 
     infoset_position = 0
@@ -110,6 +110,8 @@ def k_means(cluster_table, number_of_clusters):
     infoset_position = 0
 
     for cluster_index in kmeans.labels_:
+        if infosets_names[cluster_index] != '':
+            infosets_names[cluster_index] += '+'
         infosets_names[cluster_index] += list(infosets_dictionary.keys())[infoset_position]
         infoset_position += 1
 
