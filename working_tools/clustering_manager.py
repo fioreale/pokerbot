@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+from mpl_toolkits.mplot3d import Axes3D
 
 # function that builds the table where to compute the clusters
 # returns a dictionary indexed per action and utility which returns a list of nodes
@@ -48,52 +48,50 @@ def create_clustering_table(node_list):
 
 def print_cluster_table(cluster_table):
 
-    # x axis value list.
-    x_number_list = []
+    # list of list containing all the coordinates for each axis.
+    axes_list = []
 
-    # y axis value list.
-    y_number_list = []
+    # list of action where we save the distinct values of actions ordered to create the coordinates in the same order
+    distinct_actions_order = []
 
-    z_number_list = []
+    # list of labels for each point
+    labels = []
 
-    n = []
+    # cycle to create the list of ordered distinct values of actions
+    for action, utility in cluster_table.keys():
+        if action not in distinct_actions_order:
+            distinct_actions_order.append(action)
+            axes_list.append(list())
 
+    # cycle to create the lists of coordinates and distinct labels
     for (action, utility), node_list in cluster_table.items():
-        if action == 'c':
-            for node in node_list:
-                x_number_list.append(float(utility)/1000000)
-                n.append(node.history)
+        for node in node_list:
+            axes_list[distinct_actions_order.index(action)].append(float(utility) / 1000000)
+            if node.history not in labels:
+                labels.append(node.history)
 
-        if action == 'r' or action == 'raise2' or action == 'raise4':
-            for node in node_list:
-                y_number_list.append(float(utility)/1000000)
-                # n.append(node.history)
+    # draw point based on above x, y and z (optional) axis values
+    if len(distinct_actions_order) == 2:
+        fig, ax = plt.subplots()
+        ax.scatter(axes_list[0], axes_list[1])
+        ax.set_xlabel(distinct_actions_order[0])
+        ax.set_ylabel(distinct_actions_order[1])
+    else:
+        fig = plt.figure()
+        ax = Axes3D(fig)
+        ax.scatter(axes_list[0], axes_list[1], axes_list[2])
+        ax.set_xlabel(distinct_actions_order[0])
+        ax.set_ylabel(distinct_actions_order[1])
+        ax.set_zlabel(distinct_actions_order[2])
 
-        if action == 'f':
-            for node in node_list:
-                z_number_list.append(float(utility)/1000000)
-                # n.append(node.history)
+    # set points labels based on above x, y and z (optional) axis values
+    if len(distinct_actions_order) == 2:
+        for i, txt in enumerate(labels):
+            ax.annotate(txt, (axes_list[0][i], axes_list[1][i]))
+    else:
+        for x_label, y_label, z_label, label in zip(axes_list[0], axes_list[1], axes_list[2], labels):
+            ax.text(x_label, y_label, z_label, label)
 
-    fig, ax = plt.subplots()
-    # Draw point based on above x, y axis values.
-    # if len(x_number_list)!= 0 and len(y_number_list) != 0 and len(z_number_list) != 0:
-    #     ax.scatter(x_number_list, y_number_list, z_number_list)
-    # else :
-    #     ax.scatter(x_number_list, y_number_list)
-    ax.scatter(x_number_list, y_number_list)
-
-    print(x_number_list)
-    print(y_number_list)
-
-    for i, txt in enumerate(n):
-        print(i)
-        print(txt)
-        ax.annotate(txt, (x_number_list[i], y_number_list[i]))
-
-    # Set chart title.
-    # ax.title("Extract Number Root ")
-
-    # Set x, y label text.
-    # fig.xlabel("Number")
-    # fig.ylabel("Extract Root of Number")
+    # Set chart title
+    plt.title("Cluster Table")
     plt.show()
