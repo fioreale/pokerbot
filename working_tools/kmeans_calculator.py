@@ -1,6 +1,8 @@
 from sklearn.cluster import KMeans
 import numpy as np
 
+from tree_elements.infoset import InfoSet
+
 
 def k_means(cluster_table, number_of_clusters):
     # utility list where we store the "coordinates" of the nodes to cluster
@@ -89,4 +91,36 @@ def k_means(cluster_table, number_of_clusters):
     # compute the K-Means of the centroids of the infoset clusters
     kmeans = KMeans(n_clusters=number_of_clusters, random_state=0).fit(kmeans_input)
     # return the coordinates of the new centroids
+
+    grouped_infosets = {}
+    infosets_names = []
+
+    for i in range(0, number_of_clusters):
+        grouped_infosets[i] = InfoSet()
+        infosets_names.append([])
+
+
+    infoset_position = 0
+    for cluster_index in kmeans.labels_:
+        for node_and_utilities in infosets_dictionary[list(infosets_dictionary.keys())[infoset_position]]:
+            node_name = '/' + '/'.join(map(str, node_and_utilities[0].history))
+            grouped_infosets[cluster_index].info_nodes[node_name] = node_and_utilities[0]
+        infoset_position += 1
+
+    infoset_position = 0
+
+    for cluster_index in kmeans.labels_:
+        infosets_names[cluster_index] += list(infosets_dictionary.keys())[infoset_position]
+        infoset_position += 1
+
+    index = 0
+    for new_infoset in grouped_infosets.values():
+        new_infoset.name = infosets_names[index]
+        index += 1
+
+    print('dati')
+    for infoset in grouped_infosets.values():
+        print(infoset.info_nodes)
+        print(infoset.name)
+
     return kmeans.cluster_centers_
