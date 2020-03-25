@@ -21,21 +21,11 @@ if __name__ == '__main__':
     # visualize the infostructure of the tree
     tree_visualizer.visualize_info_structure(tree, info_sets)
 
-    # k=0
-    # for i in infoSets.infoSets1 :
-    #     for j in i.infoNodes.values():
-    #         print(str(k) + ' ' + j.getPlayer())
-    #         k+=1
-    # k=0
-    # for i in infoSets.infoSets2 :
-    #     for j in i.infoNodes.values():
-    #         print(str(k) + ' ' + j.getPlayer())
-    #         k+=1
-
     # initializes the cluster table. Graphic example: 'Abstraction Generation - slides.pdf' slide 7/67
     # cluster table is a dictionary indexed by action and utility that where each value is a list of nodes
     # Example: {[('c', '2.00000') : [<object ActionNode>, <object ActionNode>, <object ActionNode>]]}
-    cluster_table = clustering_manager.clustering_table_creation(tree)
+
+    cluster_table = clustering_manager.create_clustering_table(tree.children.values())
     # prints the cluster table using pyplot
     clustering_manager.print_cluster_table(cluster_table)
 
