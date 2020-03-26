@@ -9,11 +9,11 @@ if __name__ == '__main__':
 
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure
-    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'))
+    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
 
     # info_sets will contain the complete infostructure of the game
     # parse_infoset reads the file and returns the infostructure
-    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'kuhn.txt'), tree)
+    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
 
     # visualize the game tree
     # tree_visualizer.visualize_game_tree(tree, 0)
@@ -31,4 +31,4 @@ if __name__ == '__main__':
 
     # computes the K-Means estimation of the node clusters, given some node clusters placed in the space of utilities
     # it computes some centroids of the most likely clusters of node clusters
-    kmeans_calculator.k_means(cluster_table, 2)
+    kmeans_calculator.k_means(cluster_table, 3)
