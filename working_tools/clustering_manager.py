@@ -74,7 +74,7 @@ def print_cluster_table(cluster_table):
             else:
                 labels_concatenation_dict[(x_utility, y_utility)] = labels[i]
 
-        for i, txt in enumerate(labels):
+        for i in range(0, len(labels)):
             ax.annotate(labels_concatenation_dict[axes_list[0][i], axes_list[1][i]], (axes_list[0][i], axes_list[1][i]))
 
     else:
@@ -87,9 +87,9 @@ def print_cluster_table(cluster_table):
             else:
                 labels_concatenation_dict[(x_utility, y_utility, z_utility)] = labels[i]
 
-        for x_label, y_label, z_label, label in zip(axes_list[0], axes_list[1], axes_list[2],
-                                                    list(labels_concatenation_dict.values())):
-            ax.text(x_label, y_label, z_label, label)
+        for i in range(0, len(labels)):
+            ax.text(axes_list[0][i], axes_list[1][i], axes_list[2][i],
+                    labels_concatenation_dict[axes_list[0][i], axes_list[1][i], axes_list[2][i]])
 
     # Set chart title
     plt.title("Cluster Table")

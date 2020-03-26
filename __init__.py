@@ -9,11 +9,11 @@ if __name__ == '__main__':
 
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure
-    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
+    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'))
 
     # info_sets will contain the complete infostructure of the game
     # parse_infoset reads the file and returns the infostructure
-    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
+    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc3.txt'), tree)
 
     # visualize the game tree
     tree_visualizer.visualize_game_tree(tree, 0)
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     list_of_nodes_lists = tree_navigator.split_node_list(level)
     for node_list in list_of_nodes_lists:
         cluster_table = clustering_manager.create_clustering_table(node_list)
-        # prints the cluster table using pyplot
+        # prints the cluster table using matplotlib
         clustering_manager.print_cluster_table(cluster_table)
 
         # computes the K-Means estimation of the node clusters,given some node clusters placed in the space of utilities
