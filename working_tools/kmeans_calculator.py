@@ -138,4 +138,4 @@ def k_means(cluster_table, number_of_clusters):
         print(infoset.info_nodes)
         print(infoset.name)
 
-    return kmeans.cluster_centers_
+    return grouped_infosets

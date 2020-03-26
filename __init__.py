@@ -1,6 +1,6 @@
 import os
 
-from working_tools import input_file_parser
+from working_tools import input_file_parser, tree_navigator
 from working_tools import tree_visualizer
 from working_tools import clustering_manager
 from working_tools import kmeans_calculator
@@ -25,10 +25,19 @@ if __name__ == '__main__':
     # cluster table is a dictionary indexed by action and utility that where each value is a list of nodes
     # Example: {[('c', '2.00000') : [<object ActionNode>, <object ActionNode>, <object ActionNode>]]}
 
-    cluster_table = clustering_manager.create_clustering_table(tree.children.values())
-    # prints the cluster table using pyplot
-    clustering_manager.print_cluster_table(cluster_table)
+    height = 2
 
-    # computes the K-Means estimation of the node clusters, given some node clusters placed in the space of utilities
-    # it computes some centroids of the most likely clusters of node clusters
-    kmeans_calculator.k_means(cluster_table, 3)
+    list_of_infosets = list()
+    for i in range(0, tree_navigator.find_tree_height(tree, 0)):
+        list_of_infosets.append(list())
+
+    level = tree_navigator.get_tree_level(tree, height)
+    list_of_nodes_lists = tree_navigator.split_node_list(level)
+    for node_list in list_of_nodes_lists:
+        cluster_table = clustering_manager.create_clustering_table(node_list)
+        # prints the cluster table using pyplot
+        clustering_manager.print_cluster_table(cluster_table)
+
+        # computes the K-Means estimation of the node clusters,given some node clusters placed in the space of utilities
+        # it computes some centroids of the most likely clusters of node clusters
+        list_of_infosets[height].append(kmeans_calculator.k_means(cluster_table, 2))
