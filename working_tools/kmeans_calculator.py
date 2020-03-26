@@ -91,7 +91,7 @@ def k_means(cluster_table, number_of_clusters):
     # build numpy array of centroids coordinates
     kmeans_input = np.asarray(centroids_values)
     # compute the K-Means of the centroids of the infoset clusters
-    kmeans = KMeans(n_clusters=number_of_clusters, random_state=None).fit(kmeans_input)
+    kmeans = KMeans(n_clusters=number_of_clusters, random_state=0).fit(kmeans_input)
     print('without predict: ' + str(kmeans))
     # return the coordinates of the new centroids
 
