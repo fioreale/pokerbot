@@ -44,6 +44,7 @@ def k_means(cluster_table, number_of_clusters):
 
     # here we build a dictionary indexed for each infoset storing the list of nodes and coordinate values
     # in that infoset
+    # Example: {'infoset_name' : [<object ActionNode>, [1, ..., n]]}
     infosets_dictionary = {}
     # cycle through the nodes
     for node_list in cluster_table.values():
@@ -65,6 +66,7 @@ def k_means(cluster_table, number_of_clusters):
 
     # initialization of centroids structure = dictionary indexed by infoset object and storing the values
     # of the cluster coordinates
+    # Example: {'infoset_name' : [1, ... , n]}
     centroids_dictionary = {}
     # cycle through infosets dictionary
     for infoset in infosets_dictionary.keys():
@@ -89,9 +91,13 @@ def k_means(cluster_table, number_of_clusters):
     # build numpy array of centroids coordinates
     kmeans_input = np.asarray(centroids_values)
     # compute the K-Means of the centroids of the infoset clusters
-    kmeans = KMeans(n_clusters=number_of_clusters, random_state=0).fit(kmeans_input)
+    kmeans = KMeans(n_clusters=number_of_clusters, random_state=None).fit(kmeans_input)
+    print('without predict: ' + str(kmeans))
     # return the coordinates of the new centroids
 
+    # dictionary where we save the new merged infoset computed with kmeans
+    # it is indexed by cluster label and stores a InfoSet objects
+    # Example: {'1' : }
     grouped_infosets = {}
     infosets_names = list()
 
@@ -101,7 +107,9 @@ def k_means(cluster_table, number_of_clusters):
 
 
     infoset_position = 0
+    # cycle through the cluster returned by K-Means
     for cluster_index in kmeans.labels_:
+        # cycle through the dictionary in cardinal positions
         for node_and_utilities in infosets_dictionary[list(infosets_dictionary.keys())[infoset_position]]:
             node_name = '/' + '/'.join(map(str, node_and_utilities[0].history))
             grouped_infosets[cluster_index].info_nodes[node_name] = node_and_utilities[0]

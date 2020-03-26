@@ -1,28 +1,6 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# function that builds the table where to compute the clusters
-# returns a dictionary indexed per action and utility which returns a list of nodes
-# def clustering_table_creation(root):
-#     # dictionary indexed by action and utility that stores every node that can return that utility
-#     cluster_table = {}
-#     # cycle through each children of the root, saves the list of nodes for the utlities of that action
-#     for key, node in root.children.items():
-#         for action in node.actions:
-#             index = 0
-#             if node.player == '1':
-#                 index = 0
-#             else:
-#                 index = 1
-#             # action contains
-#             computed_utility = int(node.children['P' + node.player + ':' + action].compute_utilities()[index]*1000000)
-#             if (action, computed_utility) not in cluster_table.keys():
-#                 cluster_table[(action, computed_utility)] = []
-#                 cluster_table[(action, computed_utility)].append(node)
-#             else:
-#                 cluster_table[(action, computed_utility)].append(node)
-#
-#     return cluster_table
 
 def create_clustering_table(node_list):
     # dictionary indexed by action and utility that stores every node that can return that utility
@@ -85,11 +63,32 @@ def print_cluster_table(cluster_table):
         ax.set_zlabel(distinct_actions_order[2])
 
     # set points labels based on above x, y and z (optional) axis values
+    labels_concatenation_dict = {}
+
     if len(distinct_actions_order) == 2:
+
+        for i, x_utility in enumerate(axes_list[0]):
+            y_utility = axes_list[1][i]
+            if (x_utility, y_utility) in labels_concatenation_dict.keys():
+                labels_concatenation_dict[(x_utility, y_utility)] += labels[i]
+            else:
+                labels_concatenation_dict[(x_utility, y_utility)] = labels[i]
+
         for i, txt in enumerate(labels):
-            ax.annotate(txt, (axes_list[0][i], axes_list[1][i]))
+            ax.annotate(labels_concatenation_dict[axes_list[0][i], axes_list[1][i]], (axes_list[0][i], axes_list[1][i]))
+
     else:
-        for x_label, y_label, z_label, label in zip(axes_list[0], axes_list[1], axes_list[2], labels):
+
+        for i, x_utility in enumerate(axes_list[0]):
+            y_utility = axes_list[1][i]
+            z_utility = axes_list[2][i]
+            if (x_utility, y_utility, z_utility) in labels_concatenation_dict.keys():
+                labels_concatenation_dict[(x_utility, y_utility, z_utility)] += labels[i]
+            else:
+                labels_concatenation_dict[(x_utility, y_utility, z_utility)] = labels[i]
+
+        for x_label, y_label, z_label, label in zip(axes_list[0], axes_list[1], axes_list[2],
+                                                    list(labels_concatenation_dict.values())):
             ax.text(x_label, y_label, z_label, label)
 
     # Set chart title
