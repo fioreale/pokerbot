@@ -133,9 +133,8 @@ def k_means(cluster_table, number_of_clusters):
         new_infoset.name = infosets_names[index]
         index += 1
 
-    print('dati')
     for infoset in grouped_infosets.values():
-        print(infoset.info_nodes)
         print(infoset.name)
+        print(infoset.info_nodes)
 
     return grouped_infosets
