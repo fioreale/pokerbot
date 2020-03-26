@@ -39,7 +39,7 @@ class NatureNode(Node):
         # cycle through the dictionary of signals
         for k in self.signals:
             # overwrite each non-normalized probability with its normalized value
-            self.signals[k] = self.signals[k] / support_sum
+            self.signals[k] = float(self.signals[k] / support_sum)
         return self
 
     # function to set up the values of the chance nodes in the middle of the tree
@@ -80,3 +80,18 @@ class NatureNode(Node):
             # overwrite each non-normalized probability with its normalized value
             self.signals[k] = self.signals[k] / total_sum_support
         return self
+
+    def compute_utilities(self):
+        max_utility = [0.0, 0.0]
+        # cycle through each action to retrieve the child node utilities
+        # returned utilities are a list [utility_player_1, utility_player_2]
+        for action in self.actions:
+            self.utilities[action] = self.children[self.player + ':' + action].compute_utilities()
+        # initialization of the list max_utility where  we're gonna save the average utility for this node
+        max_utility = [0.0, 0.0]
+        for signal_action in self.actions:
+            weighted_utility_first_player = self.utilities[signal_action][0] * self.signals[signal_action]
+            weighted_utility_second_player = self.utilities[signal_action][1] * self.signals[signal_action]
+            max_utility[0] += weighted_utility_first_player
+            max_utility[1] += weighted_utility_second_player
+        return max_utility

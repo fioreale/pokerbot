@@ -16,10 +16,10 @@ if __name__ == '__main__':
     info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
 
     # visualize the game tree
-    # tree_visualizer.visualize_game_tree(tree, 0)
+    tree_visualizer.visualize_game_tree(tree, 0)
 
     # visualize the infostructure of the tree
-    tree_visualizer.visualize_info_structure(tree, info_sets)
+    # tree_visualizer.visualize_info_structure(tree, info_sets)
 
     # initializes the cluster table. Graphic example: 'Abstraction Generation - slides.pdf' slide 7/67
     # cluster table is a dictionary indexed by action and utility that where each value is a list of nodes
