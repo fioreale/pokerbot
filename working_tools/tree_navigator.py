@@ -1,6 +1,6 @@
 def get_tree_level(root, level):
     if level == 0:
-        return root
+        return [root]
 
     node_collection = []
     if level > 1:
@@ -9,7 +9,9 @@ def get_tree_level(root, level):
             node_collection += get_tree_level(child, level - 1)
         return node_collection
     else:
-        return root.children.values()
+        for node in root.children.values():
+            node_collection += [node]
+        return node_collection
 
 
 def split_node_list(node_list):
@@ -25,10 +27,10 @@ def split_node_list(node_list):
 
 
 def find_tree_height(node, level):
-    max_level = level
+    max_height = level
     if node.children is not None:
         for child in node.children.values():
-            value = find_tree_height(child, level + 1)
-            if max_level < value:
-                max_level = value
-    return max_level
+            found_height = find_tree_height(child, level + 1)
+            if max_height < found_height:
+                max_height = found_height
+    return max_height
