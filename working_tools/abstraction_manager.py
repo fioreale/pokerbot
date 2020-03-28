@@ -3,11 +3,12 @@ from working_tools import clustering_manager
 from working_tools import kmeans_calculator
 from tree_elements.action_node import ActionNode
 
+
 # initializes the cluster table. Graphic example: 'Abstraction Generation - slides.pdf' slide 7/67
 # cluster table is a dictionary indexed by action and utility that where each value is a list of nodes
 # Example: {[('c', '2.00000') : [<object ActionNode>, <object ActionNode>, <object ActionNode>]]}
 
-def abstraction(tree, clusters):
+def create_abstraction(tree, clusters):
     height = tree_navigator.find_tree_height(tree, 0)
     infosets_abstraction = list()
     for i in range(0, height):
@@ -26,9 +27,10 @@ def abstraction(tree, clusters):
             for node_list in organized_level:
                 cluster_table = clustering_manager.create_clustering_table(node_list)
                 # prints the cluster table using matplotlib
-                #clustering_manager.print_cluster_table(cluster_table)
+                # clustering_manager.print_cluster_table(cluster_table)
 
-                # computes the K-Means estimation of the node clusters,given some node clusters placed in the space of utilities
+                # computes the K-Means estimation of the node clusters,given some node clusters
+                # placed in the space of utilities
                 # it computes some centroids of the most likely clusters of node clusters
                 infosets_abstraction[i].append(kmeans_calculator.k_means(cluster_table, clusters))
 

@@ -1,8 +1,7 @@
 import os
 
-from working_tools import input_file_parser
+from working_tools import input_file_parser, abstraction_manager
 from working_tools import tree_visualizer
-import abstraction_creation
 
 if __name__ == '__main__':
 
@@ -20,7 +19,7 @@ if __name__ == '__main__':
     # visualize the infostructure of the tree
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
-    abstraction_set = abstraction_creation.abstraction(tree, 2)
+    abstraction_set = abstraction_manager.create_abstraction(tree, 2)
 
     #visualization of the new infostructure
     for abstraction_level in abstraction_set:
