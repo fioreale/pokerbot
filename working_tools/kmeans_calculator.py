@@ -1,7 +1,7 @@
 from sklearn.cluster import KMeans
 import numpy as np
 
-from tree_elements.infoset import InfoSet
+from tree_elements.info_set import InfoSet
 
 
 def k_means(cluster_table, number_of_clusters):
@@ -42,11 +42,16 @@ def k_means(cluster_table, number_of_clusters):
             # append the node of the corresponding coordinate just found to the nodes list in the same order
             node_ordered_list.append(current_node)
 
-    # here we build a dictionary indexed for each infoset storing the list of nodes and coordinate values
-    # in that infoset
+    # here we create a structure (type: list of lists) to simulate a dictionary and guarantee a deterministic order
+    # between the elements
+    # example:
+    # infoset_dictionary = [['/C:J?', [[ActionNode, [-1.0, -2.0]], [ActionNode, [-1.0, -2.0]], ...],
+    #                       ['/C:Q?', [[ActionNode, [-1.0, -2.0]], [ActionNode, [-1.0, -2.0]], ...],
+    #                       ['/C:K?', [[ActionNode, [+1.0, +1.0]], [ActionNode, [+1.0, +1.0]], ...]]
     infosets_dictionary = list()
-    # cycle through the nodes
+    # cycle through the cluster_table, which is indexed by (action, utility) and returns a list of nodes for each key
     for node_list in cluster_table.values():
+        # cycle the node list
         for current_node in node_list:
             # create list of two values = node object, utilities coordinates
             couple_node_coordinates = [None, None]
@@ -57,17 +62,27 @@ def k_means(cluster_table, number_of_clusters):
             # save coordinates in the tuple
             couple_node_coordinates[1] = desired_utilities_coordinates
 
-            # creation of a new entry in the dictionary and store the new value
-
-            infoset_names = list()
+            # create a list of the infosets currently present in the infosets_dictionary
+            # this list follows the order of appearance of the infoset in the dictionary and ensures that the
+            # insertions below are done in the same order
+            infosets_names = list()
             for infoset in infosets_dictionary:
-                infoset_names.append(infoset[0])
-            if current_node.infoset.name not in infoset_names:
-                new_vector = [current_node.infoset.name, list()]
-                new_vector[1].append(couple_node_coordinates)
-                infosets_dictionary.append(new_vector)
+                infosets_names.append(infoset[0])
+
+            # if the current node in the cluster_table is part of an infoset NOT present in the infoset_dictionary
+            if current_node.infoset.name not in infosets_names:
+                # create an infoset_vector containing:
+                #  - the name of the infoset
+                #  - a list of tuples (Node, [utilities coordinates])
+                infoset_vector = [current_node.infoset.name, list()]
+                infoset_vector[1].append(couple_node_coordinates)
+                # append the vector of the new infoset to the dictionary
+                infosets_dictionary.append(infoset_vector)
+            # else append the the tuple (Node, [utilities coordinates]) to the index corresponding to the position
+            # of the infoset in the infoset_dictionary
             else:
-                infosets_dictionary[infoset_names.index(current_node.infoset.name)][1].append(couple_node_coordinates)
+                # the index is retrieved using the position of the infoset's name in the infosets_names vector
+                infosets_dictionary[infosets_names.index(current_node.infoset.name)][1].append(couple_node_coordinates)
 
     # initialization of centroids structure = dictionary indexed by infoset object and storing the values
     # of the cluster coordinates
