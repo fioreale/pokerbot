@@ -34,7 +34,7 @@ def k_means(cluster_table, number_of_clusters):
                         # check if the node of the searched action corresponds to the action in the cycled dictionary
                         if current_node in node_list_second_cycle:
                             # then we append the utility value to the list where we save the coordinates
-                            values_for_coordinates.append(float(utility_second_cycle)/1000000)
+                            values_for_coordinates.append(float(utility_second_cycle) / 1000000)
             # the single coordinate has dimension equal to the number of actions that the player can do
             # dim[values] = dim[actions]
             # then we append the coordinate to the coordinate list
@@ -56,8 +56,8 @@ def k_means(cluster_table, number_of_clusters):
             desired_utilities_coordinates = utilities_coordinates_list[node_ordered_list.index(current_node)]
             # save coordinates in the tuple
             couple_node_coordinates[1] = desired_utilities_coordinates
+
             # creation of a new entry in the dictionary and store the new value
-            #if current_node.infoset.name not in infosets_dictionary.keys():
 
             infoset_names = list()
             for infoset in infosets_dictionary:
@@ -65,21 +65,15 @@ def k_means(cluster_table, number_of_clusters):
             if current_node.infoset.name not in infoset_names:
                 new_vector = [current_node.infoset.name, list()]
                 new_vector[1].append(couple_node_coordinates)
-                # new_vector[1][0] = current_node
-                # new_vector[1][1] = couple_node_coordinates
                 infosets_dictionary.append(new_vector)
             else:
                 infosets_dictionary[infoset_names.index(current_node.infoset.name)][1].append(couple_node_coordinates)
-                # infosets_dictionary[current_node.infoset.name] = []
-                # infosets_dictionary[current_node.infoset.name].append(couple_node_coordinates)
-                # infosets_dictionary[current_node.infoset.name].append(couple_node_coordinates)
-
 
     # initialization of centroids structure = dictionary indexed by infoset object and storing the values
     # of the cluster coordinates
     centroids_dictionary = {}
     # cycle through infosets dictionary
-    #for infoset in infosets_dictionary.keys():
+    # for infoset in infosets_dictionary.keys():
     for infoset in infosets_dictionary:
         # initialization of action_utilities list where we store the utilities of the single infoset
         actions_utilities = []
@@ -108,33 +102,58 @@ def k_means(cluster_table, number_of_clusters):
     grouped_infosets = {}
     infosets_names = list()
 
+    # create a dictionary containing a new infoset for each cluster obtained from the K-means algorithm:
+    # this infoset will contain the union of some old infosets
+    # example of a new infoset: /C:J?+/C:Q?
+
+    # the dictionary is indexed by a number in the set [0, number_of_clusters), according to the labels
+    # returned by the K-means algorithm
+    # example of labels returned by K-means: [0 0 1] --> the first two infosets are merged into one new infoset
+    # placed at index 0 in the grouped_infosets dictionary
     for i in range(0, number_of_clusters):
         grouped_infosets[i] = InfoSet()
         infosets_names.append('')
 
+    # cycle to assign the old infosets to the grouped_infosets dictionary
 
+    # initialize an index to keep track of the position in the kmeans.labels_ vector
     infoset_position = 0
+    # cycle the kmeans.labels_ vector
     for cluster_index in kmeans.labels_:
+        # cycle the list of tuples (Node, [utility1, utility2]) in the infosets_dictionary corresponding to
+        # the infoset that we are cycling in the kmeans.labels_ vector
         for node_and_utilities in infosets_dictionary[infoset_position][1]:
+            # join the history of the node (type: list) into a string separated by '/'
             node_name = '/' + '/'.join(map(str, node_and_utilities[0].history))
+            # add the node (first element in the node_and_utilities vector) to the info_nodes
+            # dictionary of the new grouped infoset
+            # the index in the grouped infosets depends on the cluster_index returned by kmeans.labels_
+            # example: kmeans.labels_ = [0 0 1] and the current cluster_index = 0 --> we assign the node to
+            # the grouped_infoset[0]
             grouped_infosets[cluster_index].info_nodes[node_name] = node_and_utilities[0]
+        # update the infoset position to keep track of the index in the kmeans.labels_ vector
         infoset_position += 1
 
+    # generate a name to the new grouped infosets
+    # the convention that we chose was to concatenate the names of the infosets with a '+' as a separator
+    # example: old infosets names = {'/C:J?', '/C:Q?'} --> new name = '/C:J?+/C:Q?'
+    # cycle again the kmeans.labels_ vector, keeping track of the position with the infoset_position index
     infoset_position = 0
-
     for cluster_index in kmeans.labels_:
+        # add a '+' in the name, if the string that we are building already contains an infoset's name
         if infosets_names[cluster_index] != '':
             infosets_names[cluster_index] += '+'
+        # add the name of the infoset (contained in infosets_dictionary[infoset_position][0]) to the string
+        # that we are building
         infosets_names[cluster_index] += infosets_dictionary[infoset_position][0]
+        # update the infoset position to keep track of the index in the kmeans.labels_ vector
         infoset_position += 1
 
+    # cycle to assign the names to the new infosets
     index = 0
-    for new_infoset in grouped_infosets.values():
-        new_infoset.name = infosets_names[index]
+    for infoset_key in sorted(grouped_infosets.keys()):
+        grouped_infosets[infoset_key].name = infosets_names[index]
         index += 1
 
-    for infoset in grouped_infosets.values():
-        print(infoset.name)
-        print(infoset.info_nodes)
-
+    # return the new grouped_infosets
     return grouped_infosets
