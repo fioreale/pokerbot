@@ -11,6 +11,9 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+def in_chars(name):
+    return [char for char in name]
+
 
 def visualize_game_tree(el, level):
     if el.children is not None:
@@ -39,23 +42,34 @@ def visualize_infoset(el, infoset, level):
         for key, value in el.children.items():
             for node_level in infoset.info_nodes.values():
                 if node_level.history[0:level] == value.history[0:]:
-                    if len(infoset.name.split('/')[1:]) == level:
-                        print('{:<15}'.format(bcolors.BOLD + bcolors.FAIL + '[' + value.history[-1] + ']'),
-                              end='' + bcolors.ENDC)
+
+                    #######################################################################
+                    # print for abstraction
+                    if '+' in in_chars(infoset.name):
+                        if len(infoset.name.split('+')[0].split('/')[1:]) == level:
+                            print('{:<15}'.format(bcolors.BOLD + bcolors.FAIL + '[' + value.history[-1] + ']'),
+                                  end='' + bcolors.ENDC)
+                        else:
+                            print('{:<15}'.format(value.history[-1] + '  ->'), end='')
+                        if len(infoset.name.split('+')[0].split('/')[1:]) > level:
+                            visualize_infoset(value, infoset, level + 1)
+                    #######################################################################
+                    # print for non abstraction
                     else:
-                        print('{:<15}'.format(value.history[-1] + '  ->'), end='')
-                    if len(infoset.name.split('/')[1:]) > level:
-                        visualize_infoset(value, infoset, level + 1)
+                        if len(infoset.name.split('/')[1:]) == level:
+                            print('{:<15}'.format(bcolors.BOLD + bcolors.FAIL + '[' + value.history[-1] + ']'),
+                                  end='' + bcolors.ENDC)
+                        else:
+                            print('{:<15}'.format(value.history[-1] + '  ->'), end='')
+                        if len(infoset.name.split('/')[1:]) > level:
+                            visualize_infoset(value, infoset, level + 1)
+                    #######################################################################
+
                     num = 0
                     print('')
                     while num < level-1:
                         print('{:>15}'.format(' |'), end='')
                         num += 1
-            # if value.history[-1]:
-            #     print('{:<15}'.format(bcolors.OKBLUE + value.history[-1] + bcolors.ENDC), end='')
-            # else:
-            #     print('{:<15}'.format(value.history[-1] + '  ->'), end='')
-
     else:
         return
 
