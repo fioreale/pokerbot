@@ -1,10 +1,10 @@
 import re
 
-from tree_elements.infoset import InfoSet
+from tree_elements.info_set import InfoSet
 from tree_elements.nature_node import NatureNode
 from tree_elements.action_node import ActionNode
 from tree_elements.terminal_node import TerminalNode
-from tree_elements.infoStructure import InfoStructure
+from tree_elements.info_structure import InfoStructure
 
 rx_dict = {
     # regex to identify root node
@@ -139,5 +139,5 @@ def parse_infoset(filepath, tree_root):
                 new_info_set.create_info_set(history, nodes, tree_root)
                 # the new infoset is added to the InfoStructure of the tree
                 info_structure.assign_info_set(new_info_set, tree_root)
-    # return the complete infostructure of the game tree
+    # return the complete info structure of the game tree
     return info_structure
