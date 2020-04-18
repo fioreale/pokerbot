@@ -35,3 +35,13 @@ def create_abstraction(tree, clusters):
                 infosets_abstraction[i].append(kmeans_calculator.k_means(cluster_table, clusters))
 
     return infosets_abstraction
+
+
+def infoset_finder(abstraction, node):
+    for level in abstraction:
+        for infosets in level:
+            for infoset in infosets.values():
+                if node in infoset.info_nodes.values():
+                    return infoset
+
+
