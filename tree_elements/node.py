@@ -62,35 +62,8 @@ class Node:
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
 
-    def compute_metric(self, player):
-        if self.hand_value is None:
-            values = self.compute_hands_values(player)
-            metric = values[0] - values[1] + values[2] / 2
-            if self.infoset is not None:
-                for node in self.infoset.info_nodes.values():
-                    node.hand_value = metric
-            else:
-                self.hand_value = metric
-        else:
-            metric = self.hand_value
-        return metric
+    def compute_metric(self, player, action):
+        return
 
-    def compute_hands_values(self, player):
-        wins = 0
-        loses = 0
-        draws = 0
-        if self.hand_value is None:
-            if self.infoset is not None:
-                for node in self.infoset.info_nodes.values():
-                    for action in node.actions:
-                        values = self.children['P' + self.player + ':' + action].compute_hands_values(player)
-                        wins += values[0]
-                        loses += values[1]
-                        draws += values[2]
-            else:
-                for action in self.actions:
-                    values = self.children['P' + self.player + ':' + action].compute_hands_values(player)
-                    wins += values[0]
-                    loses += values[1]
-                    draws += values[2]
-        return wins, loses, draws
+    def compute_hands_values(self, player, input_action):
+        return

@@ -40,7 +40,7 @@ def create_clustering_table_new(node_list):
                 index = 1
             # action contains
             children = node.children['P' + node.player + ':' + action]
-            computed_utility = int(children.compute_metric(node.player)*1000000)
+            computed_utility = int(children.compute_metric(node.player, action)*1000000)
             if (action, computed_utility) not in cluster_table.keys():
                 cluster_table[(action, computed_utility)] = []
                 cluster_table[(action, computed_utility)].append(node)

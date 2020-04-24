@@ -49,12 +49,12 @@ class TerminalNode(Node):
     def compute_utilities(self):
         return self.payoffs
 
-    def compute_metric(self, player):
-        values = self.compute_hands_values(player)
+    def compute_metric(self, player, action):
+        values = self.compute_hands_values(player, action)
         metric = values[0] - values[1] + values[2] / 2
         return metric
 
-    def compute_hands_values(self, player):
+    def compute_hands_values(self, player, input_action):
         if player == '1':
             if self.payoffs[0] > self.payoffs[1]:
                 return 1, 0, 0

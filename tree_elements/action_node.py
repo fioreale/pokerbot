@@ -1,4 +1,6 @@
+from tree_elements.nature_node import NatureNode
 from tree_elements.node import Node
+
 
 # class used to build nodes where players chose which action to play
 # extends superclass Node
@@ -32,3 +34,46 @@ class ActionNode(Node):
         # player stores the player that plays the current node
         self.player = player
         return self
+
+    def compute_metric(self, player, action):
+        if self.hand_value is None:
+            values = self.compute_hands_values(player, action)
+            metric = values[0] - values[1] + values[2] / 2
+            if self.infoset is not None:
+                for node in self.parent.infoset.info_nodes.values():
+                    child = node.children['P' + node.player + ':' + action]
+                    child.hand_value = metric
+            else:
+                self.hand_value = metric
+        else:
+            metric = self.hand_value
+        return metric
+
+    def compute_hands_values(self, player, input_action):
+        wins = 0
+        loses = 0
+        draws = 0
+        if self.hand_value is None:
+            if type(self.parent) is NatureNode:
+                for action in self.actions:
+                    values = self.children['P' + self.player + ':' + action].compute_hands_values(player, action)
+                    wins += values[0]
+                    loses += values[1]
+                    draws += values[2]
+            elif self.infoset is not None:
+                for node in self.parent.infoset.info_nodes.values():
+                    child = node.children['P' + node.player + ':' + input_action]
+                    for action in child.actions:
+                        values = child.children['P' + child.player + ':' + action].compute_hands_values(player, action)
+                        wins += values[0]
+                        loses += values[1]
+                        draws += values[2]
+            else:
+                for node in self.parent.infoset.info_nodes.values():
+                    child = node.children['P' + node.player + ':' + input_action]
+                    for action in child.actions:
+                        values = child.children['P' + child.player + ':' + action].compute_hands_values(player, action)
+                        wins += values[0]
+                        loses += values[1]
+                        draws += values[2]
+        return wins, loses, draws

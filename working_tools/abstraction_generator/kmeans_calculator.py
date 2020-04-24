@@ -87,20 +87,14 @@ def k_means(cluster_table, number_of_clusters):
     # initialization of centroids structure = dictionary indexed by infoset object and storing the values
     # of the cluster coordinates
     centroids_dictionary = {}
-    # cycle through infosets dictionary
-    # for infoset in infosets_dictionary.keys():
+
     for infoset in infosets_dictionary:
         # initialization of action_utilities list where we store the utilities of the single infoset
-        actions_utilities = []
-        # cycle through the dictionary to retrieve the utilities
-        for node_coordinates_couple in infoset[1]:
-            actions_utilities.append(node_coordinates_couple[1])
-        # build numpy array of utilities for the infosets
-        kmeans_input = np.asarray(actions_utilities)
-        # call K-Means on the utilities for the single infoset
-        kmeans = KMeans(n_clusters=1, random_state=0).fit(kmeans_input)
+        tuple_list = infoset[1]
+        tuple_node_utilities = tuple_list[0]
+        actions_utilities = np.array([tuple_node_utilities[1]])
         # storing the cluster coordinates in the centroids dictionary
-        centroids_dictionary[infoset[0]] = kmeans.cluster_centers_
+        centroids_dictionary[infoset[0]] = actions_utilities
 
     # list used to convert the centroids dictionary into an array
     centroids_values = []

@@ -96,23 +96,25 @@ class NatureNode(Node):
             max_utility[1] += weighted_utility_second_player
         return max_utility
 
-    def compute_hands_values(self, player):
+    def compute_metric(self, player, action):
+        if self.hand_value is None:
+            values = self.compute_hands_values(player, action)
+            metric = values[0] - values[1] + values[2] / 2
+            self.hand_value = metric
+        else:
+            metric = self.hand_value
+        return metric
+
+    def compute_hands_values(self, player, input_action):
         wins = 0
         loses = 0
         draws = 0
         if self.hand_value is None:
-            if self.infoset is not None:
-                for node in self.infoset.info_nodes.values():
-                    for action in node.actions:
-                        values = self.children['C:' + action].compute_hands_values(player)
-                        wins += values[0]
-                        loses += values[1]
-                        draws += values[2]
-            else:
-                for action in self.actions:
-                    values = self.children['C:' + action].compute_hands_values(player)
-                    wins += values[0]
-                    loses += values[1]
-                    draws += values[2]
+            for action in self.actions:
+                values = self.children['C:' + action].compute_hands_values(player, action)
+                wins += values[0]
+                loses += values[1]
+                draws += values[2]
+
         return wins, loses, draws
 
