@@ -1,10 +1,7 @@
 import random
 
-import numpy as np
-
 from tree_elements.terminal_node import TerminalNode
 from tree_elements.nature_node import NatureNode
-from working_tools.abstraction_manager import infoset_finder
 
 
 def external_sampling(abstraction, player, regret_table, strategy_table, sigma_table, root, probability):

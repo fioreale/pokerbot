@@ -1,6 +1,6 @@
-from working_tools import tree_navigator
-from working_tools import clustering_manager
-from working_tools import kmeans_calculator
+from working_tools.abstraction_generator import tree_navigator
+from working_tools.abstraction_generator import clustering_manager
+from working_tools.abstraction_generator import kmeans_calculator
 from tree_elements.action_node import ActionNode
 
 

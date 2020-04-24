@@ -1,4 +1,4 @@
-from working_tools.external_sampling import external_sampling
+from working_tools.game_solver.external_sampling import external_sampling
 
 
 def solver(abstraction, time_horizon, num_of_players, root):
