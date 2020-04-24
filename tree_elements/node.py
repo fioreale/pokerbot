@@ -15,10 +15,10 @@ class Node:
         self.infoset = None
         # variable where we save the player that plays in this node
         self.player = None
-        self.utilities = {}     # utilities dictionary used  to compute backward induction outcomes
+        self.utilities = {}  # utilities dictionary used  to compute backward induction outcomes
         self.utilities_per_action = {}  # dictionary where we save all the possible utilities for each single action
         # reference Abstraction_Generation.pdf slide 23/67
-        self.hand_value = None
+        self.action_value = None
 
     # recursive function that traverse the history and returns its last node
     # history contains the list of nodes that leads to the node to find, the last node of the list is the node
@@ -62,8 +62,10 @@ class Node:
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
 
+    # abstract
     def compute_metric(self, player, action):
         return
 
-    def compute_hands_values(self, player, input_action):
+    # abstract
+    def compute_action_value(self, player, input_action):
         return

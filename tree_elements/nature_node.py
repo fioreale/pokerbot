@@ -97,24 +97,33 @@ class NatureNode(Node):
         return max_utility
 
     def compute_metric(self, player, action):
-        if self.hand_value is None:
-            values = self.compute_hands_values(player, action)
-            metric = values[0] - values[1] + values[2] / 2
-            self.hand_value = metric
-        else:
-            metric = self.hand_value
-        return metric
+        # if the action value is not already set
+        if self.action_value is None:
+            # compute the action value
+            values = self.compute_action_value(player, action)
+            # calculate the metric
+            # metric = values[0] - values[1] + values[2] / 2
+            # METRIC, THIRD PROPOSITION = (WIN POINTS(positives) + LOSSES POINTS(negatives) + DRAWS(zeros)
+            metric = (values[0] + values[1] + values[2])
+            self.action_value = metric
+        return self.action_value
 
-    def compute_hands_values(self, player, input_action):
+    def compute_action_value(self, player, input_action):
         wins = 0
         loses = 0
         draws = 0
-        if self.hand_value is None:
+
+        # if the action value is not already set
+        if self.action_value is None:
+            # for all the actions
             for action in self.actions:
-                values = self.children['C:' + action].compute_hands_values(player, action)
+                # compute action value associated to the action
+                values = self.children['C:' + action].compute_action_value(player, action)
+                # update values of the wins, losses and draws
                 wins += values[0]
                 loses += values[1]
                 draws += values[2]
 
+        # return values
         return wins, loses, draws
 

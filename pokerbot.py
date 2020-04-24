@@ -36,7 +36,7 @@ if __name__ == '__main__':
             print('')
             print('-----')
             # tree_visualizer.visualize_infoset(tree, infoset, 1)
-    # print('++++++++++++++++++++++')
+    print('++++++++++++++++++++++')
     # sys.stdout = original
     utilities, strategy_table = solver(abstraction_set, 20, 2, tree)
     strategy_table = normalize_table(strategy_table)

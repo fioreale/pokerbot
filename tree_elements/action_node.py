@@ -36,44 +36,71 @@ class ActionNode(Node):
         return self
 
     def compute_metric(self, player, action):
-        if self.hand_value is None:
-            values = self.compute_hands_values(player, action)
-            metric = values[0] - values[1] + values[2] / 2
-            if self.infoset is not None:
-                for node in self.parent.infoset.info_nodes.values():
-                    child = node.children['P' + node.player + ':' + action]
-                    child.hand_value = metric
-            else:
-                self.hand_value = metric
-        else:
-            metric = self.hand_value
-        return metric
+        # if the action value is not already set
+        if self.action_value is None:
+            # compute the node values
+            values = self.compute_action_value(player, action)
 
-    def compute_hands_values(self, player, input_action):
+            # calculate the metric
+            # METRIC, FIRST PROPOSITION = wins - losses + draws/2
+            # metric = (values[0] - values[1] + values[2] / 2)
+            # METRIC, SECOND PROPOSITION = (wins - losses + draws/2) / cardinality(infoset)
+            # metric = (values[0] - values[1] + values[2] / 2) / len(self.infoset.info_nodes.values())
+            # METRIC, THIRD PROPOSITION = (WINS POINTS(positives) + LOSSES POINTS(negatives) + DRAWS(zeros)
+            metric = (values[0] + values[1] + values[2])
+
+            # CHECKED: always true
+            # if self.infoset is not None:
+            for node in self.parent.infoset.info_nodes.values():
+                child = node.children['P' + node.player + ':' + action]
+                child.action_value = metric
+            # CHECKED: never called
+            # else:
+            #     self.action_value = metric
+            self.action_value = metric
+        return self.action_value
+
+    def compute_action_value(self, player, input_action):
+        # initialize metric parameters
         wins = 0
-        loses = 0
+        losses = 0
         draws = 0
-        if self.hand_value is None:
+        # if the action value is not already set
+        if self.action_value is None:
+            # TODO verify the correctness of the operations done under this condition
             if type(self.parent) is NatureNode:
                 for action in self.actions:
-                    values = self.children['P' + self.player + ':' + action].compute_hands_values(player, action)
+                    values = self.children['P' + self.player + ':' + action].compute_action_value(player, action)
                     wins += values[0]
-                    loses += values[1]
+                    losses += values[1]
                     draws += values[2]
-            elif self.infoset is not None:
-                for node in self.parent.infoset.info_nodes.values():
-                    child = node.children['P' + node.player + ':' + input_action]
-                    for action in child.actions:
-                        values = child.children['P' + child.player + ':' + action].compute_hands_values(player, action)
-                        wins += values[0]
-                        loses += values[1]
-                        draws += values[2]
+
+            # CHECKED: always true
+            # elif self.infoset is not None:
+
             else:
+                # for each node belonging to the infoset of the parent
                 for node in self.parent.infoset.info_nodes.values():
+                    # select the child corresponding to the same action that lead to the current node
                     child = node.children['P' + node.player + ':' + input_action]
+                    # for each action of the child node
                     for action in child.actions:
-                        values = child.children['P' + child.player + ':' + action].compute_hands_values(player, action)
+                        # call compute action value
+                        values = child.children['P' + child.player + ':' + action].compute_action_value(player, action)
+                        # update values of the wins, losses and draws
                         wins += values[0]
-                        loses += values[1]
+                        losses += values[1]
                         draws += values[2]
-        return wins, loses, draws
+
+            # CHECKED: never called
+            # else:
+            #     for node in self.parent.infoset.info_nodes.values():
+            #         child = node.children['P' + node.player + ':' + input_action]
+            #         for action in child.actions:
+            #             values = child.children['P' + child.player + ':'+ action].compute_hands_values(player, action)
+            #             wins += values[0]
+            #             losses += values[1]
+            #             draws += values[2]
+
+        # return values
+        return wins, losses, draws
