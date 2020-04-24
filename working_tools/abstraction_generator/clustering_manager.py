@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+from tree_elements.action_node import ActionNode
+from tree_elements.terminal_node import TerminalNode
+
 
 def create_clustering_table(node_list):
     # dictionary indexed by action and utility that stores every node that can return that utility
@@ -14,7 +17,7 @@ def create_clustering_table(node_list):
             else:
                 index = 1
             # action contains
-            computed_utility = int(node.children['P' + node.player + ':' + action].compute_utilities()[index]*1000000)
+            computed_utility = int(node.children['P' + node.player + ':' + action].compute_utilities()[index] * 1000000)
             if (action, computed_utility) not in cluster_table.keys():
                 cluster_table[(action, computed_utility)] = []
                 cluster_table[(action, computed_utility)].append(node)
@@ -22,6 +25,7 @@ def create_clustering_table(node_list):
                 cluster_table[(action, computed_utility)].append(node)
 
     return cluster_table
+
 
 def create_clustering_table_new(node_list):
     # dictionary indexed by action and utility that stores every node that can return that utility
@@ -35,8 +39,8 @@ def create_clustering_table_new(node_list):
             else:
                 index = 1
             # action contains
-
-            computed_utility = int(node.children['P' + node.player + ':' + action].compute_metrics())
+            children = node.children['P' + node.player + ':' + action]
+            computed_utility = int(children.compute_metric(node.player)*1000000)
             if (action, computed_utility) not in cluster_table.keys():
                 cluster_table[(action, computed_utility)] = []
                 cluster_table[(action, computed_utility)].append(node)
@@ -46,9 +50,7 @@ def create_clustering_table_new(node_list):
     return cluster_table
 
 
-
 def print_cluster_table(cluster_table):
-
     # list of list containing all the coordinates for each axis.
     axes_list = []
 

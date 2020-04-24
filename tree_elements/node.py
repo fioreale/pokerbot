@@ -62,10 +62,10 @@ class Node:
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
 
-    def compute_metrics(self):
+    def compute_metric(self, player):
         if self.hand_value is None:
-            values = self.compute_hands_values(self.player)
-            metric = values[0] - values[1] + values[2]/2
+            values = self.compute_hands_values(player)
+            metric = values[0] - values[1] + values[2] / 2
             for node in self.infoset.info_nodes.values():
                 node.hand_value = metric
         else:
