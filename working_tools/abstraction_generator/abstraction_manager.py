@@ -25,9 +25,9 @@ def create_abstraction(tree, clusters):
             organized_level = tree_navigator.split_node_list(filtered_level)
 
             for node_list in organized_level:
-                cluster_table = clustering_manager.create_clustering_table(node_list)
+                cluster_table = clustering_manager.create_clustering_table_new(node_list)
                 # prints the cluster table using matplotlib
-                # clustering_manager.print_cluster_table(cluster_table)
+                clustering_manager.print_cluster_table(cluster_table)
 
                 # computes the K-Means estimation of the node clusters,given some node clusters
                 # placed in the space of utilities

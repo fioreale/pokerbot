@@ -95,3 +95,4 @@ class NatureNode(Node):
             max_utility[0] += weighted_utility_first_player
             max_utility[1] += weighted_utility_second_player
         return max_utility
+

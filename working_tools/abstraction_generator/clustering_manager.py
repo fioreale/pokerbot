@@ -23,6 +23,29 @@ def create_clustering_table(node_list):
 
     return cluster_table
 
+def create_clustering_table_new(node_list):
+    # dictionary indexed by action and utility that stores every node that can return that utility
+    cluster_table = {}
+    # cycle through each children of the root, saves the list of nodes for the utlities of that action
+    for node in node_list:
+        for action in node.actions:
+            index = 0
+            if node.player == '1':
+                index = 0
+            else:
+                index = 1
+            # action contains
+
+            computed_utility = int(node.children['P' + node.player + ':' + action].compute_metrics())
+            if (action, computed_utility) not in cluster_table.keys():
+                cluster_table[(action, computed_utility)] = []
+                cluster_table[(action, computed_utility)].append(node)
+            else:
+                cluster_table[(action, computed_utility)].append(node)
+
+    return cluster_table
+
+
 
 def print_cluster_table(cluster_table):
 

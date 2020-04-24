@@ -18,6 +18,7 @@ class Node:
         self.utilities = {}     # utilities dictionary used  to compute backward induction outcomes
         self.utilities_per_action = {}  # dictionary where we save all the possible utilities for each single action
         # reference Abstraction_Generation.pdf slide 23/67
+        self.hand_value = None
 
     # recursive function that traverse the history and returns its last node
     # history contains the list of nodes that leads to the node to find, the last node of the list is the node
@@ -60,3 +61,33 @@ class Node:
                     max_utility = utility
         # returns best utility which is a vector [utility_player_1, utility_player_2]
         return max_utility
+
+    def compute_metrics(self):
+        if self.hand_value is None:
+            values = self.compute_hands_values(self.player)
+            metric = values[0] - values[1] + values[2]/2
+            for node in self.infoset.info_nodes.values():
+                node.hand_value = metric
+        else:
+            metric = self.hand_value
+        return metric
+
+    def compute_hands_values(self, player):
+        wins = 0
+        loses = 0
+        draws = 0
+        if self.hand_value is None:
+            if self.infoset is not None:
+                for node in self.infoset.info_nodes.values():
+                    for action in node.actions:
+                        values = self.children['P' + self.player + ':' + action].compute_hands_values(player)
+                        wins += values[0]
+                        loses += values[1]
+                        draws += values[2]
+            else:
+                for action in self.actions:
+                    values = self.children['P' + self.player + ':' + action].compute_hands_values(player)
+                    wins += values[0]
+                    loses += values[1]
+                    draws += values[2]
+        return wins, loses, draws
