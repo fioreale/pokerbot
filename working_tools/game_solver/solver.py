@@ -6,19 +6,18 @@ def solver(abstraction, time_horizon, num_of_players, root):
     strategy_table = {}
     sigma_table = {}
     for level in abstraction:
-        for infosets in level:
-            for infoset in infosets.values():
-                actions = list(infoset.info_nodes.values())[0].actions
-                regret_actions = {}
-                strategy_actions = {}
-                sigma_actions = {}
-                for action in actions:
-                    regret_actions[action] = 0
-                    strategy_actions[action] = 0
-                    sigma_actions[action] = 1/len(actions)
-                regret_table[infoset.name] = regret_actions
-                strategy_table[infoset.name] = strategy_actions
-                sigma_table[infoset.name] = sigma_actions
+        for infoset in level:
+            actions = list(infoset.info_nodes.values())[0].actions
+            regret_actions = {}
+            strategy_actions = {}
+            sigma_actions = {}
+            for action in actions:
+                regret_actions[action] = 0
+                strategy_actions[action] = 0
+                sigma_actions[action] = 1/len(actions)
+            regret_table[infoset.name] = regret_actions
+            strategy_table[infoset.name] = strategy_actions
+            sigma_table[infoset.name] = sigma_actions
 
     utilities = []
 

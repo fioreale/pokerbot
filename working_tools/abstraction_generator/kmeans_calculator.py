@@ -108,7 +108,7 @@ def k_means(cluster_table, number_of_clusters):
     kmeans = KMeans(n_clusters=number_of_clusters, random_state=0).fit(kmeans_input)
     # return the coordinates of the new centroids
 
-    grouped_infosets = {}
+    grouped_infosets = []
     infosets_names = list()
 
     # create a dictionary containing a new infoset for each cluster obtained from the K-means algorithm:
@@ -120,7 +120,7 @@ def k_means(cluster_table, number_of_clusters):
     # example of labels returned by K-means: [0 0 1] --> the first two infosets are merged into one new infoset
     # placed at index 0 in the grouped_infosets dictionary
     for i in range(0, number_of_clusters):
-        grouped_infosets[i] = InfoSet()
+        grouped_infosets.append(InfoSet())
         infosets_names.append('')
 
     # cycle to assign the old infosets to the grouped_infosets dictionary
@@ -160,8 +160,9 @@ def k_means(cluster_table, number_of_clusters):
 
     # cycle to assign the names to the new infosets
     index = 0
-    for infoset_key in sorted(grouped_infosets.keys()):
-        grouped_infosets[infoset_key].name = infosets_names[index]
+    # for infoset_key in sorted(grouped_infosets.keys()):
+    for grouped_infoset in grouped_infosets:
+        grouped_infoset.name = infosets_names[index]
         index += 1
 
     # return the new grouped_infosets
