@@ -89,11 +89,14 @@ def k_means(cluster_table, number_of_clusters):
     centroids_dictionary = {}
 
     for infoset in infosets_dictionary:
-        # initialization of action_utilities list where we store the utilities of the single infoset
+        # select the list of tuples (Node, Coordinates)
         tuple_list = infoset[1]
+        # select the first tuple
         tuple_node_utilities = tuple_list[0]
+        # select the utilities from the tuple
         actions_utilities = np.array([tuple_node_utilities[1]])
-        # storing the cluster coordinates in the centroids dictionary
+        # store the cluster coordinates in the centroids dictionary
+        # we can select the first element of the infoset as the centroid because all tuples are equals
         centroids_dictionary[infoset[0]] = actions_utilities
 
     # list used to convert the centroids dictionary into an array
@@ -109,21 +112,21 @@ def k_means(cluster_table, number_of_clusters):
     # return the coordinates of the new centroids
 
     grouped_infosets = []
-    infosets_names = list()
+    infosets_names = []
 
-    # create a dictionary containing a new infoset for each cluster obtained from the K-means algorithm:
+    # create a vector containing a new infoset for each cluster obtained from the K-means algorithm:
     # this infoset will contain the union of some old infosets
     # example of a new infoset: /C:J?+/C:Q?
 
-    # the dictionary is indexed by a number in the set [0, number_of_clusters), according to the labels
+    # the vector has a number of elements equal to [number_of_clusters], according to the labels
     # returned by the K-means algorithm
     # example of labels returned by K-means: [0 0 1] --> the first two infosets are merged into one new infoset
-    # placed at index 0 in the grouped_infosets dictionary
+    # placed at index 0 in the grouped_infosets vector
     for i in range(0, number_of_clusters):
         grouped_infosets.append(InfoSet())
         infosets_names.append('')
 
-    # cycle to assign the old infosets to the grouped_infosets dictionary
+    # cycle to assign the old infosets to the grouped_infosets vector
 
     # initialize an index to keep track of the position in the kmeans.labels_ vector
     infoset_position = 0
@@ -160,7 +163,6 @@ def k_means(cluster_table, number_of_clusters):
 
     # cycle to assign the names to the new infosets
     index = 0
-    # for infoset_key in sorted(grouped_infosets.keys()):
     for grouped_infoset in grouped_infosets:
         grouped_infoset.name = infosets_names[index]
         index += 1
