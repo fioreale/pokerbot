@@ -32,16 +32,14 @@ def create_abstraction(tree, clusters):
                 # computes the K-Means estimation of the node clusters,given some node clusters
                 # placed in the space of utilities
                 # it computes some centroids of the most likely clusters of node clusters
-                infosets_abstraction[i].append(kmeans_calculator.k_means(cluster_table, clusters))
+                kmeans = kmeans_calculator.k_means(cluster_table, clusters)
+                infosets_abstraction[i].extend(kmeans)
 
     return infosets_abstraction
 
 
 def infoset_finder(abstraction, node):
     for level in abstraction:
-        for infosets in level:
-            for infoset in infosets.values():
-                if node in infoset.info_nodes.values():
-                    return infoset
-
-
+        for infoset in level:
+            if node in infoset.info_nodes.values():
+                return infoset
