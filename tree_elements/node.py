@@ -39,6 +39,7 @@ class Node:
         self.children[history[-1]] = node
 
     # function used to perform backward induction
+    # TODO delete this function
     def compute_utilities(self):
         max_utility = [0.0, 0.0]
         # cycle through each action to retrieve the child node utilities

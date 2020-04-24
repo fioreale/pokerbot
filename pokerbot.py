@@ -1,9 +1,8 @@
 import os
 
 from working_tools import input_file_parser, abstraction_manager
-from working_tools import tree_visualizer
-from working_tools.external_sampling import normalize_table
-from working_tools.solver import solver
+from working_tools.game_solver.external_sampling import normalize_table
+from working_tools.game_solver.solver import solver
 
 if __name__ == '__main__':
 
