@@ -48,3 +48,20 @@ class TerminalNode(Node):
     # override function that returns the payoff list
     def compute_utilities(self):
         return self.payoffs
+
+    def compute_hands_values(self, player):
+        if player == '1':
+            if self.payoffs[0] > self.payoffs[1]:
+                return 1, 0, 0
+            elif self.payoffs[0] < self.payoffs[1]:
+                return 0, 1, 0
+            else:
+                return 0, 0, 1
+
+        else:
+            if self.payoffs[1] > self.payoffs[0]:
+                return 1, 0, 0
+            elif self.payoffs[1] < self.payoffs[0]:
+                return 0, 1, 0
+            else:
+                return 0, 0, 1
