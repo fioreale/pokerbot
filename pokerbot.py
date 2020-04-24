@@ -1,4 +1,5 @@
 import os
+import sys
 
 from working_tools import input_file_parser, tree_visualizer
 from working_tools.abstraction_generator import abstraction_manager
@@ -22,15 +23,17 @@ if __name__ == '__main__':
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
     abstraction_set = abstraction_manager.create_abstraction(tree, 2)
-
+    # print(2)
+    # original = sys.stdout
+    # sys.stdout = open('redirect', 'w')
     # visualization of the new infostructure
     for abstraction_level in abstraction_set:
         for infoset_list in abstraction_level:
-            for infoset in infoset_list.values():
+            for infoset in abstraction_level.values():
                 tree_visualizer.visualize_infoset(tree, infoset, 1)
+    # sys.stdout = original
+    utilities, strategy_table = solver(abstraction_set, 20, 2, tree)
 
-    # utilities, strategy_table = solver(abstraction_set, 20, 2, tree)
-    #
-    # strategy_table = normalize_table(strategy_table)
-    # print(utilities)
-    # print(strategy_table)
+    strategy_table = normalize_table(strategy_table)
+    print(utilities)
+    print(strategy_table)

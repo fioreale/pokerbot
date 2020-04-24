@@ -16,14 +16,14 @@ def get_tree_level(root, level):
 
 def split_node_list(node_list):
     set_of_actions = list()
-    set_of_nodes = list()
+    sets_of_nodes = list()
     for node in node_list:
         if node.actions not in set_of_actions:
             set_of_actions.append(node.actions)
-            set_of_nodes.append(list())
+            sets_of_nodes.append(list())
     for node in node_list:
-        set_of_nodes[set_of_actions.index(node.actions)].append(node)
-    return set_of_nodes
+        sets_of_nodes[set_of_actions.index(node.actions)].append(node)
+    return sets_of_nodes
 
 
 def find_tree_height(node, level):
