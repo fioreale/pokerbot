@@ -66,8 +66,11 @@ class Node:
         if self.hand_value is None:
             values = self.compute_hands_values(player)
             metric = values[0] - values[1] + values[2] / 2
-            for node in self.infoset.info_nodes.values():
-                node.hand_value = metric
+            if self.infoset is not None:
+                for node in self.infoset.info_nodes.values():
+                    node.hand_value = metric
+            else:
+                self.hand_value = metric
         else:
             metric = self.hand_value
         return metric
