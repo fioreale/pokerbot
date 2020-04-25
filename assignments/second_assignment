@@ -1,0 +1,34 @@
+Dear students,
+
+the second assignment (corresponding to the second challenge) is the game solver. More precisely:
+
+you are given a game tree,
+you are required to find an approximate solution in terms of epsilon-Nash strategy profile.
+As you know, the problem of finding a Nash equilibrium in 2-player zero-sum games can be formulated as a
+Linear Programming problem (LP) and therefore solved in polynomial time in the size of the game. However, when a
+game tree is huge, linear programming is impractical (the same happens in the case of Markov Decision Processes:
+you can formulate them as LPs, but the solvers cannot be used for huge problems, and any-time techniques, such as
+value iteration, are used). In the case of 2-player zero-sum games, the state-of-the-art techniques are based on the
+minimization of the regret. Regret Matching (RM) is the main algorithm for normal-form games, while Counter Factual
+Regret (CFR) minimisation is the extension of RM to extensive-form games. We remark that many different favours of CFR
+are known, such as, e.g., CFR+, CFR-BR, discounted CFR, Monte Carlo CFR.
+
+In this assignment, you are required to implement the CFR algorithm in the flavour you prefer. The CFR algorithm will
+be combined with the abstract generator previously designed. In this way:
+
+you will be given a game,
+your abstract generator will generete an abstraction,
+this abstraction will be the input to the CFR algorithm,
+the CFR algorithm will produce an approximate equilibrium, called blueprint,
+these strategie will be remapped to the original game by using part of the code developed for the first assignment.
+I anticipate you that in the last challenge, you will refine the blueprint strategy (that is the equilibrium strategy
+of the abstract game) to produce a more accurate strategy for the original game.
+
+To support your work, we produced a video lecture providing an introduction to RM and CFR. It is a duty of you finding
+a good favour of CFR from the literature and then implement it. Furthermore, next week, the lecture of Thursday will be
+devoted to the clarification of possible doubts on CFR. The link to the video is (https://youtu.be/J1Q-Y_Rxzew), while
+the link to slides is (https://www.dropbox.com/s/8br8sw6wznk6c26/Regret%20matching.pdf?dl=0).
+
+Best regards and good luck,
+
+Nicola.
