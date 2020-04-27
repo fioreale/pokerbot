@@ -1,5 +1,6 @@
 from tree_elements.node import Node
 
+
 # class used to represent the chance nodes in the tree
 
 
@@ -32,10 +33,10 @@ class NatureNode(Node):
             self.signals[signal_action_name] = signal_action_value
             # the action name is saved in the list of actions available for the current node
             self.actions.append(signal_action_name)
-        support_sum = 0         # support variable used to compute the normalized probabilities
+        support_sum = 0  # support variable used to compute the normalized probabilities
         # cycle through the dictionary of signals
         for j in self.signals:
-            support_sum += self.signals[j]      # compute the sum of all non-normalized probability values
+            support_sum += self.signals[j]  # compute the sum of all non-normalized probability values
         # cycle through the dictionary of signals
         for k in self.signals:
             # overwrite each non-normalized probability with its normalized value
@@ -71,59 +72,31 @@ class NatureNode(Node):
             self.signals[chance_action_name] = chance_action_value
             # the action name is saved in the list of actions available for the current node
             self.actions.append(str(chance_action_name))
-        total_sum_support = 0       # support variable used to compute the normalized probabilities
+        total_sum_support = 0  # support variable used to compute the normalized probabilities
         # cycle through the dictionary of signals
         for j in self.signals:
-            total_sum_support += self.signals[j]        # compute the sum of all non-normalized probability values
+            total_sum_support += self.signals[j]  # compute the sum of all non-normalized probability values
         # cycle through the dictionary of signals
         for k in self.signals:
             # overwrite each non-normalized probability with its normalized value
             self.signals[k] = self.signals[k] / total_sum_support
         return self
 
-    def compute_utilities(self):
-        max_utility = [0.0, 0.0]
-        # cycle through each action to retrieve the child node utilities
-        # returned utilities are a list [utility_player_1, utility_player_2]
-        for action in self.actions:
-            self.utilities[action] = self.children[self.player + ':' + action].compute_utilities()
-        # initialization of the list max_utility where  we're gonna save the average utility for this node
-        max_utility = [0.0, 0.0]
-        for signal_action in self.actions:
-            weighted_utility_first_player = self.utilities[signal_action][0] * self.signals[signal_action]
-            weighted_utility_second_player = self.utilities[signal_action][1] * self.signals[signal_action]
-            max_utility[0] += weighted_utility_first_player
-            max_utility[1] += weighted_utility_second_player
-        return max_utility
+    def compute_strategies_to_terminal_nodes(self):
+        strategies_list = []
+        for child in self.children.values():
+            strategies_list.extend(child.compute_strategies_to_terminal_nodes())
+        return strategies_list
 
-    def compute_metric(self, player, action):
-        # if the action value is not already set
-        if self.action_value is None:
-            # compute the action value
-            values = self.compute_action_value(player, action)
-            # calculate the metric
-            # metric = values[0] - values[1] + values[2] / 2
-            # METRIC, THIRD PROPOSITION = (WIN POINTS(positives) + LOSSES POINTS(negatives) + DRAWS(zeros)
-            metric = (values[0] + values[1] + values[2])
-            self.action_value = metric
-        return self.action_value
-
-    def compute_action_value(self, player, input_action):
-        wins = 0
-        loses = 0
-        draws = 0
-
-        # if the action value is not already set
-        if self.action_value is None:
-            # for all the actions
-            for action in self.actions:
-                # compute action value associated to the action
-                values = self.children['C:' + action].compute_action_value(player, action)
-                # update values of the wins, losses and draws
-                wins += values[0]
-                loses += values[1]
-                draws += values[2]
-
-        # return values
-        return wins, loses, draws
-
+    def compute_payoff_coordinate_vector(self, player, strategies_list):
+        # vector used to define the coordinates of the node in the payoff space, each dimension contains an outcome of
+        # the player of the interested payoff space
+        payoff_vector = []
+        # iterate over the sequence of strategies describing the order of actions we have to follow
+        for strategy in strategies_list:
+            # add the payoff of the desired child to the payoff vector.
+            # [strategy[1:]] builds a list and eats up the first element of the strategy to move on to the second step
+            # of the strategy
+            payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
+                                                                                             [strategy[1:]]))
+        return payoff_vector

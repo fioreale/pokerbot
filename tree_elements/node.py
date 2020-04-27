@@ -39,33 +39,10 @@ class Node:
     def append_child(self, node, history):
         self.children[history[-1]] = node
 
-    # function used to perform backward induction
-    # TODO delete this function
-    def compute_utilities(self):
-        max_utility = [0.0, 0.0]
-        # cycle through each action to retrieve the child node utilities
-        # returned utilities are a list [utility_player_1, utility_player_2]
-        for action in self.actions:
-            self.utilities[action] = self.children['P' + self.player + ':' + action].compute_utilities()
-        # initialization of the list max_utility where  we're gonna save the best utility for this node
-        max_utility = self.utilities[self.actions[0]]
-        # cycle through the computed utilities to compute the best one
-        for key, utility in self.utilities.items():
-            # computation of best utility for first player
-            if self.player == '1':
-                if float(utility[0]) > max_utility[0]:
-                    max_utility = utility
-            # computation of best utility for second player
-            if self.player == '2':
-                if float(utility[1]) > max_utility[1]:
-                    max_utility = utility
-        # returns best utility which is a vector [utility_player_1, utility_player_2]
-        return max_utility
-
     # abstract
-    def compute_metric(self, player, action):
+    def compute_strategies_to_terminal_nodes(self):
         return
 
     # abstract
-    def compute_action_value(self, player, input_action):
+    def compute_payoff_coordinate_vector(self, player, strategies_list):
         return
