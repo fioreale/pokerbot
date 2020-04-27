@@ -23,22 +23,23 @@ if __name__ == '__main__':
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
     abstraction_set = abstraction_manager.create_abstraction(tree, 2)
+
     # original = sys.stdout
     # sys.stdout = open('redirect.txt', 'w')
-    print('+++ABSTRACTION SET+++')
+    # print('+++ABSTRACTION SET+++')
     # visualization of the new infostructure
-    for abstraction_level in abstraction_set:
-        # for infoset_list in abstraction_level:
-        for infoset in abstraction_level:  # .values():
-            print(infoset.name)
-            for node in infoset.info_nodes.values():
-                print(node.history, end=' ')
-            print('')
-            print('-----')
-            # tree_visualizer.visualize_infoset(tree, infoset, 1)
-    print('++++++++++++++++++++++')
-    # sys.stdout = original
-    utilities, strategy_table = solver(abstraction_set, 20, 2, tree)
-    strategy_table = normalize_table(strategy_table)
-    print(utilities)
-    print(strategy_table)
+    # for abstraction_level in abstraction_set:
+    #     # for infoset_list in abstraction_level:
+    #     for infoset in abstraction_level:  # .values():
+    #         print(infoset.name)
+    #         for node in infoset.info_nodes.values():
+    #             print(node.history, end=' ')
+    #         print('')
+    #         print('-----')
+    #         # tree_visualizer.visualize_infoset(tree, infoset, 1)
+    # print('++++++++++++++++++++++')
+    # # sys.stdout = original
+    # utilities, strategy_table = solver(abstraction_set, 20, 2, tree)
+    # strategy_table = normalize_table(strategy_table)
+    # print(utilities)
+    # print(strategy_table)

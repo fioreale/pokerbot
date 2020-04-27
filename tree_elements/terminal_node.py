@@ -46,65 +46,12 @@ class TerminalNode(Node):
                 self.payoffs[1] = payoff_player_outcome
         return self
 
-    # override function that returns the payoff list
-    def compute_utilities(self):
-        return self.payoffs
+    def compute_strategies_to_terminal_nodes(self):
+        return [self.history]
 
-    # compute metric as wins - losses + draws/2
-    def compute_metric(self, player, action):
-        values = self.compute_action_value(player, action)
-        # metric = values[0] - values[1] + values[2] / 2
-        # METRIC, THIRD PROPOSITION = (WINS POINTS(positives) + LOSSES POINTS(negatives) + DRAWS(zeros)
-        metric = (values[0] + values[1] + values[2])
-        self.action_value = metric
-        return self.action_value
-
-    # compute action value
-    # def compute_action_value(self, player, input_action):
-    #     # if the current player is the first player
-    #     if player == '1':
-    #         # if victory
-    #         if self.payoffs[0] > self.payoffs[1]:
-    #             # return 1 win
-    #             return 1, 0, 0
-    #         # if loss
-    #         elif self.payoffs[0] < self.payoffs[1]:
-    #             # return 1 loss
-    #             return 0, 1, 0
-    #         # if draw
-    #         else:
-    #             # return 1 draw
-    #             return 0, 0, 1
-    #     # if the current player is the second player
-    #     else:
-    #         # if victory
-    #         if self.payoffs[1] > self.payoffs[0]:
-    #             # return 1 win
-    #             return 1, 0, 0
-    #         # if loss
-    #         elif self.payoffs[1] < self.payoffs[0]:
-    #             # return 1 loss
-    #             return 0, 1, 0
-    #         # if draw
-    #         else:
-    #             # return 1 draw
-    #             return 0, 0, 1
-
-    # ALTERNATIVE METHOD TO CALCULATE THE METRIC:
-    # RETURN THE POINTS GAINED (OR LOST) IN THE GAME, INSTEAD OF JUST KEEPING TRACK OF WINS, LOSSES AND DRAWS
-    def compute_action_value(self, player, input_action):
+    def compute_payoff_coordinate_vector(self, player, strategies_list):
+        # returns the payoff based on the desired player
         if player == '1':
-            if self.payoffs[0] > self.payoffs[1]:
-                return self.payoffs[0], 0, 0
-            elif self.payoffs[0] < self.payoffs[1]:
-                return 0, self.payoffs[0], 0
-            else:
-                return 0, 0, self.payoffs[0]
-
+            return [self.payoffs[0]]
         else:
-            if self.payoffs[1] > self.payoffs[0]:
-                return self.payoffs[1], 0, 0
-            elif self.payoffs[1] < self.payoffs[0]:
-                return 0, self.payoffs[1], 0
-            else:
-                return 0, 0, self.payoffs[1]
+            return [self.payoffs[1]]
