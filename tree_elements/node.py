@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Node:
     def __init__(self):
         # history list where there is the sequence of nodes that leads to the current node
@@ -46,3 +49,15 @@ class Node:
     # abstract
     def compute_payoff_coordinate_vector(self, player, strategies_list):
         return
+
+    # TODO
+    def compress_tree(self, cluster_table, kmeans):
+        for kmeans_labels in set(kmeans.labels_):
+            infosets_list = list(cluster_table.keys())
+            same_label_infosets_indexes = np.argwhere(kmeans.labels_ == kmeans_labels)
+            # group all infosets with same labels
+            same_label_infosets_ndarray = np.array(infosets_list)[same_label_infosets_indexes]
+            same_label_infosets_list = list(same_label_infosets_ndarray)
+            for infoset in infosets_list[1:]:
+                infosets_list[0].info_nodes.append(infoset.info_nodes)
+                infoset.info_nodes = []
