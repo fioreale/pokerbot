@@ -1,20 +1,25 @@
 import os
-import sys
 
-from working_tools import input_file_parser, tree_visualizer
+from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
-from working_tools.game_solver.external_sampling import normalize_table
-from working_tools.game_solver.solver import solver
+
+FILE_NAME = 'leduc5.txt'
 
 if __name__ == '__main__':
 
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure
-    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'))
+    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', FILE_NAME))
 
     # info_sets will contain the complete infostructure of the game
     # parse_infoset reads the file and returns the infostructure
-    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', 'leduc5.txt'), tree)
+    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', FILE_NAME), tree)
+
+    # parse again
+    compressed_tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', FILE_NAME))
+
+    compressed_infosets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', FILE_NAME),
+                                                          compressed_tree)
 
     # visualize the game tree
     # tree_visualizer.visualize_game_tree(tree, 0)
@@ -22,7 +27,7 @@ if __name__ == '__main__':
     # visualize the infostructure of the tree
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
-    abstraction_set = abstraction_manager.create_abstraction(tree, 2)
+    abstraction_set = abstraction_manager.create_abstraction(tree, compressed_tree, 2)
 
     # original = sys.stdout
     # sys.stdout = open('redirect.txt', 'w')
