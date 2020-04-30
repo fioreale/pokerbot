@@ -30,3 +30,9 @@ class InfoSet:
             self.info_nodes[node].infoset = self
 
         return self
+
+    def compute_number_of_terminal_nodes(self):
+        number_of_terminal_nodes = 0
+        for node in self.info_nodes.values():
+            number_of_terminal_nodes += node.compute_number_of_terminal_nodes()
+        return number_of_terminal_nodes
