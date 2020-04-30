@@ -1,11 +1,16 @@
 import os
-
+import logging
 from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
 
 FILE_NAME = 'leduc5.txt'
 
 if __name__ == '__main__':
+
+    logging.basicConfig()
+
+    pokerbot_logger = logging.getLogger('pokerbot')
+    pokerbot_logger.setLevel(logging.WARNING)
 
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure

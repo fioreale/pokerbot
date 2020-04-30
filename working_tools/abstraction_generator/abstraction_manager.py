@@ -1,3 +1,5 @@
+import logging
+
 from working_tools.abstraction_generator import tree_navigator
 from working_tools.abstraction_generator import clustering_manager
 from working_tools.abstraction_generator import kmeans_calculator
@@ -11,12 +13,16 @@ def create_abstraction(tree, compressed_tree, number_of_clusters):
 
     height = tree_navigator.find_tree_height(tree, 0)
 
-    for i in range(1, height):
+    for i in range(4, height):
         print('computing cluster table level: ' + str(i))
         if i == 3:
-            print('here')
+            create_abstraction_logger = logging.getLogger('pokerbot')
+            create_abstraction_logger.setLevel(logging.WARNING)
+
         cluster_table = clustering_manager.create_clustering_table(tree, i)
+
         kmeans = kmeans_calculator.k_means(cluster_table, number_of_clusters)
+
         print('executed level: ' + str(i))
         # compressed_tree.compress_tree(cluster_table, kmeans)
 

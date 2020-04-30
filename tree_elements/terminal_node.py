@@ -49,9 +49,12 @@ class TerminalNode(Node):
     def compute_strategies_to_terminal_nodes(self):
         return [self.history]
 
-    def compute_payoff_coordinate_vector(self, player, strategies_list):
+    def compute_payoff_coordinate_vector(self, player, strategies_list, difference_of_number_of_nodes):
         # returns the payoff based on the desired player
         if player == '1':
             return [self.payoffs[0]]
         else:
             return [self.payoffs[1]]
+
+    def compute_number_of_terminal_nodes(self):
+        return 1

@@ -41,7 +41,7 @@ class ActionNode(Node):
             strategies_list.extend(child.compute_strategies_to_terminal_nodes())
         return strategies_list
 
-    def compute_payoff_coordinate_vector(self, player, strategies_list):
+    def compute_payoff_coordinate_vector(self, player, strategies_list, difference_of_number_of_nodes):
         # vector used to define the coordinates of the node in the payoff space, each dimension contains an outcome of
         # the player of the interested payoff space
         payoff_vector = []
@@ -51,5 +51,6 @@ class ActionNode(Node):
             # [strategy[1:]] builds a list and eats up the first element of the strategy to move on to the second step
             # of the strategy
             payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
-                                                                                             [strategy[1:]]))
+                                                                                             [strategy[1:]],
+                                                                                             difference_of_number_of_nodes))
         return payoff_vector

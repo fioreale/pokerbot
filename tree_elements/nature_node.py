@@ -1,3 +1,5 @@
+import numpy as np
+
 from tree_elements.node import Node
 
 
@@ -88,7 +90,7 @@ class NatureNode(Node):
             strategies_list.extend(child.compute_strategies_to_terminal_nodes())
         return strategies_list
 
-    def compute_payoff_coordinate_vector(self, player, strategies_list):
+    def compute_payoff_coordinate_vector(self, player, strategies_list, difference_of_number_of_nodes):
         # vector used to define the coordinates of the node in the payoff space, each dimension contains an outcome of
         # the player of the interested payoff space
         payoff_vector = []
@@ -97,6 +99,10 @@ class NatureNode(Node):
             # add the payoff of the desired child to the payoff vector.
             # [strategy[1:]] builds a list and eats up the first element of the strategy to move on to the second step
             # of the strategy
-            payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
-                                                                                             [strategy[1:]]))
+            if strategy[0].split(':')[1] not in self.actions:
+                payoff_vector = [0 for i in range(difference_of_number_of_nodes)]
+            else:
+                payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
+                                                                                                 [strategy[1:]],
+                                                                                                 difference_of_number_of_nodes))
         return payoff_vector

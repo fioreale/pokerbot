@@ -47,8 +47,15 @@ class Node:
         return
 
     # abstract
-    def compute_payoff_coordinate_vector(self, player, strategies_list):
+    def compute_payoff_coordinate_vector(self, player, strategies_list, difference_of_number_of_nodes):
         return
+
+    # abstract
+    def compute_number_of_terminal_nodes(self):
+        number_of_nodes = 0
+        for child in self.children.values():
+            number_of_nodes += child.compute_number_of_terminal_nodes()
+        return number_of_nodes
 
     # TODO
     def compress_tree(self, cluster_table, kmeans):
