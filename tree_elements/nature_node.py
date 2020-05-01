@@ -102,7 +102,8 @@ class NatureNode(Node):
             if strategy[0].split(':')[1] not in self.actions:
                 payoff_vector = [0 for i in range(difference_of_number_of_nodes)]
             else:
-                payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
-                                                                                                 [strategy[1:]],
-                                                                                                 difference_of_number_of_nodes))
+                payoff_vector.extend(self.children[strategy[0]].
+                                     compute_payoff_coordinate_vector(player,
+                                                                      [strategy[1:]],
+                                                                      difference_of_number_of_nodes))
         return payoff_vector

@@ -1,5 +1,6 @@
 import logging
 
+from pokerbot import FILE_NAME
 from tree_elements.terminal_node import TerminalNode
 
 
@@ -82,19 +83,26 @@ def find_tree_height(node, level):
     return max_height
 
 
-def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list, max_number_of_nodes,
+def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
                                difference_of_terminal_nodes):
     # payoff vector contains the coordinates (i.e. the utilities) to position the infoset in the payoff space
     payoff_vector = []
     # iterate over all the nodes of the infoset and retrieve the payoff vector
-    for node_letter in nodes_letter_list:
-        next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
-        if next_node_to_visit_string not in infoset.info_nodes.keys():
-            payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])
-        else:
-            node = infoset.info_nodes[next_node_to_visit_string]
-            # compute payoff vector on every strategy
-            payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player, strategies_list,
-                                                                       max_number_of_nodes))
+    if FILE_NAME == 'kuhn.txt':
+        for node in infoset.info_nodes.values():
+            payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player,
+                                                                       strategies_list,
+                                                                       difference_of_terminal_nodes))
+    else:
+        for node_letter in nodes_letter_list:
+            next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
+            if next_node_to_visit_string not in infoset.info_nodes.keys():
+                payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])
+            else:
+                node = infoset.info_nodes[next_node_to_visit_string]
+                # compute payoff vector on every strategy
+                payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player,
+                                                                           strategies_list,
+                                                                           difference_of_terminal_nodes))
 
     return payoff_vector

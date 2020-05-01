@@ -50,7 +50,8 @@ class ActionNode(Node):
             # add the payoff of the desired child to the payoff vector.
             # [strategy[1:]] builds a list and eats up the first element of the strategy to move on to the second step
             # of the strategy
-            payoff_vector.extend(self.children[strategy[0]].compute_payoff_coordinate_vector(player,
-                                                                                             [strategy[1:]],
-                                                                                             difference_of_number_of_nodes))
+            payoff_vector.extend(self.children[strategy[0]]
+                                 .compute_payoff_coordinate_vector(player,
+                                                                   [strategy[1:]],
+                                                                   difference_of_number_of_nodes))
         return payoff_vector
