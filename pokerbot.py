@@ -1,6 +1,6 @@
 import os
 import logging
-from working_tools import input_file_parser
+from working_tools import input_file_parser, tree_visualizer
 from working_tools.abstraction_generator import abstraction_manager
 
 FILE_NAME = 'leduc5.txt'
@@ -32,7 +32,8 @@ if __name__ == '__main__':
     # visualize the infostructure of the tree
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
-    abstraction_set = abstraction_manager.create_abstraction(tree, compressed_tree, 2)
+    compressed_tree = abstraction_manager.create_abstraction(tree, compressed_tree, 2)
+    tree_visualizer.visualize_game_tree(compressed_tree, 0)
 
     # original = sys.stdout
     # sys.stdout = open('redirect.txt', 'w')

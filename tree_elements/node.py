@@ -1,5 +1,7 @@
 import numpy as np
 
+from working_tools.abstraction_generator import infoset_numbers_calculator
+
 
 class Node:
     def __init__(self):
@@ -58,13 +60,57 @@ class Node:
         return number_of_nodes
 
     # TODO
-    def compress_tree(self, cluster_table, kmeans):
-        for kmeans_labels in set(kmeans.labels_):
-            infosets_list = list(cluster_table.keys())
-            same_label_infosets_indexes = np.argwhere(kmeans.labels_ == kmeans_labels)
-            # group all infosets with same labels
-            same_label_infosets_ndarray = np.array(infosets_list)[same_label_infosets_indexes]
-            same_label_infosets_list = list(same_label_infosets_ndarray)
-            for infoset in infosets_list[1:]:
-                infosets_list[0].info_nodes.append(infoset.info_nodes)
-                infoset.info_nodes = []
+    def compress_tree(self, kmeans, strategies_list_dictionary):
+
+        for history_group_keys, history_group_couple in kmeans.items():
+
+            infoset_ordered_list = history_group_couple[0]
+            kmeans_results = history_group_couple[1]
+
+            for kmeans_label in set(kmeans_results.labels_):
+
+                same_label_infosets_indexes = np.argwhere(kmeans_results.labels_ == kmeans_label)
+                # group all infosets with same labels
+                same_label_infosets_ndarray = np.array(infoset_ordered_list)[same_label_infosets_indexes]
+                same_label_infosets_list = same_label_infosets_ndarray.tolist()
+
+                max_num_of_nodes = infoset_numbers_calculator.max_numbers_calculator(same_label_infosets_list[0])[1]
+                max_num_of_nodes_infoset = infoset_numbers_calculator.max_nodes_infoset_finder(same_label_infosets_list[0],
+                                                                                       max_num_of_nodes)
+
+                if list(max_num_of_nodes_infoset.info_nodes.values())[0].player == '1':
+                    player = '2'
+                else:
+                    player = '1'
+
+                second_player_payoff_vector = []
+
+                for infoset in infoset_ordered_list:
+                    difference_of_terminal_nodes = max_num_of_nodes - infoset.compute_number_of_terminal_nodes()
+
+                    second_player_payoff_vector.append(infoset.compute_payoff_of_other_player(player,
+                                                                                              strategies_list_dictionary[
+                                                                                                  history_group_keys],
+                                                                                              difference_of_terminal_nodes))
+
+                second_player_payoff_vector = np.mean(np.array(second_player_payoff_vector), axis=0)
+                both_players_payoff_vector = np.array(
+                    [kmeans_results.cluster_centers_[kmeans_label], second_player_payoff_vector]).T
+                both_players_payoff_vector = both_players_payoff_vector.tolist()
+
+                max_num_of_nodes_infoset.apply_new_payoff(strategies_list_dictionary[history_group_keys],
+                                                          both_players_payoff_vector)
+
+                filtered_list = filter(lambda x: x != max_num_of_nodes_infoset, same_label_infosets_list)
+                for infoset in filtered_list:
+                    for node in infoset.info_nodes.values():
+                        node.parent.children.pop(node.history[-1])
+
+    def change_payoff(self, both_players_payoff_vector, strategies_list):
+        num_of_assigned_terminal_nodes = 0
+        for strategy in strategies_list:
+            number_of_terminal_nodes = self.children[strategy[0]].compute_number_of_terminal_nodes()
+            self.children[strategy[0]].change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
+                                                     [strategy[1:]])
+            num_of_assigned_terminal_nodes += number_of_terminal_nodes
+

@@ -1,10 +1,14 @@
 from working_tools.abstraction_generator import tree_navigator
+from working_tools.abstraction_generator.infoset_numbers_calculator import max_numbers_calculator, \
+    max_nodes_infoset_finder
 
 
 def create_clustering_table(root, tree_level_number):
 
     # dictionary to store the payoff space of the infosets
     cluster_table = {}
+
+    strategies_list_dictionary = {}
 
     # function to retrieve the infosets of all the nodes in a level
     infosets_list = tree_navigator.get_infosets_of_tree_level(root, tree_level_number)
@@ -18,6 +22,7 @@ def create_clustering_table(root, tree_level_number):
         strategies_list = strategies_list_calculator(history_group, tree_level_number)
 
         history_group_name = "".join(history_group[0].name[4:])
+        strategies_list_dictionary[history_group_name] = strategies_list
         cluster_table[history_group_name] = {}
 
         max_number_of_terminal_nodes, max_number_of_info_nodes = max_numbers_calculator(history_group)
@@ -37,35 +42,7 @@ def create_clustering_table(root, tree_level_number):
                                            nodes_letter_list,
                                            strategies_list,
                                            difference_of_terminal_nodes)
-    return cluster_table
-
-
-def max_numbers_calculator(history_group):
-    max_number_of_info_nodes = 0
-    max_number_of_terminal_nodes = 0
-
-    # compute the max number of terminal nodes in infoset and max number of info nodes in an infoset
-    for infoset in history_group:
-        computed_number = len(infoset.info_nodes)
-        if computed_number > max_number_of_info_nodes:
-            max_number_of_info_nodes = computed_number
-        computed_number = infoset.compute_number_of_terminal_nodes()
-        if computed_number > max_number_of_terminal_nodes:
-            max_number_of_terminal_nodes = computed_number
-
-    return max_number_of_terminal_nodes, max_number_of_info_nodes
-
-
-def max_nodes_infoset_finder(history_group, max_number_of_info_nodes):
-    # retrieves one infoset with the max number of info nodes
-    infoset_with_max_nodes = None
-
-    for infoset in history_group:
-        if len(infoset.info_nodes) == max_number_of_info_nodes:
-            infoset_with_max_nodes = infoset
-
-    return infoset_with_max_nodes
-
+    return cluster_table, strategies_list_dictionary
 
 def nodes_letter_list_calculator(infoset_with_max_nodes):
     # list used to store the list of nodes. These nodes define an order to visit the tree infoset to

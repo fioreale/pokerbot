@@ -14,15 +14,15 @@ def create_abstraction(tree, compressed_tree, number_of_clusters):
     for i in range(3, height):
         print('computing cluster table level: ' + str(i))
 
-        cluster_table = clustering_manager.create_clustering_table(tree, i)
+        cluster_table, strategies_list_dictionary = clustering_manager.create_clustering_table(tree, i)
 
         kmeans = kmeans_calculator.k_means(cluster_table, number_of_clusters)
 
         print('executed level: ' + str(i))
 
-        # compressed_tree.compress_tree(cluster_table, kmeans)
+        compressed_tree.compress_tree(kmeans, strategies_list_dictionary)
 
-    return kmeans
+    return compressed_tree
 
 
 def infoset_finder(abstraction, node):
