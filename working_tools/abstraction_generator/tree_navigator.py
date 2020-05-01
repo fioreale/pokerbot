@@ -20,34 +20,23 @@ def get_tree_level(root, level):
 
 
 def get_infosets_of_tree_level(root, remaining_levels):
-    get_infosets_of_tree_level_logger = logging.getLogger('pokerbot')
-
-    get_infosets_of_tree_level_logger.info('computing infoset of level: %d', remaining_levels)
     # if we have to explore more than one level the function is called on the child
     if remaining_levels > 1:
         # iterate over all the children to recursively call the function on each child
         collected_infosets = []
         for child in root.children.values():
             # retrieve infosets returned by children of the node
-            get_infosets_of_tree_level_logger.info('collecting infosets from node: %s', ''.join(child.history))
             collected_infosets.extend(get_infosets_of_tree_level(child, remaining_levels - 1))
-            # iterate over the newly collected infosets lists
         return collected_infosets
     else:
-        get_infosets_of_tree_level_logger.info('last level nodes')
         # since we don't have to explore any more levels the function is not recursively called anymore
         # iterate over the children of the current node
         child_infosets = []
         for node in root.children.values():
             is_chance_node = (node.player == 'C')
             is_terminal_node = isinstance(node, TerminalNode)
-            if is_chance_node:
-                get_infosets_of_tree_level_logger.info('is Chance Node')
-            elif is_terminal_node:
-                get_infosets_of_tree_level_logger.info('is Terminal Node')
-            else:
+            if (not is_chance_node) and (not is_terminal_node):
                 child_infosets.append(node.infoset)
-                get_infosets_of_tree_level_logger.info('collected infoset from child nodes: %s', node.infoset.name)
         return child_infosets
 
 
@@ -62,11 +51,7 @@ def infoset_group_filtering(list_of_infosets):
         else:
             inserted = False
             for same_history_group_infosets in infosets_collection_list:
-                history_group_name_no_chance_node = list(filter(lambda x: 'C' not in x,
-                                                                same_history_group_infosets[0].name.split('/')[2:]))
-                new_infoset_name_no_chance_node = list(filter(lambda x: 'C' not in x,
-                                                              new_infoset.name.split('/')[2:]))
-                if history_group_name_no_chance_node == new_infoset_name_no_chance_node:
+                if same_history_group_infosets[0].name.split('/')[2:] == new_infoset.name.split('/')[2:]:
                     same_history_group_infosets.append(new_infoset)
                     inserted = True
             if not inserted:
@@ -97,17 +82,19 @@ def find_tree_height(node, level):
     return max_height
 
 
-def compute_payoff_coordinates(infoset, strategies_list, difference_of_number_of_nodes):
+def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list, max_number_of_nodes,
+                               difference_of_terminal_nodes):
     # payoff vector contains the coordinates (i.e. the utilities) to position the infoset in the payoff space
     payoff_vector = []
     # iterate over all the nodes of the infoset and retrieve the payoff vector
-    for node in infoset.info_nodes.values():
-        # compute payoff vector on every strategy
-        payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player, strategies_list,
-                                                                   difference_of_number_of_nodes))
+    for node_letter in nodes_letter_list:
+        next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
+        if next_node_to_visit_string not in infoset.info_nodes.keys():
+            payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])
+        else:
+            node = infoset.info_nodes[next_node_to_visit_string]
+            # compute payoff vector on every strategy
+            payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player, strategies_list,
+                                                                       max_number_of_nodes))
 
     return payoff_vector
-
-
-def compress_tree(infosets, cluster_table):
-    return
