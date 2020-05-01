@@ -1,5 +1,3 @@
-import logging
-
 from working_tools.abstraction_generator import tree_navigator
 
 
@@ -38,7 +36,6 @@ def create_clustering_table(root, tree_level_number):
                 compute_payoff_coordinates(infoset,
                                            nodes_letter_list,
                                            strategies_list,
-                                           max_number_of_info_nodes,
                                            difference_of_terminal_nodes)
     return cluster_table
 
@@ -86,8 +83,6 @@ def nodes_letter_list_calculator(infoset_with_max_nodes):
 
 
 def strategies_list_calculator(history_group, tree_level_number):
-    strategies_list = []
-
     # compute all the strategies that follows a node in a infoset history group, this list of strategies allows us
     # to have an order of computation while retrieving the payoffs. It is necessary to retrieve the payoffs in the
     # same order because we need to have coherent payoff vector for all the infosets
