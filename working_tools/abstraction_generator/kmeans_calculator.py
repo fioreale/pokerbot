@@ -9,6 +9,7 @@ def k_means(cluster_table, number_of_clusters):
 
     kmeans_results_dict = {}
 
+    # iterate over the cluster table history groups
     for history_group_name, history_group_dict in cluster_table.items():
         # build numpy array of centroids coordinates
         kmeans_input = []
@@ -21,38 +22,6 @@ def k_means(cluster_table, number_of_clusters):
         for infoset in history_group_dict.keys():
             print(infoset.name, end=' ')
         print(str(kmeans_results_dict[history_group_name].labels_))
-        # return the coordinates of the new centroids
 
-    # grouped_infosets = []
-    #
-    # # create a vector containing a new infoset for each cluster obtained from the K-means algorithm:
-    # # this infoset will contain the union of some old infosets
-    # # example of a new infoset: /C:J?+/C:Q?
-    #
-    # # the vector has a number of elements equal to [number_of_clusters], according to the labels
-    # # returned by the K-means algorithm
-    # # example of labels returned by K-means: [0 0 1] --> the first two infosets are merged into one new infoset
-    # # placed at index 0 in the grouped_infosets vector
-    # for i in range(0, number_of_clusters):
-    #     grouped_infosets.append(InfoSet())
-    #
-    # # cycle to assign the old infosets to the grouped_infosets vector
-    #
-    # # initialize an index to keep track of the position in the kmeans.labels_ vector
-    # infoset_position = 0
-    # # cycle the kmeans.labels_ vector
-    # for cluster_index in kmeans.labels_:
-    #     # retrieve the desired infoset in the cluster table accordingly to the infoset_position
-    #     desired_infoset = list(cluster_table.keys())[infoset_position]
-    #     # add the infoset nodes to the infoset in the grouped_infoset structure
-    #     grouped_infosets[cluster_index].info_nodes.update(desired_infoset.info_nodes)
-    #     # update the name of the new infoset
-    #     if grouped_infosets[cluster_index].name is None:
-    #         grouped_infosets[cluster_index].name = desired_infoset.name
-    #     else:
-    #         grouped_infosets[cluster_index].name += '+' + desired_infoset.name
-    #     # update the infoset position to keep track of the index in the kmeans.labels_ vector
-    #     infoset_position += 1
-
-    # return the new grouped_infosets
+    # return the new kmeans clusters
     return kmeans_results_dict

@@ -17,7 +17,10 @@ class InfoSet:
     # root contains the root node of the tree
     def create_info_set(self, history, nodes, root):
         # the name of the infoset is initialized with the complete history that leads to the infoset
-        self.name = history
+        if history[1] == 'C':
+            self.name = history.replace('/C:', '/', 1)
+        else:
+            self.name = history
         # nodes_list contains all the nodes paths in the infoset passed through the attribute nodes
         nodes_list = nodes.split(' ')
         for node in nodes_list:
