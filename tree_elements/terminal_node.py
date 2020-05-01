@@ -58,3 +58,7 @@ class TerminalNode(Node):
 
     def compute_number_of_terminal_nodes(self):
         return 1
+
+    def change_payoff(self, both_player_payoff_vector, strategies_list):
+        self.payoffs[0] = both_player_payoff_vector[0][0]
+        self.payoffs[1] = both_player_payoff_vector[0][1]
