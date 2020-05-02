@@ -1,5 +1,3 @@
-import logging
-
 from pokerbot import FILE_NAME
 from tree_elements.terminal_node import TerminalNode
 
