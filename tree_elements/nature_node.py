@@ -22,6 +22,7 @@ class NatureNode(Node):
     def create_root_node(self, actions):
         # history is initialized as an empty list as there are no nodes that leads to the root node
         self.history = []
+        self.level = 0
         # the list of actions is split by spaces
         actions = actions.split()
         for action in actions:
@@ -82,6 +83,7 @@ class NatureNode(Node):
         for k in self.signals:
             # overwrite each non-normalized probability with its normalized value
             self.signals[k] = self.signals[k] / total_sum_support
+        self.level = self.parent.level + 1
         return self
 
     def compute_strategies_to_terminal_nodes(self):

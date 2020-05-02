@@ -1,5 +1,3 @@
-import logging
-
 from pokerbot import FILE_NAME
 from tree_elements.terminal_node import TerminalNode
 
@@ -39,6 +37,33 @@ def get_infosets_of_tree_level(root, remaining_levels):
             if (not is_chance_node) and (not is_terminal_node):
                 child_infosets.append(node.infoset)
         return child_infosets
+
+
+def get_descendants(infoset):
+    descendants = []
+    infoset_player = list(infoset.info_nodes.values())[0].player
+    for node in infoset.info_nodes.values():
+        descendants.extend(get_descendants_of_infoset(node, infoset_player, 0))
+    descendants = set(descendants)
+    return descendants
+
+
+def get_descendants_of_infoset(root, infoset_player, iteration_number):
+    infoset_collection = []
+    current_infoset_player = root.player
+    if iteration_number == 0 or current_infoset_player != infoset_player:
+        for child in root.children.values():
+            # node_collection.append(get_tree_level(child, level - 1))
+            descendants = get_descendants_of_infoset(child, infoset_player, iteration_number+1)
+            if isinstance(descendants, list):
+                infoset_collection.extend(descendants)
+            else:
+                infoset_collection.append(descendants)
+        return infoset_collection
+    elif current_infoset_player == infoset_player:
+        return root.infoset
+    else:
+        return
 
 
 def infoset_group_filtering(list_of_infosets):
@@ -94,7 +119,7 @@ def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
                                                                        strategies_list,
                                                                        difference_of_terminal_nodes))
     else:
-        for node_letter in sorted(nodes_letter_list):
+        for node_letter in nodes_letter_list:
             next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
             if next_node_to_visit_string not in infoset.info_nodes.keys():
                 payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])

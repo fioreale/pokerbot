@@ -44,6 +44,7 @@ class TerminalNode(Node):
                 self.payoffs[0] = payoff_player_outcome
             else:
                 self.payoffs[1] = payoff_player_outcome
+        self.level = self.parent.level + 1
         return self
 
     def compute_strategies_to_terminal_nodes(self):

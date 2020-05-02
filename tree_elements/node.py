@@ -24,6 +24,7 @@ class Node:
         self.utilities_per_action = {}  # dictionary where we save all the possible utilities for each single action
         # reference Abstraction_Generation.pdf slide 23/67
         self.action_value = None
+        self.level = None
 
     # recursive function that traverse the history and returns its last node
     # history contains the list of nodes that leads to the node to find, the last node of the list is the node

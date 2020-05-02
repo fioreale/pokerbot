@@ -33,6 +33,7 @@ class ActionNode(Node):
         self.actions = actions.split()
         # player stores the player that plays the current node
         self.player = player
+        self.level = self.parent.level + 1
         return self
 
     def compute_strategies_to_terminal_nodes(self):

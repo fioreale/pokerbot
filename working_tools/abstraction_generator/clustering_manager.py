@@ -3,15 +3,15 @@ from working_tools.abstraction_generator.infoset_numbers_calculator import max_n
     max_nodes_infoset_finder
 
 
-def create_clustering_table(root, tree_level_number):
+def create_clustering_table(infosets_list, tree_level_number):
 
     # dictionary to store the payoff space of the infosets
     cluster_table = {}
-
+    #
     strategies_list_dictionary = {}
-
-    # function to retrieve the infosets of all the nodes in a level
-    infosets_list = tree_navigator.get_infosets_of_tree_level(root, tree_level_number)
+    #
+    # # function to retrieve the infosets of all the nodes in a level
+    # infosets_list = tree_navigator.get_infosets_of_tree_level(root, tree_level_number)
 
     # function to filter the infosets and group them by corresponding history
     infosets_list = tree_navigator.infoset_group_filtering(infosets_list)

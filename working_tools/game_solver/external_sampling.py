@@ -2,7 +2,7 @@ import random
 
 from tree_elements.terminal_node import TerminalNode
 from tree_elements.nature_node import NatureNode
-from working_tools.abstraction_generator.abstraction_manager import infoset_finder
+import numpy as np
 
 
 def external_sampling(abstraction, player, regret_table, strategy_table, sigma_table, root, probability):
@@ -19,7 +19,8 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
 
     n_actions = len(node.actions)
     if type(node) is NatureNode:
-        sampled_action_chance = node.actions[random.randint(0, n_actions - 1)]
+        random_number = np.random.choice(n_actions, p=list(node.signals.values()))
+        sampled_action_chance = node.actions[random_number]
         new_probability = probability * node.signals[sampled_action_chance]
         child = node.children['C:' + sampled_action_chance]
         return external_sampling(abstraction, player, regret_table, strategy_table, sigma_table,
@@ -27,14 +28,13 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
 
     infoset = infoset_finder(abstraction, node)
 
-    # from strategy = {}
     infoset_name = infoset.name
     sigma_table[infoset_name] = regret_matching(regret_table[infoset_name], sigma_table[infoset_name], node.actions)
 
     if node.player == str(player):
         # initialization
-        utility_sigma = 0
         utilities_per_action = {}
+        utility_sigma = 0
 
         for a in node.actions:
             child = node.children['P' + node.player + ':' + a]
@@ -50,7 +50,7 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
         return utility_sigma
 
     else:
-        sampled_action_player = node.actions[random.randint(0, n_actions - 1)]
+        sampled_action_player = node.actions[np.random.choice(n_actions)]
         new_probability = probability * sigma_table[infoset_name][sampled_action_player]
         child = node.children['P' + node.player + ':' + sampled_action_player]
         utility = external_sampling(abstraction, player, regret_table, strategy_table, sigma_table,
@@ -83,3 +83,9 @@ def normalize_table(strategy_table):
             for strategy_name, strategy in strategy_table[infoset_name].items():
                 strategy_table[infoset_name][strategy_name] = strategy / tot_strategy
     return strategy_table
+
+
+def infoset_finder(abstraction, node):
+    for infoset in abstraction:
+        if node in infoset.info_nodes.values():
+            return infoset

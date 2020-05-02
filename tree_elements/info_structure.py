@@ -19,3 +19,11 @@ class InfoStructure:
                 self.info_sets1.append(infoset)
             else:
                 self.info_sets2.append(infoset)
+
+    def get_number_of_infosets(self):
+        tot = 0
+        for infoset in self.info_sets1:
+            tot += 1
+        for infoset in self.info_sets2:
+            tot += 1
+        return tot

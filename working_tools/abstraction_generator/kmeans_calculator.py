@@ -5,13 +5,16 @@ from tree_elements.info_set import InfoSet
 from working_tools.abstraction_generator import tree_navigator
 
 
-def k_means(cluster_table, number_of_clusters):
+def k_means(cluster_table):
 
     kmeans_results_dict = {}
 
     # iterate over the cluster table history groups
     for history_group_name, history_group_dict in cluster_table.items():
         # build numpy array of centroids coordinates
+        number_of_clusters = int(np.floor(len(history_group_dict.keys())/2))
+        if number_of_clusters == 0:
+            number_of_clusters = 1
         kmeans_input = []
         infoset_ordered_list = list()
         for infoset, infoset_payoff_vector in history_group_dict.items():

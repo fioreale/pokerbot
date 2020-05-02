@@ -8,6 +8,7 @@ class InfoSet:
         # info_nodes is a dictionary indexed by node paths and containing the node objects of the corresponding nodes
         # Example: {['/C:99/P1:c/P2:c/C:T/P1:raise4' : <object ActionNode>]}
         self.info_nodes = {}
+        self.level = None
 
     # function that build the infoset
     # history contains the path that leads to the infoset with partial information.
@@ -31,7 +32,7 @@ class InfoSet:
             self.info_nodes[node] = root.node_finder(path)
             # the current infoset is assigned to Node.infoset attribute of every node in the current infoset
             self.info_nodes[node].infoset = self
-
+        self.level = list(self.info_nodes.values())[0].level
         return self
 
     def compute_number_of_terminal_nodes(self):
@@ -44,7 +45,8 @@ class InfoSet:
         num_of_assigned_terminal_nodes = 0
         for key in sorted(self.info_nodes.keys()):
             number_of_terminal_nodes = self.info_nodes[key].compute_number_of_terminal_nodes()
-            self.info_nodes[key].change_payoff(both_player_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
+            self.info_nodes[key].change_payoff(both_player_payoff_vector[
+                                               num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
                                                strategies_list)
             num_of_assigned_terminal_nodes += number_of_terminal_nodes
 
@@ -52,5 +54,5 @@ class InfoSet:
         payoff_vector = list()
         for key in sorted(self.info_nodes.keys()):
             payoff_vector.extend(self.info_nodes[key].compute_payoff_coordinate_vector(player, strategies_list,
-                                                                                  difference_of_num_of_nodes))
+                                                                                       difference_of_num_of_nodes))
         return payoff_vector
