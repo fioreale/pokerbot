@@ -11,7 +11,7 @@ def create_abstraction(tree, compressed_tree, number_of_clusters):
 
     height = tree_navigator.find_tree_height(tree, 0)
 
-    for i in range(3, height):
+    for i in range(1, height):
         print('computing cluster table level: ' + str(i))
 
         cluster_table, strategies_list_dictionary = clustering_manager.create_clustering_table(tree, i)
@@ -20,7 +20,7 @@ def create_abstraction(tree, compressed_tree, number_of_clusters):
 
         print('executed level: ' + str(i))
 
-        compressed_tree.compress_tree(kmeans, strategies_list_dictionary)
+        # compressed_tree.compress_tree(kmeans, strategies_list_dictionary)
 
     return compressed_tree
 

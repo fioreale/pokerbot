@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
     compressed_tree = abstraction_manager.create_abstraction(tree, compressed_tree, 2)
-    tree_visualizer.visualize_game_tree(compressed_tree, 0)
+    # tree_visualizer.visualize_game_tree(compressed_tree, 0)
 
     # original = sys.stdout
     # sys.stdout = open('redirect.txt', 'w')

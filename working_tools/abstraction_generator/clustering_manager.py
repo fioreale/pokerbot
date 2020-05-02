@@ -44,6 +44,7 @@ def create_clustering_table(root, tree_level_number):
                                            difference_of_terminal_nodes)
     return cluster_table, strategies_list_dictionary
 
+
 def nodes_letter_list_calculator(infoset_with_max_nodes):
     # list used to store the list of nodes. These nodes define an order to visit the tree infoset to
     # have a consistent payoff vector for each infoset
