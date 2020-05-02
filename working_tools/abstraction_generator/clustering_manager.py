@@ -10,6 +10,8 @@ def create_clustering_table(root, tree_level_number):
 
     strategies_list_dictionary = {}
 
+    nodes_letter_list_dict = {}
+
     # function to retrieve the infosets of all the nodes in a level
     infosets_list = tree_navigator.get_infosets_of_tree_level(root, tree_level_number)
 
@@ -19,19 +21,20 @@ def create_clustering_table(root, tree_level_number):
     # iteration over the history groups to fill the dictionary
     for history_group in infosets_list:
 
-        strategies_list = strategies_list_calculator(history_group, tree_level_number)
+        history_group_name = ''.join(history_group[0].name[4:])
 
-        history_group_name = "".join(history_group[0].name[4:])
+        strategies_list = strategies_list_calculator(history_group, tree_level_number)
         strategies_list_dictionary[history_group_name] = strategies_list
+
         cluster_table[history_group_name] = {}
 
         max_number_of_terminal_nodes, max_number_of_info_nodes = max_numbers_calculator(history_group)
-
         infoset_with_max_nodes = max_nodes_infoset_finder(history_group, max_number_of_info_nodes)
 
         # list used to store the list of nodes. These nodes define an order to visit the tree infoset to
         # have a consistent payoff vector for each infoset
         nodes_letter_list = nodes_letter_list_calculator(infoset_with_max_nodes)
+        nodes_letter_list_dict[history_group_name] = nodes_letter_list
 
         for infoset in history_group:
             difference_of_terminal_nodes = max_number_of_terminal_nodes - infoset.compute_number_of_terminal_nodes()
@@ -42,7 +45,8 @@ def create_clustering_table(root, tree_level_number):
                                            nodes_letter_list,
                                            strategies_list,
                                            difference_of_terminal_nodes)
-    return cluster_table, strategies_list_dictionary
+
+    return cluster_table, strategies_list_dictionary, nodes_letter_list_dict
 
 
 def nodes_letter_list_calculator(infoset_with_max_nodes):

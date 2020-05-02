@@ -94,7 +94,7 @@ def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
                                                                        strategies_list,
                                                                        difference_of_terminal_nodes))
     else:
-        for node_letter in sorted(nodes_letter_list):
+        for node_letter in nodes_letter_list:
             next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
             if next_node_to_visit_string not in infoset.info_nodes.keys():
                 payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])

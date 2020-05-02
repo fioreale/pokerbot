@@ -14,16 +14,16 @@ if __name__ == '__main__':
 
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure
-    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', FILE_NAME))
+    tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
 
     # info_sets will contain the complete infostructure of the game
     # parse_infoset reads the file and returns the infostructure
-    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', FILE_NAME), tree)
+    info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME), tree)
 
-    # parse again
-    compressed_tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'inputs', FILE_NAME))
+    # parse again, could be substituted with copy.deepcopy()
+    compressed_tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
 
-    compressed_infosets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'inputs', FILE_NAME),
+    compressed_infosets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME),
                                                           compressed_tree)
 
     # visualize the game tree

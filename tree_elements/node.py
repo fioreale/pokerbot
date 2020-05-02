@@ -59,9 +59,9 @@ class Node:
             number_of_nodes += child.compute_number_of_terminal_nodes()
         return number_of_nodes
 
-    def compress_tree(self, kmeans, strategies_list_dictionary):
+    def compress_tree(self, kmeans, strategies_list_dictionary, nodes_letter_list_dict):
 
-        for history_group_keys, history_group_couple in kmeans.items():
+        for history_group_key, history_group_couple in kmeans.items():
 
             infoset_ordered_list = history_group_couple[0]
             kmeans_results = history_group_couple[1]
@@ -70,34 +70,41 @@ class Node:
 
                 same_label_infosets_indexes = np.argwhere(kmeans_results.labels_ == kmeans_label)
                 # group all infosets with same labels
-                same_label_infosets_ndarray = np.array(infoset_ordered_list)[same_label_infosets_indexes]
+                same_label_infosets_ndarray = np.array(infoset_ordered_list)[same_label_infosets_indexes].flatten()
                 same_label_infosets_list = same_label_infosets_ndarray.tolist()
 
-                max_num_of_nodes = infoset_numbers_calculator.max_numbers_calculator(same_label_infosets_list[0])[1]
-                max_num_of_nodes_infoset = infoset_numbers_calculator.max_nodes_infoset_finder(same_label_infosets_list[0],
-                                                                                       max_num_of_nodes)
+                max_number_of_terminal_nodes, max_num_of_nodes = infoset_numbers_calculator.\
+                    max_numbers_calculator(same_label_infosets_list)
+                max_num_of_nodes_infoset = infoset_numbers_calculator.\
+                    max_nodes_infoset_finder(same_label_infosets_list,
+                                             max_num_of_nodes)
 
                 if list(max_num_of_nodes_infoset.info_nodes.values())[0].player == '1':
                     player = '2'
                 else:
                     player = '1'
 
-                second_player_payoff_vector = []
+                # vector used to store the payoffs of the different different from the one on which we have computed
+                # the payoff space
+                different_player_payoff_vector = []
 
                 for infoset in infoset_ordered_list:
-                    difference_of_terminal_nodes = max_num_of_nodes - infoset.compute_number_of_terminal_nodes()
+                    difference_of_terminal_nodes = max_number_of_terminal_nodes - infoset.\
+                        compute_number_of_terminal_nodes()
 
-                    second_player_payoff_vector.append(infoset.compute_payoff_of_other_player(player,
-                                                                                              strategies_list_dictionary[
-                                                                                                  history_group_keys],
-                                                                                              difference_of_terminal_nodes))
+                    different_player_payoff_vector.\
+                        append(infoset.compute_payoff_of_other_player(player,
+                                                                      strategies_list_dictionary[history_group_key],
+                                                                      difference_of_terminal_nodes,
+                                                                      nodes_letter_list_dict[history_group_key]))
 
-                second_player_payoff_vector = np.mean(np.array(second_player_payoff_vector), axis=0)
+                different_player_payoff_vector = np.mean(np.array(different_player_payoff_vector), axis=0)
                 both_players_payoff_vector = np.array(
-                    [kmeans_results.cluster_centers_[kmeans_label], second_player_payoff_vector]).T
+                    [kmeans_results.cluster_centers_[kmeans_label], different_player_payoff_vector]).T
                 both_players_payoff_vector = both_players_payoff_vector.tolist()
 
-                max_num_of_nodes_infoset.apply_new_payoff(strategies_list_dictionary[history_group_keys],
+                max_num_of_nodes_infoset.apply_new_payoff(strategies_list_dictionary[history_group_key],
+                                                          nodes_letter_list_dict[history_group_key],
                                                           both_players_payoff_vector)
 
                 filtered_list = filter(lambda x: x != max_num_of_nodes_infoset, same_label_infosets_list)
@@ -108,7 +115,10 @@ class Node:
     def change_payoff(self, both_players_payoff_vector, strategies_list):
         num_of_assigned_terminal_nodes = 0
         for strategy in strategies_list:
-            number_of_terminal_nodes = self.children[strategy[0]].compute_number_of_terminal_nodes()
-            self.children[strategy[0]].change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
-                                                     [strategy[1:]])
-            num_of_assigned_terminal_nodes += number_of_terminal_nodes
+            # number_of_terminal_nodes = self.children[strategy[0]].compute_number_of_terminal_nodes()
+            if not(strategy[0].split(':')[1] not in self.actions):
+                self.children[strategy[0]].\
+                    change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:
+                                                             num_of_assigned_terminal_nodes + 1],
+                                  [strategy[1:]])
+                num_of_assigned_terminal_nodes += 1
