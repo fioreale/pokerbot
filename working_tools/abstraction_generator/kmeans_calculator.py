@@ -24,5 +24,9 @@ def k_means(cluster_table, number_of_clusters):
         kmeans_ordered_list_couple = [infoset_ordered_list, kmeans_results]
         kmeans_results_dict[history_group_name] = kmeans_ordered_list_couple
 
+        # for infoset in infoset_ordered_list:
+        #     print(infoset.name, end=' ')
+        # print(str(kmeans_results.labels_))
+
     # return the new kmeans clusters
     return kmeans_results_dict

@@ -59,7 +59,6 @@ class Node:
             number_of_nodes += child.compute_number_of_terminal_nodes()
         return number_of_nodes
 
-    # TODO
     def compress_tree(self, kmeans, strategies_list_dictionary):
 
         for history_group_keys, history_group_couple in kmeans.items():
@@ -113,4 +112,3 @@ class Node:
             self.children[strategy[0]].change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
                                                      [strategy[1:]])
             num_of_assigned_terminal_nodes += number_of_terminal_nodes
-
