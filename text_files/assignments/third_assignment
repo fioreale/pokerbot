@@ -1,0 +1,36 @@
+Dear students,
+
+The third assignment (corresponding to the third challenge) is the subgame re-solver. More in detail:
+
+you are given a coarse strategy (in our case, obtained by mapping the blueprint strategy computed over an abstraction of
+the game tree to the original game tree),
+you are required to refine the coarse strategy in the original game.
+We suggest the adoption of Subgame solving with depth-limited search. The idea of subgame re-solving is to extract a
+small portion of the game tree, said subgame, and to re-solve it assuming that both the probabilities with which the
+root information sets of the subgame are reached and the strategies played off the subgame are those prescribed by the
+blueprint. Thus, in practice, you can extract every subgame and re-solve it. Finally, you can take the returned
+solutions and directly map it to the original game.
+
+Usually:
+
+for every subgame, only the strategies of the root information sets are used (in the map to the original game),
+only the strategy of one of the two players is refined.
+In real-world applications, subgame solving is used in real time. That is, in real-world applications, once an
+information set is reached, the strategy at that information set is refined. This approach leads to the refinement of a
+small portion of the game tree, that actually reached during the play. In the challenge, we do not ask you for
+developing a bot that plays the poker game in real time, but just a bot that returns the strategy to play. So, you are
+required to use subgame re-solving in an offline fashion to return the strategy over the whole game tree. However, if
+re-solving every subgame is computationally unaffordable, you can focus only on the subgames that will be played with
+the highest probability.
+
+For re-solving a subgame, you can use the solver you implemented in the second challenge (CFR or some variants of it).
+
+Thus, given the blueprint, you are required to refine:
+
+the strategy of player one,
+the strategy of player two,
+in both cases returning a complete strategy over the original game tree.
+
+To support your work, we produced a video lecture providing an introduction to Subgame solving with depth-limited
+search. The link to the video is (https://www.dropbox.com/s/exk9e3eg06ak4p8/Subgame%20re-solving.m4v?dl=0), while the
+link to slides is (https://www.dropbox.com/s/ymiw9e0jb0r5cpj/Subgame%20re-solving.pdf?dl=0).
