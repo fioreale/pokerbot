@@ -88,7 +88,7 @@ class Node:
                 # the payoff space
                 different_player_payoff_vector = []
 
-                for infoset in infoset_ordered_list:
+                for infoset in same_label_infosets_list:
                     difference_of_terminal_nodes = max_number_of_terminal_nodes - infoset.\
                         compute_number_of_terminal_nodes()
 
@@ -99,8 +99,14 @@ class Node:
                                                                       nodes_letter_list_dict[history_group_key]))
 
                 different_player_payoff_vector = np.mean(np.array(different_player_payoff_vector), axis=0)
-                both_players_payoff_vector = np.array(
-                    [kmeans_results.cluster_centers_[kmeans_label], different_player_payoff_vector]).T
+                
+                if list(max_num_of_nodes_infoset.info_nodes.values())[0].player == '1':
+                    both_players_payoff_vector = np.array(
+                        [kmeans_results.cluster_centers_[kmeans_label], different_player_payoff_vector]).T
+                else:
+                    both_players_payoff_vector = np.array(
+                        [different_player_payoff_vector, kmeans_results.cluster_centers_[kmeans_label]]).T
+
                 both_players_payoff_vector = both_players_payoff_vector.tolist()
 
                 max_num_of_nodes_infoset.apply_new_payoff(strategies_list_dictionary[history_group_key],
@@ -108,6 +114,7 @@ class Node:
                                                           both_players_payoff_vector)
 
                 filtered_list = filter(lambda x: x != max_num_of_nodes_infoset, same_label_infosets_list)
+
                 for infoset in filtered_list:
                     for node in infoset.info_nodes.values():
                         node.parent.children.pop(node.history[-1])

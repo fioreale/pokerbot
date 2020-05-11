@@ -1,5 +1,8 @@
+import copy
 import os
 import logging
+import sys
+
 from working_tools import input_file_parser, tree_visualizer
 from working_tools.abstraction_generator import abstraction_manager
 
@@ -20,6 +23,8 @@ if __name__ == '__main__':
     # parse_infoset reads the file and returns the infostructure
     info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME), tree)
 
+    sys.setrecursionlimit(1000000)
+
     # parse again, could be substituted with copy.deepcopy()
     compressed_tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
 
@@ -32,8 +37,8 @@ if __name__ == '__main__':
     # visualize the infostructure of the tree
     # tree_visualizer.visualize_info_structure(tree, info_sets)
 
-    compressed_tree = abstraction_manager.create_abstraction(tree, compressed_tree, 2)
-    # tree_visualizer.visualize_game_tree(compressed_tree, 0)
+    compressed_tree = abstraction_manager.create_abstraction(compressed_tree, 2)
+    tree_visualizer.visualize_game_tree(compressed_tree, 0)
 
     # original = sys.stdout
     # sys.stdout = open('redirect.txt', 'w')
