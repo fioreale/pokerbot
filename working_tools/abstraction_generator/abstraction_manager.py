@@ -16,14 +16,11 @@ def create_abstraction(tree, player):
     abstraction_set = []
 
     infosets_list = tree_navigator.get_infosets_of_tree_level(tree, int(player))
-    # cluster_table, strategies_list_dictionary = clustering_manager.create_clustering_table(infosets_list, 1)
-    #
-    # kmeans_dictionary_structure = kmeans_calculator.k_means(cluster_table)
-    #
-    # grouped_level = group_infosets(kmeans_dictionary_structure)
-    initial_level = list(set(infosets_list))
-    # abstraction_set.extend(initial_level)
+
+    initial_level = infosets_list
+
     recursive_abstraction(initial_level, abstraction_set)
+
     return abstraction_set
 
 

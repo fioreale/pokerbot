@@ -1,13 +1,13 @@
 import os
 import logging
-import sys
 
-from working_tools import input_file_parser, tree_visualizer
+from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
 from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
+from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
 
-FILE_NAME = 'kuhn.txt'
+FILE_NAME = 'leduc5.txt'
 
 if __name__ == '__main__':
 
@@ -59,12 +59,13 @@ if __name__ == '__main__':
     print('++++++++++++++++++++++')
     # sys.stdout = original
 
-    abs_set_2 = []
-    for infoset in info_sets.info_sets1:
-        abs_set_2.append(infoset)
-    for infoset in info_sets.info_sets2:
-        abs_set_2.append(infoset)
-    utilities, strategy_table = solver(abs_set_2, 100000, 2, tree)
+    utilities, strategy_table = solver(abstraction_set, 100000, 2, tree)
     strategy_table = normalize_table(strategy_table)
     print(utilities)
     print(strategy_table)
+
+    apply_strategies_to_nodes(abstraction_set, strategy_table)
+
+
+
+    print('hello world')

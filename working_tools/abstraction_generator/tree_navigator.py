@@ -26,7 +26,7 @@ def get_infosets_of_tree_level(root, remaining_levels):
         for child in root.children.values():
             # retrieve infosets returned by children of the node
             collected_infosets.extend(get_infosets_of_tree_level(child, remaining_levels - 1))
-        return collected_infosets
+        return list(set(collected_infosets))
     else:
         # since we don't have to explore any more levels the function is not recursively called anymore
         # iterate over the children of the current node
@@ -54,7 +54,7 @@ def get_descendants_of_infoset(root, infoset_player, iteration_number):
     if iteration_number == 0 or current_infoset_player != infoset_player:
         for child in root.children.values():
             # node_collection.append(get_tree_level(child, level - 1))
-            descendants = get_descendants_of_infoset(child, infoset_player, iteration_number+1)
+            descendants = get_descendants_of_infoset(child, infoset_player, iteration_number + 1)
             if isinstance(descendants, list):
                 infoset_collection.extend(descendants)
             else:
@@ -131,3 +131,4 @@ def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
                                                                            difference_of_terminal_nodes))
 
     return payoff_vector
+

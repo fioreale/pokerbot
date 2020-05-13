@@ -68,9 +68,9 @@ def regret_matching(regret_table_infoset, sigma_table_infoset, actions):
         tot_regret += max(0, regret)
     for action in actions:
         if tot_regret > 0:
-            sigma_table_infoset[action] = max(0, regret_table_infoset[action])/tot_regret
+            sigma_table_infoset[action] = max(0, regret_table_infoset[action]) / tot_regret
         else:
-            sigma_table_infoset[action] = 1/len(actions)
+            sigma_table_infoset[action] = 1 / len(actions)
     return sigma_table_infoset
 
 

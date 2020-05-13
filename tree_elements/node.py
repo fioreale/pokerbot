@@ -22,9 +22,9 @@ class Node:
         self.player = None
         self.utilities = {}  # utilities dictionary used  to compute backward induction outcomes
         self.utilities_per_action = {}  # dictionary where we save all the possible utilities for each single action
-        # reference Abstraction_Generation.pdf slide 23/67
-        self.action_value = None
-        self.level = None
+        self.level = None   # indicates level of the node
+        # list of probabilities to execute the action ordered in the same way of self.actions
+        self.strategies_probabilities = []
 
     # recursive function that traverse the history and returns its last node
     # history contains the list of nodes that leads to the node to find, the last node of the list is the node
