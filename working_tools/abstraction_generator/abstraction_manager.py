@@ -1,6 +1,7 @@
 import logging
 import operator
 
+import working_tools.abstraction_generator.infosets_navigator
 from tree_elements.info_set import InfoSet
 from working_tools.abstraction_generator import tree_navigator
 from working_tools.abstraction_generator import clustering_manager
@@ -9,13 +10,13 @@ import numpy as np
 
 
 # initializes the cluster table. Graphic example: 'Abstraction Generation - slides.pdf' slide 7/67
-from working_tools.abstraction_generator.tree_navigator import get_infosets_of_tree_level
+from working_tools.abstraction_generator.infosets_navigator import get_infosets_of_tree_level
 
 
 def create_abstraction(tree, player):
     abstraction_set = []
 
-    infosets_list = tree_navigator.get_infosets_of_tree_level(tree, int(player))
+    infosets_list = working_tools.abstraction_generator.infosets_navigator.get_infosets_of_tree_level(tree, int(player))
 
     initial_level = infosets_list
 
@@ -35,7 +36,7 @@ def recursive_abstraction(infosets_list, abstraction_set):
     clustered_infosets = group_infosets(kmeans_dictionary_structure)
     abstraction_set.extend(clustered_infosets)
     for infoset in clustered_infosets:
-        descendant_infosets = tree_navigator.get_descendants(infoset)
+        descendant_infosets = working_tools.abstraction_generator.infosets_navigator.get_descendants(infoset)
         if len(descendant_infosets) != 0:
             descendants_by_level = {}
             for infoset in descendant_infosets:

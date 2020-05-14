@@ -1,8 +1,10 @@
+import copy
 import os
 import logging
 
 from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
+from working_tools.game_refiner.subgames_calculator import subgame_calculator
 from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
@@ -59,13 +61,13 @@ if __name__ == '__main__':
     print('++++++++++++++++++++++')
     # sys.stdout = original
 
-    utilities, strategy_table = solver(abstraction_set, 100000, 2, tree)
+    utilities, strategy_table = solver(abstraction_set, 1000, 2, tree)
     strategy_table = normalize_table(strategy_table)
     print(utilities)
     print(strategy_table)
 
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
-
+    subgames = subgame_calculator(tree, 4)
 
     print('hello world')
