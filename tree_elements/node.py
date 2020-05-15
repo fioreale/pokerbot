@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 
 from working_tools.abstraction_generator import infoset_numbers_calculator
@@ -116,3 +118,10 @@ class Node:
 
     def compute_payoffs_from_node(self):
         pass
+
+    def change_payoffs(self, payoffs_vector):
+        pass
+
+    def update_infosets_after_deep_copy(self, root):
+        for child in self.children.values():
+            child.update_infosets_after_deep_copy(root)

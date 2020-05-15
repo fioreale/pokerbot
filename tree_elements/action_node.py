@@ -56,3 +56,27 @@ class ActionNode(Node):
                                                                    [strategy[1:]],
                                                                    difference_of_number_of_nodes))
         return payoff_vector
+
+    def compute_payoffs_from_node(self):
+        payoffs_vector = []
+        for action in sorted(self.actions):
+            payoffs_vector.extend(self.children['P' + self.player + ':' + action].compute_payoffs_from_node())
+        return payoffs_vector
+
+    def change_payoffs(self, payoffs_vector):
+        assigned_terminal_nodes = 0
+        for action in sorted(self.actions):
+            n_of_terminal_nodes = self.children['P' + self.player + ':' + action] \
+                .compute_number_of_terminal_nodes()
+            self.children['P' + self.player + ':' + action] \
+                .change_payoffs(payoffs_vector[assigned_terminal_nodes:n_of_terminal_nodes + assigned_terminal_nodes])
+            assigned_terminal_nodes += n_of_terminal_nodes
+
+    def update_infosets_after_deep_copy(self, root):
+        history = '/' + '/'.join(self.history)
+        self.infoset.info_nodes[history] = self
+        for node_in_old_tree in self.infoset.info_nodes.values():
+            node_in_current_tree = root.node_finder(node_in_old_tree.history)
+            node_in_current_tree.infoset = self.infoset
+        for child in self.children.values():
+            child.update_infosets_after_deep_copy(root)

@@ -1,3 +1,5 @@
+import copy
+
 from tree_elements.node import Node
 
 
@@ -63,3 +65,13 @@ class TerminalNode(Node):
     def change_payoff(self, both_player_payoff_vector, strategies_list):
         self.payoffs[0] = both_player_payoff_vector[0][0]
         self.payoffs[1] = both_player_payoff_vector[0][1]
+
+    def compute_payoffs_from_node(self):
+        return [self.payoffs[0]]
+
+    def change_payoffs(self, both_player_payoff_vector):
+        self.payoffs[0] = both_player_payoff_vector[0]
+        self.payoffs[1] = - both_player_payoff_vector[0]
+
+    def update_infosets_after_deep_copy(self, root):
+        return

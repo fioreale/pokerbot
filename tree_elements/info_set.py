@@ -1,4 +1,5 @@
 # list of nodes for each information set
+import copy
 
 
 class InfoSet:
@@ -9,6 +10,13 @@ class InfoSet:
         # Example: {['/C:99/P1:c/P2:c/C:T/P1:raise4' : <object ActionNode>]}
         self.info_nodes = {}
         self.level = None
+
+    def __deepcopy__(self, memo):
+        new_infoset = type(self)()
+        new_infoset.name = copy.deepcopy(self.name, memo)
+        new_infoset.info_nodes = copy.copy(self.info_nodes)
+        new_infoset.level = copy.deepcopy(self.level, memo)
+        return new_infoset
 
     # function that build the infoset
     # history contains the path that leads to the infoset with partial information.

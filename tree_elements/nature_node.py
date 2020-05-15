@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 
 from tree_elements.node import Node
@@ -111,4 +113,16 @@ class NatureNode(Node):
         return payoff_vector
 
     def compute_payoffs_from_node(self):
-        for child
+        payoffs_vector = []
+        for action in sorted(self.actions):
+            payoffs_vector.extend(self.children['C:' + action].compute_payoffs_from_node)
+        return payoffs_vector
+
+    def change_payoffs(self, payoffs_vector):
+        assigned_terminal_nodes = 0
+        for action in sorted(self.actions):
+            n_of_terminal_nodes = self.children['C:' + action] \
+                .compute_number_of_terminal_nodes()
+            self.children['P' + self.player + ':' + action] \
+                .change_payoffs(payoffs_vector[assigned_terminal_nodes:n_of_terminal_nodes + assigned_terminal_nodes])
+            assigned_terminal_nodes += n_of_terminal_nodes
