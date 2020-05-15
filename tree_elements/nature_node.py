@@ -109,3 +109,6 @@ class NatureNode(Node):
                                                                       [strategy[1:]],
                                                                       difference_of_number_of_nodes))
         return payoff_vector
+
+    def compute_payoffs_from_node(self):
+        for child

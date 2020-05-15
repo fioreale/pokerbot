@@ -113,3 +113,6 @@ class Node:
             self.children[strategy[0]].change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
                                                      [strategy[1:]])
             num_of_assigned_terminal_nodes += number_of_terminal_nodes
+
+    def compute_payoffs_from_node(self):
+        pass

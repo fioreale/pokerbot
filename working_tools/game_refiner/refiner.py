@@ -13,7 +13,8 @@ def game_strategy_refiner(tree):
 
         for subgame in subgames_list:
 
-            strategies_to_subgame = compute_probabilities_to_subgame(subgame)
+            probabilities_to_subgame = compute_probabilities_to_subgame(subgame)
 
             subgame_copy = copy.deepcopy(subgame)
 
+            compressed_subgame = compress_subgame(subgame_copy, probabilities_to_subgame)
