@@ -24,7 +24,7 @@ class Node:
         self.player = None
         self.utilities = {}  # utilities dictionary used  to compute backward induction outcomes
         self.utilities_per_action = {}  # dictionary where we save all the possible utilities for each single action
-        self.level = None   # indicates level of the node
+        self.level = None  # indicates level of the node
         # list of probabilities to execute the action ordered in the same way of self.actions
         self.strategies_probabilities = []
 
@@ -77,8 +77,9 @@ class Node:
                 same_label_infosets_list = same_label_infosets_ndarray.tolist()
 
                 max_num_of_nodes = infoset_numbers_calculator.max_numbers_calculator(same_label_infosets_list[0])[1]
-                max_num_of_nodes_infoset = infoset_numbers_calculator.max_nodes_infoset_finder(same_label_infosets_list[0],
-                                                                                       max_num_of_nodes)
+                max_num_of_nodes_infoset = infoset_numbers_calculator.max_nodes_infoset_finder(
+                    same_label_infosets_list[0],
+                    max_num_of_nodes)
 
                 if list(max_num_of_nodes_infoset.info_nodes.values())[0].player == '1':
                     player = '2'
@@ -112,7 +113,8 @@ class Node:
         num_of_assigned_terminal_nodes = 0
         for strategy in strategies_list:
             number_of_terminal_nodes = self.children[strategy[0]].compute_number_of_terminal_nodes()
-            self.children[strategy[0]].change_payoff(both_players_payoff_vector[num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
+            self.children[strategy[0]].change_payoff(both_players_payoff_vector[
+                                                     num_of_assigned_terminal_nodes:number_of_terminal_nodes + num_of_assigned_terminal_nodes],
                                                      [strategy[1:]])
             num_of_assigned_terminal_nodes += number_of_terminal_nodes
 
@@ -125,3 +127,9 @@ class Node:
     def update_infosets_after_deep_copy(self, root):
         for child in self.children.values():
             child.update_infosets_after_deep_copy(root)
+
+    def check_compression_correctness(self):
+        if self.player == '1':
+            print(self.history)
+        for child in self.children.values():
+            child.check_compression_correctness()

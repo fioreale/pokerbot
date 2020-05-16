@@ -62,4 +62,3 @@ def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
                                                                            difference_of_terminal_nodes))
 
     return payoff_vector
-

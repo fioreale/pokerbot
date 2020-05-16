@@ -1,6 +1,7 @@
 from working_tools.game_solver.external_sampling import external_sampling
 from tqdm import tqdm
 
+
 def solver(abstraction, time_horizon, num_of_players, root):
     regret_table = {}
     strategy_table = {}
@@ -13,7 +14,7 @@ def solver(abstraction, time_horizon, num_of_players, root):
         for action in actions:
             regret_actions[action] = 0
             strategy_actions[action] = 0
-            sigma_actions[action] = 1/len(actions)
+            sigma_actions[action] = 1 / len(actions)
         regret_table[infoset.name] = regret_actions
         strategy_table[infoset.name] = strategy_actions
         sigma_table[infoset.name] = sigma_actions

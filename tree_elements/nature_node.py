@@ -115,7 +115,7 @@ class NatureNode(Node):
     def compute_payoffs_from_node(self):
         payoffs_vector = []
         for action in sorted(self.actions):
-            payoffs_vector.extend(self.children['C:' + action].compute_payoffs_from_node)
+            payoffs_vector.extend(self.children['C:' + action].compute_payoffs_from_node())
         return payoffs_vector
 
     def change_payoffs(self, payoffs_vector):
@@ -123,6 +123,15 @@ class NatureNode(Node):
         for action in sorted(self.actions):
             n_of_terminal_nodes = self.children['C:' + action] \
                 .compute_number_of_terminal_nodes()
-            self.children['P' + self.player + ':' + action] \
+            self.children['C:' + action] \
                 .change_payoffs(payoffs_vector[assigned_terminal_nodes:n_of_terminal_nodes + assigned_terminal_nodes])
             assigned_terminal_nodes += n_of_terminal_nodes
+
+    def create_new_tree(self, subgame, probabilities_to_subgame):
+        actions_string = ''
+        actions_index = 0
+        for infoset in subgame:
+            for node in infoset.info_nodes.values():
+                actions_string += str(actions_index) + '=' + str(probabilities_to_subgame['/' + '/'.join(node.history)])
+                actions_index += 1
+        return self.create_root_node(actions_string)

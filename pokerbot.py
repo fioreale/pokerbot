@@ -9,7 +9,7 @@ from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
 
-FILE_NAME = 'kuhn.txt'
+FILE_NAME = 'leduc5.txt'
 
 if __name__ == '__main__':
 
@@ -72,4 +72,7 @@ if __name__ == '__main__':
     tree_copy.update_infosets_after_deep_copy(tree_copy)
     subgames = subgame_calculator(tree_copy, 1)
     compress_subgame(subgames[0])
+
+    tree_copy.check_compression_correctness()
+
     print('hello world')

@@ -75,3 +75,6 @@ class TerminalNode(Node):
 
     def update_infosets_after_deep_copy(self, root):
         return
+
+    def check_compression_correctness(self):
+        return
