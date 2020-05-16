@@ -133,3 +133,9 @@ class Node:
             print(self.history)
         for child in self.children.values():
             child.check_compression_correctness()
+
+    def get_infosets_of_tree(self):
+        infosets = [self.infoset]
+        for child in self.children.values():
+            infosets = set(infosets + child.get_infosets_of_tree())
+        return list(infosets)

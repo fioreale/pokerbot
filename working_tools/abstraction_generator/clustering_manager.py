@@ -1,5 +1,5 @@
 import working_tools.abstraction_generator.infosets_navigator
-from working_tools.abstraction_generator import tree_navigator
+from pokerbot import FILE_NAME
 from working_tools.abstraction_generator.infoset_numbers_calculator import max_numbers_calculator, \
     max_nodes_infoset_finder
 
@@ -38,11 +38,10 @@ def create_clustering_table(infosets_list, tree_level_number):
             difference_of_terminal_nodes = max_number_of_terminal_nodes - infoset.compute_number_of_terminal_nodes()
 
             # compute the payoff of each infoset
-            cluster_table[history_group_name][infoset] = tree_navigator.\
-                compute_payoff_coordinates(infoset,
-                                           nodes_letter_list,
-                                           strategies_list,
-                                           difference_of_terminal_nodes)
+            cluster_table[history_group_name][infoset] = compute_payoff_coordinates(infoset,
+                                                                                    nodes_letter_list,
+                                                                                    strategies_list,
+                                                                                    difference_of_terminal_nodes)
     return cluster_table, strategies_list_dictionary
 
 
@@ -81,3 +80,28 @@ def strategies_list_calculator(history_group, tree_level_number):
     strategies_list = list(map(lambda x: x[tree_level_number:], strategies_list))
 
     return strategies_list
+
+
+def compute_payoff_coordinates(infoset, nodes_letter_list, strategies_list,
+                               difference_of_terminal_nodes):
+    # payoff vector contains the coordinates (i.e. the utilities) to position the infoset in the payoff space
+    payoff_vector = []
+    # iterate over all the nodes of the infoset and retrieve the payoff vector
+    if FILE_NAME == 'kuhn.txt':
+        for node in infoset.info_nodes.values():
+            payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player,
+                                                                       strategies_list,
+                                                                       difference_of_terminal_nodes))
+    else:
+        for node_letter in nodes_letter_list:
+            next_node_to_visit_string = '/C:' + str(infoset.name[1:]).replace('?', node_letter)
+            if next_node_to_visit_string not in infoset.info_nodes.keys():
+                payoff_vector.extend([0 for i in range(difference_of_terminal_nodes)])
+            else:
+                node = infoset.info_nodes[next_node_to_visit_string]
+                # compute payoff vector on every strategy
+                payoff_vector.extend(node.compute_payoff_coordinate_vector(node.player,
+                                                                           strategies_list,
+                                                                           difference_of_terminal_nodes))
+
+    return payoff_vector

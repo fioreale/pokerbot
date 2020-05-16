@@ -134,4 +134,19 @@ class NatureNode(Node):
             for node in infoset.info_nodes.values():
                 actions_string += str(actions_index) + '=' + str(probabilities_to_subgame['/' + '/'.join(node.history)])
                 actions_index += 1
-        return self.create_root_node(actions_string)
+        root = self.create_root_node(actions_string)
+
+        actions_index = 0
+        for infoset in subgame:
+            for node in infoset.info_nodes.values():
+                root.children['C:' + str(actions_index)] = node
+                actions_index += 1
+        return root
+
+    def get_infosets_of_tree(self):
+        infosets = []
+        for child in self.children.values():
+            child_infosets = child.get_infosets_of_tree()
+            if child_infosets is not None:
+                infosets = list(set(infosets + child_infosets))
+        return infosets

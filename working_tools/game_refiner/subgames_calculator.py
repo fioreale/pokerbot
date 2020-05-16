@@ -37,9 +37,13 @@ def recursive_compute_probabilities(node):
     if node.parent is None:
         return 1
     else:
+        parent = node.parent
         node_action = node.history[-1].split(':')[-1]
-        strategy_index = node.parent.actions.index(node_action)
-        return node.parent.strategies_probabilities[strategy_index] * recursive_compute_probabilities(node.parent)
+        if isinstance(parent, ActionNode):
+            strategy_index = node.parent.actions.index(node_action)
+            return node.parent.strategies_probabilities[strategy_index] * recursive_compute_probabilities(node.parent)
+        else:
+            return node.parent.signals[node_action] * recursive_compute_probabilities(node.parent)
 
 
 def compress_subgame(subgame):

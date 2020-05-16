@@ -80,3 +80,11 @@ class ActionNode(Node):
             node_in_current_tree.infoset = self.infoset
         for child in self.children.values():
             child.update_infosets_after_deep_copy(root)
+
+    def get_infosets_of_tree(self):
+        infosets = [self.infoset]
+        for child in self.children.values():
+            child_infosets = child.get_infosets_of_tree()
+            if child_infosets is not None:
+                infosets = list(set(infosets + child_infosets))
+        return infosets

@@ -4,12 +4,13 @@ import logging
 
 from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
+from working_tools.game_refiner.refiner import game_strategy_refiner
 from working_tools.game_refiner.subgames_calculator import subgame_calculator, compress_subgame
 from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
 
-FILE_NAME = 'leduc5.txt'
+FILE_NAME = 'kuhn.txt'
 
 if __name__ == '__main__':
 
@@ -68,11 +69,12 @@ if __name__ == '__main__':
 
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
-    tree_copy = copy.deepcopy(tree)
-    tree_copy.update_infosets_after_deep_copy(tree_copy)
-    subgames = subgame_calculator(tree_copy, 1)
-    compress_subgame(subgames[0])
+    # tree_copy = copy.deepcopy(tree)
+    # tree_copy.update_infosets_after_deep_copy(tree_copy)
+    # subgames = subgame_calculator(tree_copy, 1)
+    # compress_subgame(subgames[0])
+    #
+    # tree_copy.check_compression_correctness()
 
-    tree_copy.check_compression_correctness()
-
-    print('hello world')
+    game_strategy_refiner(tree)
+    print('ciao')

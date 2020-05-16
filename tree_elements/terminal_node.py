@@ -78,3 +78,7 @@ class TerminalNode(Node):
 
     def check_compression_correctness(self):
         return
+
+    def get_infosets_of_tree(self):
+        return
+
