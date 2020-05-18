@@ -156,3 +156,9 @@ class NatureNode(Node):
             if child_infosets is not None:
                 infosets = list(set(infosets + child_infosets))
         return infosets
+
+    def play(self):
+        random_number = np.random.choice(len(self.actions), p=list(self.signals.values()))
+        sampled_action = self.actions[random_number]
+        child = self.children['C:' + sampled_action]
+        return child.play()

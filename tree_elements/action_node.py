@@ -1,8 +1,7 @@
-from tree_elements.nature_node import NatureNode
 from tree_elements.node import Node
+import numpy as np
 
-
-# class used to build nodes where players chose which action to play
+# class used to build nodes where n_players chose which action to play
 # extends superclass Node
 
 
@@ -88,3 +87,9 @@ class ActionNode(Node):
             if child_infosets is not None:
                 infosets = list(set(infosets + child_infosets))
         return infosets
+
+    def play(self):
+        random_number = np.random.choice(len(self.actions), p=self.strategies_probabilities)
+        sampled_action = self.actions[random_number]
+        child = self.children['P' + self.player + ':' + sampled_action]
+        return child.play()

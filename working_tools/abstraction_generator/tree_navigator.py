@@ -1,6 +1,7 @@
 import operator
 from datetime import datetime
 import sys
+from pathlib import Path
 
 
 def get_tree_level(root, level):
@@ -42,6 +43,7 @@ def find_tree_height(node, level):
 
 
 def file_strategies_saver(tree):
+    Path("text_files/outputs").mkdir(parents=True, exist_ok=True)
     original = sys.stdout
     now = datetime.now()
     current_time = now.strftime("%Y_%m_%d__%H_%M_%S")

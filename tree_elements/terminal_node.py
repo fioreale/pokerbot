@@ -1,12 +1,8 @@
-import copy
-
 from tree_elements.node import Node
 
 
 # class used to build terminal nodes which store the payoff value for the players
 # extends superclass Node
-
-
 class TerminalNode(Node):
 
     # constructor method. Initializes the list of payoffs as [None, None]
@@ -82,3 +78,5 @@ class TerminalNode(Node):
     def get_infosets_of_tree(self):
         return
 
+    def play(self):
+        return self.payoffs[0]

@@ -1,5 +1,3 @@
-import copy
-
 import numpy as np
 
 from working_tools.abstraction_generator import infoset_numbers_calculator
@@ -139,3 +137,6 @@ class Node:
         for child in self.children.values():
             infosets = set(infosets + child.get_infosets_of_tree())
         return list(infosets)
+
+    def play(self):
+        pass

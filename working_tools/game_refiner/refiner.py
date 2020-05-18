@@ -12,13 +12,11 @@ def game_strategy_refiner(tree, time_steps):
     tree_levels = find_tree_height(tree, 0)
 
     for level in range(tree_levels):
-
-        print(str(level))
         tree_copy = copy.deepcopy(tree)
         tree_copy.update_infosets_after_deep_copy(tree_copy)
         subgames_list = subgame_calculator(tree_copy, level)
-
-        for subgame in tqdm(subgames_list, desc="Subgames processed", unit="sub"):
+        description = 'Tree level = ' + str(level) + ', processed subgames'
+        for subgame in tqdm(subgames_list, desc=description, unit="sub"):
 
             probabilities_to_subgame = compute_probabilities_to_subgame(subgame)
             probabilities_to_subgame = normalize_probabilities_to_subgame(probabilities_to_subgame)
