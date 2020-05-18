@@ -1,3 +1,8 @@
+import operator
+from datetime import datetime
+import sys
+
+
 def get_tree_level(root, level):
     if level == 0:
         return [root]
@@ -34,3 +39,23 @@ def find_tree_height(node, level):
             if max_height < found_height:
                 max_height = found_height
     return max_height
+
+
+def file_strategies_saver(tree):
+    original = sys.stdout
+    now = datetime.now()
+    current_time = now.strftime("%Y_%m_%d__%H_%M_%S")
+    sys.stdout = open('text_files/outputs/strategies_' + current_time + '.txt', 'w')
+    infoset_list = tree.get_infosets_of_tree()
+    for infoset in sorted(infoset_list, key=operator.attrgetter('name')):
+        node = list(infoset.info_nodes.values())[0]
+        print('infoset ' + infoset.name + ' strategies', end=' ')
+        index = 0
+        for action in node.actions:
+            if index == len(node.actions)-1:
+                print(action + '=' + str(node.strategies_probabilities[index]), end='')
+            else:
+                print(action + '=' + str(node.strategies_probabilities[index]), end=' ')
+            index += 1
+        print()
+    sys.stdout = original

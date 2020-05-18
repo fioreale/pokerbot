@@ -33,6 +33,19 @@ def compute_probabilities_to_subgame(subgame):
     return probabilities_dict
 
 
+def normalize_probabilities_to_subgame(probabilities_to_subgame):
+    total_probability = 0
+
+    for probability in probabilities_to_subgame.values():
+        total_probability += probability
+
+    for key in probabilities_to_subgame.keys():
+        if total_probability != 0:
+            probabilities_to_subgame[key] = probabilities_to_subgame[key] / total_probability
+
+    return probabilities_to_subgame
+
+
 def recursive_compute_probabilities(node):
     if node.parent is None:
         return 1

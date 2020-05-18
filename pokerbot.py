@@ -4,13 +4,16 @@ import logging
 
 from working_tools import input_file_parser
 from working_tools.abstraction_generator import abstraction_manager
+from working_tools.abstraction_generator.tree_navigator import file_strategies_saver
 from working_tools.game_refiner.refiner import game_strategy_refiner
 from working_tools.game_refiner.subgames_calculator import subgame_calculator, compress_subgame
 from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
 
-FILE_NAME = 'kuhn.txt'
+FILE_NAME = 'leduc5.txt'
+SOLVER_TIME_STEPS = 1000
+REFINER_TIME_STEPS = 100
 
 if __name__ == '__main__':
 
@@ -27,54 +30,19 @@ if __name__ == '__main__':
     # parse_infoset reads the file and returns the infostructure
     info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME), tree)
 
-    # parse again
-    # compressed_tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
-
-    # compressed_infosets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME),
-    #                                                       compressed_tree)
-
-    # visualize the game tree
-    # original = sys.stdout
-    # sys.stdout = open('tree.txt', 'w')
-    # tree_visualizer.visualize_game_tree(tree, 0)
-    # sys.stdout = original
-    # visualize the infostructure of the tree
-    # tree_visualizer.visualize_info_structure(tree, info_sets)
-
     abstraction_set = abstraction_manager.create_abstraction(tree, '1')
     abstraction_set.extend(abstraction_manager.create_abstraction(tree, '2'))
-    # tree_visualizer.visualize_game_tree(compressed_tree, 0)
 
-    print('INITIAL NUMBER OF INFOSETS:', end=' ')
-    print(info_sets.get_number_of_infosets())
-    print('FINAL NUMBER OF INFOSETS:', end=' ')
-    print(len(abstraction_set))
-    # original = sys.stdout
-    # sys.stdout = open('redirect.txt', 'w')
-    print('+++ABSTRACTION SET+++')
-    # visualization of the new infostructure
-    for infoset in abstraction_set:
-        # for infoset_list in abstraction_level:
-        print(infoset.name)
-        # for node in infoset.info_nodes.values():
-        #     print(node.history, end=' ')
-        print('-----')
-    print('++++++++++++++++++++++')
-    # sys.stdout = original
-
-    utilities, strategy_table = solver(abstraction_set, 1000, 2, tree)
+    utilities, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
     strategy_table = normalize_table(strategy_table)
     print(utilities)
     print(strategy_table)
 
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
-    # tree_copy = copy.deepcopy(tree)
-    # tree_copy.update_infosets_after_deep_copy(tree_copy)
-    # subgames = subgame_calculator(tree_copy, 1)
-    # compress_subgame(subgames[0])
-    #
-    # tree_copy.check_compression_correctness()
+    game_strategy_refiner(tree, REFINER_TIME_STEPS)
 
-    game_strategy_refiner(tree)
+    # save strategies to file
+    file_strategies_saver(tree)
+
     print('ciao')

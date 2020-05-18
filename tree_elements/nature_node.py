@@ -45,7 +45,10 @@ class NatureNode(Node):
         # cycle through the dictionary of signals
         for k in self.signals:
             # overwrite each non-normalized probability with its normalized value
-            self.signals[k] = float(self.signals[k] / support_sum)
+            if support_sum != 0:
+                self.signals[k] = float(self.signals[k] / support_sum)
+            else:
+                self.signals[k] = 0.0
         return self
 
     # function to set up the values of the chance nodes in the middle of the tree
@@ -132,14 +135,17 @@ class NatureNode(Node):
         actions_index = 0
         for infoset in subgame:
             for node in infoset.info_nodes.values():
-                actions_string += str(actions_index) + '=' + str(probabilities_to_subgame['/' + '/'.join(node.history)])
+                actions_string += str(actions_index) + '=' \
+                                  + str(probabilities_to_subgame['/' + '/'.join(node.history)]) + ' '
                 actions_index += 1
-        root = self.create_root_node(actions_string)
+        root = self.create_root_node(actions_string[:-1])
 
         actions_index = 0
         for infoset in subgame:
             for node in infoset.info_nodes.values():
                 root.children['C:' + str(actions_index)] = node
+                root.strategies_probabilities.append(probabilities_to_subgame['/' + '/'.join(node.history)])
+                root.signals[str(actions_index)] = probabilities_to_subgame['/' + '/'.join(node.history)]
                 actions_index += 1
         return root
 

@@ -19,7 +19,7 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
 
     n_actions = len(node.actions)
     if type(node) is NatureNode:
-        random_number = np.random.choice(n_actions, p=list(node.signals.values()))
+        random_number = np.random.choice(n_actions)
         sampled_action_chance = node.actions[random_number]
         new_probability = probability * node.signals[sampled_action_chance]
         child = node.children['C:' + sampled_action_chance]
