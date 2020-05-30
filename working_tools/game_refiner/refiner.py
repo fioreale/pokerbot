@@ -35,5 +35,5 @@ def remap_strategies_to_tree(strategy_table, new_tree_for_solver, tree):
         strategies_to_remap = strategy_table[child.infoset.name]
         original_node = tree.node_finder(child.history)
         original_node.strategies_probabilities = []
-        for action in strategies_to_remap:
+        for action in original_node.actions:
             original_node.strategies_probabilities.append(strategies_to_remap[action])

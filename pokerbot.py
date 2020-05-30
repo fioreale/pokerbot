@@ -9,10 +9,9 @@ from working_tools.game_simulator import game_simulator
 from working_tools.game_solver.external_sampling import normalize_table
 from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
-
-FILE_NAME = 'leduc5.txt'
-SOLVER_TIME_STEPS = 1000
-REFINER_TIME_STEPS = 100
+import matplotlib.pyplot as plt
+import numpy as np
+from constants import FILE_NAME, SOLVER_TIME_STEPS, REFINER_TIME_STEPS
 
 if __name__ == '__main__':
 
@@ -32,9 +31,15 @@ if __name__ == '__main__':
     abstraction_set = abstraction_manager.create_abstraction(tree, '1')
     abstraction_set.extend(abstraction_manager.create_abstraction(tree, '2'))
 
-    utilities, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
-    strategy_table = normalize_table(strategy_table)
+    regrets_history, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
 
+    print(regrets_history)
+
+    plt.figure()
+    plt.plot(np.array(regrets_history), 'r')
+    plt.show()
+
+    strategy_table = normalize_table(strategy_table)
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
     game_strategy_refiner(tree, REFINER_TIME_STEPS)

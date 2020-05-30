@@ -20,6 +20,7 @@ def solver(abstraction, time_horizon, num_of_players, root):
 
     utilities = []
 
+    regrets_history = []
     for t in range(0, time_horizon):
         for player in range(1, num_of_players + 1):
             utilities.append(external_sampling(abstraction,
@@ -29,5 +30,11 @@ def solver(abstraction, time_horizon, num_of_players, root):
                                                sigma_table,
                                                root,
                                                1))
+        total_timestep_regret = 0
+        for infoset in regret_table.keys():
+            for action in regret_table[infoset].keys():
+                total_timestep_regret += regret_table[infoset][action]
 
-    return utilities, strategy_table
+        regrets_history.append(total_timestep_regret / (t+1))
+
+    return regrets_history, strategy_table

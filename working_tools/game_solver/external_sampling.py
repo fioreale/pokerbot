@@ -1,5 +1,3 @@
-import random
-
 from tree_elements.terminal_node import TerminalNode
 from tree_elements.nature_node import NatureNode
 import numpy as np
@@ -29,7 +27,7 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
     infoset = infoset_finder(abstraction, node)
 
     infoset_name = infoset.name
-    sigma_table[infoset_name] = regret_matching(regret_table[infoset_name], sigma_table[infoset_name], node.actions)
+    sigma_table[infoset_name] = regret_matching(regret_table, sigma_table, infoset_name, node.actions)
 
     if node.player == str(player):
         # initialization
@@ -42,10 +40,10 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
                                                         child, probability)
             utility_sigma += sigma_table[infoset_name][a] * utilities_per_action[a]
 
-        r_tilde = {}
+        r_tilde_plus = {}
         for a in node.actions:
-            r_tilde[infoset_name, a] = utilities_per_action[a] - utility_sigma
-            regret_table[infoset_name][a] += r_tilde[infoset_name, a]
+            r_tilde_plus[infoset_name, a] = max(0, utilities_per_action[a] - utility_sigma)
+            regret_table[infoset_name][a] += r_tilde_plus[infoset_name, a]
 
         return utility_sigma
 
@@ -62,16 +60,17 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
         return utility
 
 
-def regret_matching(regret_table_infoset, sigma_table_infoset, actions):
+def regret_matching(regret_table, sigma_table, infoset_name, actions):
     tot_regret = 0
-    for regret in regret_table_infoset.values():
-        tot_regret += max(0, regret)
+    for key, regret in regret_table[infoset_name].items():
+        regret_table[infoset_name][key] = max(0, regret)
+        tot_regret += regret_table[infoset_name][key]
     for action in actions:
         if tot_regret > 0:
-            sigma_table_infoset[action] = max(0, regret_table_infoset[action]) / tot_regret
+            sigma_table[infoset_name][action] = max(0, regret_table[infoset_name][action]) / tot_regret
         else:
-            sigma_table_infoset[action] = 1 / len(actions)
-    return sigma_table_infoset
+            sigma_table[infoset_name][action] = 1 / len(actions)
+    return sigma_table[infoset_name]
 
 
 def normalize_table(strategy_table):

@@ -80,7 +80,8 @@ def recursive_compression(node, current_player):
                 for child in node.children.values():
                     payoffs_of_children.append(child.compute_payoffs_from_node())
                 max_payoff_length = find_max_payoff_length(payoffs_of_children)
-                payoffs_of_children = list(map(lambda x: extend_to_max_length(x, max_payoff_length), payoffs_of_children))
+                payoffs_of_children = list(map(lambda x: extend_to_max_length(x, max_payoff_length),
+                                               payoffs_of_children))
                 payoffs_of_children = np.array(payoffs_of_children)
                 weights = np.array(node.strategies_probabilities, dtype='float')
                 payoffs_weighted_average = np.average(a=payoffs_of_children, axis=0, weights=weights)
