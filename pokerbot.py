@@ -11,7 +11,7 @@ from working_tools.game_solver.solver import solver
 from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
 import matplotlib.pyplot as plt
 import numpy as np
-from constants import FILE_NAME, SOLVER_TIME_STEPS, REFINER_TIME_STEPS
+from constants import FILE_NAME, SOLVER_TIME_STEPS, REFINER_TIME_STEPS, COMPRESS_PLAYER_2, ABSTRACTION_PERCENTAGE
 
 if __name__ == '__main__':
 
@@ -24,12 +24,25 @@ if __name__ == '__main__':
     # parse the file to compute the tree structure
     tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
 
+    print('completed parsing')
     # info_sets will contain the complete infostructure of the game
     # parse_infoset reads the file and returns the infostructure
     info_sets = input_file_parser.parse_infoset(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME), tree)
 
-    abstraction_set = abstraction_manager.create_abstraction(tree, '1')
-    abstraction_set.extend(abstraction_manager.create_abstraction(tree, '2'))
+    print('completed infosets')
+
+    if COMPRESS_PLAYER_2:
+        infosets_length = len(info_sets.info_sets1) + len(info_sets.info_sets2)
+        abstraction_set = abstraction_manager.create_abstraction(tree, '1', infosets_length, ABSTRACTION_PERCENTAGE)
+        abstraction_set.extend(abstraction_manager.create_abstraction(tree, '2', infosets_length,
+                                                                      ABSTRACTION_PERCENTAGE))
+        print('abstraction completed.')
+    else:
+        infosets_length = len(info_sets.info_sets1)
+        abstraction_set = abstraction_manager.create_abstraction(tree, '1', infosets_length, ABSTRACTION_PERCENTAGE)
+        effective_percentage = len(abstraction_set) / infosets_length
+        abstraction_set.extend(info_sets.info_sets2)
+        print('abstraction completed. effective: ' + str(effective_percentage))
 
     regrets_history, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
 
