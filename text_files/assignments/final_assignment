@@ -1,0 +1,43 @@
+You will find three poker game instances (Leduc_A,  Leduc_B, Leduc_C) in the DropBox link
+(https://www.dropbox.com/sh/9lfagrvfd39x8lx/AAAqjMmDNPt2QUsBVedQ-si9a?dl=0) by this evening. We will send you an email
+as soon as we have uploaded them. Furthermore, we decided to postpone the deadline to submit your work (strategies and
+slides describing your work) to July 15th.
+
+You are asked for the following.
+
+
+
+1. Leduc_A: this game is solvable even without abstractions. You are required to solve the game when abstractions are
+used only for player 1. In particular, consider 4 levels of abstractions, in which the number of information sets of
+player 1 are reduced by 5%, 10%, 25%, and 50%, respectively. To avoid any doubt: the size of the abstraction is
+therefore 0.95 X, 0.90 X, 0.75 X, 0.50 X, where X is the number of information sets of player 1 in the original,
+non-abstracted, game. Compare the average performance of the strategy for player 1 returned by your algorithm for
+every level of abstraction with the performance of the optimal strategy (computed without any abstractions).
+Provide us the following:
+
+* the strategy of both players when no abstractions are used;
+
+* the strategy of player 1 in the abstract game for the 4 levels of abstractions (without the application of subgame
+solving procedure);
+
+* the strategy of player 1 for the 4 levels of abstractions when subgame solving procedure is applied.
+
+
+
+2. Leduc_B: this is a large Leduc game. You are required to apply your algorithm when the number of information sets of
+each player is not larger than the number of information sets of the original, non-abstracted, Leduc_A. If necessary,
+feel free to use an abstraction in which the number of information sets is smaller. Provide us the following:
+
+* the strategy of both players in the abstract game (without the application of subgame solving procedure);
+
+* the strategy of both players when subgame solving procedure is applied.
+
+
+
+3. Leduc_C: this is a large Leduc game. You are required to apply your algorithm when the number of information sets of
+each player is not larger than the number of information sets of the original, non-abstracted, Leduc_A. If necessary,
+feel free to use an abstraction in which the number of information sets is smaller. Provide us the following:
+
+* the strategy of both players in the abstract game (without the application of subgame solving procedure);
+
+* the strategy of both players when subgame solving procedure is applied.
