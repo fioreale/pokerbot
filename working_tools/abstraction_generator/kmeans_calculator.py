@@ -14,7 +14,9 @@ def k_means(cluster_table, perform_clusterization):
         # build numpy array of centroids coordinates
         print('number of nodes:' + str(len(history_group_dict.keys())))
         if perform_clusterization:
-            number_of_clusters = int(np.floor(len(history_group_dict.keys())/2))
+            # number_of_clusters = int(np.floor(len(history_group_dict.keys()) / 2))
+            # test
+            number_of_clusters = int(np.ceil(len(history_group_dict.keys())/2))
         else:
             number_of_clusters = len(history_group_dict.keys())
         if number_of_clusters == 0:
