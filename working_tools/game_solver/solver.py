@@ -1,5 +1,4 @@
 from working_tools.game_solver.external_sampling import external_sampling
-from tqdm import tqdm
 
 
 def solver(abstraction, time_horizon, num_of_players, root):
@@ -22,9 +21,7 @@ def solver(abstraction, time_horizon, num_of_players, root):
     utilities = []
 
     regrets_history = []
-
-    description = 'time elapsed:'
-    for t in tqdm(range(time_horizon), desc=description, unit="t"):
+    for t in range(0, time_horizon):
         for player in range(1, num_of_players + 1):
             utilities.append(external_sampling(abstraction,
                                                str(player),
