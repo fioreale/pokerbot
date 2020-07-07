@@ -2,7 +2,7 @@ class PercentageWizard:
     def __init__(self, total_number_of_infosets, percentage):
         self.total_number_of_infosets = total_number_of_infosets
         self.percentage = percentage
-        self.threshold = total_number_of_infosets * (1 - 4 * (1 - self.percentage))
+        self.threshold = total_number_of_infosets * (1 - 2 * (1 - self.percentage))
         self.parsed_infosets = 0
         self.done_levels = 0
 
