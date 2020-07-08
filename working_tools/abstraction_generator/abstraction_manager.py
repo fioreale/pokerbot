@@ -9,10 +9,10 @@ from working_tools.abstraction_generator.percentage_wizard import PercentageWiza
 from constants import ABSTRACTION_PERCENTAGE
 
 
-def create_abstraction(tree, player, total_number_of_infosets):
+def create_abstraction(tree, player, total_number_of_infosets, percentage, wizard_coefficient):
     abstraction_set = []
 
-    percentage_wizard = PercentageWizard(total_number_of_infosets, ABSTRACTION_PERCENTAGE)
+    percentage_wizard = PercentageWizard(total_number_of_infosets, percentage, wizard_coefficient)
 
     infosets_list = working_tools.abstraction_generator.infosets_navigator.get_infosets_of_tree_level(tree, int(player))
 
@@ -25,9 +25,7 @@ def create_abstraction(tree, player, total_number_of_infosets):
 
 def recursive_abstraction(infosets_list, abstraction_set, percentage_wizard):
     level = infosets_list[0].level
-    # if level == 1 or level == 2:
-    #     clustered_infosets = infosets_list
-    # else:
+
     cluster_table, strategies_list_dictionary = clustering_manager. \
         create_clustering_table(infosets_list, level)
     kmeans_dictionary_structure = kmeans_calculator.k_means(cluster_table, percentage_wizard)

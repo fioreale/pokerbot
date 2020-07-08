@@ -12,7 +12,6 @@ def k_means(cluster_table, percentage_wizard):
     # iterate over the cluster table history groups
     for history_group_name, history_group_dict in cluster_table.items():
         # build numpy array of centroids coordinates
-        print('history group size: ' + str(len(history_group_dict.keys())))
         if percentage_wizard.perform_clustering():
             number_of_clusters = int(np.floor(len(history_group_dict.keys())/2))
             if number_of_clusters == 0:
