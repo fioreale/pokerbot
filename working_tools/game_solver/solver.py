@@ -2,6 +2,7 @@ import time
 
 from working_tools.game_solver.external_sampling import external_sampling
 from tqdm import tqdm
+import copy
 
 
 def solver(abstraction, time_horizon, num_of_players, root):
@@ -22,8 +23,10 @@ def solver(abstraction, time_horizon, num_of_players, root):
         sigma_table[infoset.name] = sigma_actions
 
     utilities = []
-
+    previous_cumulative_regret = 0
     regrets_history = []
+    previous_regret_table = []
+
     for t in tqdm(range(0, time_horizon), desc='Game solver, processed time steps', unit='t'):
         for player in range(1, num_of_players + 1):
             utilities.append(external_sampling(abstraction,
@@ -33,11 +36,29 @@ def solver(abstraction, time_horizon, num_of_players, root):
                                                sigma_table,
                                                root,
                                                1))
+        maximum_regret = 0
+
+        # if t > 0:
+        #     for infoset in regret_table.keys():
+        #         for action in regret_table[infoset].keys():
+        #             regret_difference = regret_table[infoset][action] - previous_regret_table[infoset][action]
+        #             if regret_difference > maximum_regret:
+        #                 maximum_regret = regret_difference
+        #
+        # previous_regret_table = copy.deepcopy(regret_table)
+        #
+        # regrets_history.append(maximum_regret)
+
         total_timestep_regret = 0
         for infoset in regret_table.keys():
             for action in regret_table[infoset].keys():
                 total_timestep_regret += regret_table[infoset][action]
 
-        regrets_history.append(total_timestep_regret / (t+1))
+        difference_cumulative_regrets = total_timestep_regret - previous_cumulative_regret
+        average_timestep_difference_regret = difference_cumulative_regrets / len(regret_table.keys())
+
+        previous_cumulative_regret = total_timestep_regret
+
+        regrets_history.append(average_timestep_difference_regret)
 
     return regrets_history, strategy_table

@@ -42,22 +42,35 @@ def find_tree_height(node, level):
     return max_height
 
 
-def file_strategies_saver(tree):
+def file_strategies_saver(tree, file_name, print_both_strategies):
     Path("text_files/outputs").mkdir(parents=True, exist_ok=True)
     original = sys.stdout
     now = datetime.now()
     current_time = now.strftime("%Y_%m_%d__%H_%M_%S")
-    sys.stdout = open('text_files/outputs/strategies_' + current_time + '.txt', 'w')
+    sys.stdout = open('text_files/outputs/' + file_name + '_strategies_' + current_time + '.txt', 'w')
     infoset_list = tree.get_infosets_of_tree()
     for infoset in sorted(infoset_list, key=operator.attrgetter('name')):
-        node = list(infoset.info_nodes.values())[0]
-        print('infoset ' + infoset.name + ' strategies', end=' ')
-        index = 0
-        for action in node.actions:
-            if index == len(node.actions)-1:
-                print(action + '=' + str(node.strategies_probabilities[index]), end='')
-            else:
-                print(action + '=' + str(node.strategies_probabilities[index]), end=' ')
-            index += 1
-        print()
+        if print_both_strategies:
+            node = list(infoset.info_nodes.values())[0]
+            print('infoset ' + infoset.name + ' strategies', end=' ')
+            index = 0
+            for action in node.actions:
+                if index == len(node.actions)-1:
+                    print(action + '=' + str(node.strategies_probabilities[index]), end='')
+                else:
+                    print(action + '=' + str(node.strategies_probabilities[index]), end=' ')
+                index += 1
+            print()
+        else:
+            node = list(infoset.info_nodes.values())[0]
+            if node.player == '1':
+                print('infoset ' + infoset.name + ' strategies', end=' ')
+                index = 0
+                for action in node.actions:
+                    if index == len(node.actions) - 1:
+                        print(action + '=' + str(node.strategies_probabilities[index]), end='')
+                    else:
+                        print(action + '=' + str(node.strategies_probabilities[index]), end=' ')
+                    index += 1
+                print()
     sys.stdout = original

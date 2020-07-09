@@ -11,9 +11,11 @@ def external_sampling(abstraction, player, regret_table, strategy_table, sigma_t
             return 0
 
         if player == '1':
-            return node.payoffs[0] / probability
+            return node.payoffs[0]
+            # / probability
         else:
-            return node.payoffs[1] / probability
+            return node.payoffs[1]
+            # / probability
 
     n_actions = len(node.actions)
     if type(node) is NatureNode:

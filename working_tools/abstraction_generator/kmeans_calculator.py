@@ -27,7 +27,7 @@ def k_means(cluster_table, percentage_wizard):
                 kmeans_input = np.append(kmeans_input, value)
         # compute the K-Means of the centroids of the infoset clusters
         kmeans_input = kmeans_input.reshape(len(history_group_dict.keys()), -1)
-        kmeans_results = KMeans(n_clusters=number_of_clusters, random_state=0).fit(kmeans_input)
+        kmeans_results = KMeans(n_clusters=number_of_clusters, random_state=1234).fit(kmeans_input)
         kmeans_ordered_list_couple = [infoset_ordered_list, kmeans_results]
         kmeans_results_dict[history_group_name] = kmeans_ordered_list_couple
 
