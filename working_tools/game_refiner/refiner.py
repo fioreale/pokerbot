@@ -1,4 +1,6 @@
 import copy
+import time
+
 from tqdm import tqdm
 from tree_elements.nature_node import NatureNode
 from working_tools.abstraction_generator.tree_navigator import find_tree_height
@@ -15,9 +17,14 @@ def game_strategy_refiner(tree, time_steps):
         tree_copy = copy.deepcopy(tree)
         tree_copy.update_infosets_after_deep_copy(tree_copy)
         subgames_list = subgame_calculator(tree_copy, level)
-        description = 'Tree level = ' + str(level) + ', processed subgames'
-        for subgame in tqdm(subgames_list, desc=description, unit="sub"):
-
+        index = 1
+        list_lenght = len(subgames_list)
+        for subgame in subgames_list:
+            print('\nGame refiner, tree level: ' + str(level)
+                  + ', subgame: '
+                  + str(index)
+                  + '/' + str(list_lenght))
+            index += 1
             probabilities_to_subgame = compute_probabilities_to_subgame(subgame)
             probabilities_to_subgame = normalize_probabilities_to_subgame(probabilities_to_subgame)
 
