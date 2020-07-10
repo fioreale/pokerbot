@@ -30,16 +30,25 @@
 %\end{frame}
 
 \begin{frame}{Framework}
+\begin{itemize}
+\item The following diagram shows the general framework of our project.
+\item The architecture is organized in four high-level modules:
+\end{itemize}
 \begin{figure}[hbtp]
 		\centering
-		\includegraphics[scale=0.5]{images/img_01.jpg}
-		\end{figure}
+		\includegraphics[scale=0.2]{images/img_01.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Game Builder}
 \begin{itemize}
 \item This module is responsible for the construction of the game tree in extensive form
 \item The Game Builder can parse files that comply with the format established by the efg\_lib
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Game Builder}
+\begin{itemize}
 \item The parsing is an iterative process that, for each line of the file:
 \begin{enumerate}
 \item Distinguishes the different classes using a set of regular expressions.
@@ -47,6 +56,11 @@
 \item The resulting tree is a recursive data structure of nodes.
 \end{enumerate}
 \end{itemize}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.2]{images/img_02.png}
+		\caption{Model of the game nodes.}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Game Builder}
@@ -54,6 +68,11 @@
 \item The game builder also parses the information sets, grouping nodes that belong to the same set together.
 \item The information sets are organized in lists of nodes, where each node maintains a reference to the others in the group.
 \end{itemize}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.25]{images/img_03.png}
+		\caption{Model of the information set structure.}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Game Abstraction}
@@ -61,12 +80,20 @@
 \item To perform the game abstraction, we adopted a top-level approach that visits recursively the tree starting from the root. 
 \item This choice allowed us to avoid occurrences of imperfect recall during the process.
 \item We also designed the algorithm to abstract one player at a time, to be able to use different parameters for each player.
-\item Abstraction high level procedure, for each level:
+\item The abstraction procedure, for each level:
 \begin{enumerate}
 \item Identifies information sets that are eligible to be unified, based on the sequence of moves that preceded them
 \item Produces a clustering
 \end{enumerate}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Game Abstraction}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.2]{images/img_04.png}
+		\caption{Visualization of a top-down abstraction.}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Game Abstraction}
@@ -110,6 +137,14 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Game Solver}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.3]{images/img_05.png}
+		\caption{Monte Carlo CFR with External Sampling, the sampling (edges in red) is done only for the chance and opponent nodes.}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Game Refiner}
 \begin{itemize}
 \item The objective of this module is the resolution of an imperfect information game. 
@@ -132,6 +167,14 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Game Refiner}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale=0.2]{images/img_06.png}
+		\caption{Compression of the auxiliary tree. This step is followed by the solution of the compressed tree and the remapping of the strategy into the game tree.}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Performances}
 \begin{itemize}
 \item To assess the performances of our models, we observed the evolution of the cumulative regret during training.
@@ -140,14 +183,20 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Performances}
+\begin{itemize}
+\item Insert regret plots...
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Game Simulator}
 \begin{itemize}
 \item We built a game simulator to have a closer look at the choices made by the strategies we produced.
 \item Given a game tree and a strategy for each player, the Game Simulator plays an arbitrary number of Poker games and outputs:
-\begin{itemize}
+\begin{enumerate}
 \item The expected return for each player, computed as the empirical means of the expected rewards collected in each game.
 \item The list of moves chosen by the players in each turn, to let us observe the behaviors we were obtaining.
-\end{itemize}
+\end{enumerate}
 \end{itemize}
 \end{frame}
 
