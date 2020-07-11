@@ -24,6 +24,10 @@ if __name__ == '__main__':
     pokerbot_logger = logging.getLogger('pokerbot')
     pokerbot_logger.setLevel(logging.WARNING)
 
+    now = datetime.now()
+    current_time = now.strftime("%Y_%m_%d__%H_%M_%S")
+    percentage_array = [(0.55, 1.25), (0.7700000000000002, 2.5), (0.8600000000000003, 4.0), (0.8800000000000003, 4.75)]
+
     # tree will be the root node of the entire tree
     # parse the file to compute the tree structure
     tree = input_file_parser.parse_tree(os.path.join(os.getcwd(), 'text_files', 'inputs', FILE_NAME))
@@ -47,23 +51,23 @@ if __name__ == '__main__':
                                                                      ABSTRACTION_PERCENTAGE, WIZARD_COEFFICIENT)
             abstraction_percentage = len(abstraction_set) / len(info_sets.info_sets1)
             abstraction_set.extend(info_sets.info_sets2)
+            print('PERC: ' + str(ABSTRACTION_PERCENTAGE) + ' COEFF: ' + str(WIZARD_COEFFICIENT) + 'compression '
+                                                                                                  'percentage: ' +
+                  str(abstraction_percentage))
+            Path("text_files/outputs").mkdir(parents=True, exist_ok=True)
+            original = sys.stdout
+            sys.stdout = open('text_files/outputs/percentages_' + current_time + '.txt', 'a')
             print('PERC: ' + str(ABSTRACTION_PERCENTAGE) + ' COEFF: ' + str(WIZARD_COEFFICIENT) + ' compression '
                                                                                                   'percentage: ' +
                   str(abstraction_percentage))
-            # Path("text_files/outputs").mkdir(parents=True, exist_ok=True)
-            # original = sys.stdout
-            # sys.stdout = open('text_files/outputs/percentages_' + current_time + '.txt', 'a')
-            # print('PERC: ' + str(percentage) + ' COEFF: ' + str(coefficient) + ' compression '
-            #                                                                    'percentage: ' +
-            #       str(abstraction_percentage))
-            # sys.stdout = original
+            sys.stdout = original
         regrets_history, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
     else:
         abstraction_set = info_sets.info_sets1
         abstraction_set.extend(info_sets.info_sets2)
         regrets_history, strategy_table = solver(abstraction_set, SOLVER_TIME_STEPS, 2, tree)
 
-    # print(regrets_history)
+    print(regrets_history)
 
     # plt.figure()
     # plt.plot(np.array(regrets_history), 'r')
@@ -71,11 +75,10 @@ if __name__ == '__main__':
 
     strategy_table = normalize_table(strategy_table)
 
-    if PERFORM_REFINEMENT:
-        game_strategy_refiner(tree, REFINER_TIME_STEPS)
+    game_strategy_refiner(tree, REFINER_TIME_STEPS)
 
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
     # save strategies to file
-    file_name = 'Leduc_A_NO_Player1_Abstraction_NO_Refinement_PERC_0.95'
-    # file_strategies_saver(tree, file_name, PRINT_BOTH_STRATEGIES)
+    file_name = 'Leduc_A_YES_Abstraction_YES_Refinement_test_10ksteps'
+    file_strategies_saver(tree, file_name, PRINT_BOTH_STRATEGIES)

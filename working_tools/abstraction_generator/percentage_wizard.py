@@ -11,7 +11,8 @@ class PercentageWizard:
         self.done_levels = 0
 
     def perform_clustering(self):
-        if self.done_levels < 1:
-            self.done_levels += 1
-            return True
-        return self.parsed_infosets >= self.threshold
+        # if self.done_levels < 1:
+        #     self.done_levels += 1
+        #     return True
+        # return self.parsed_infosets >= self.threshold
+        return True
