@@ -1,16 +1,13 @@
 import os
 import logging
 
-from working_tools import input_file_parser
-from working_tools.abstraction_generator import abstraction_manager
-from working_tools.abstraction_generator.tree_navigator import file_strategies_saver
-from working_tools.game_refiner.refiner import game_strategy_refiner
-from working_tools.game_simulator import game_simulator
-from working_tools.game_solver.external_sampling import normalize_table
-from working_tools.game_solver.solver import solver
-from working_tools.game_refiner.strategies_mapper import apply_strategies_to_nodes
-import matplotlib.pyplot as plt
-import numpy as np
+from game_builder import input_file_parser
+from game_abstraction import abstraction_manager
+from game_abstraction.tree_navigator import file_strategies_saver
+from game_refiner.refiner import game_strategy_refiner
+from game_solver.external_sampling import normalize_table
+from game_solver.solver import solver
+from game_refiner.strategies_mapper import apply_strategies_to_nodes
 import sys
 from pathlib import Path
 from datetime import datetime

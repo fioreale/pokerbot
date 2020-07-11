@@ -1,4 +1,4 @@
-from tree_elements.node import Node
+from game_model.node import Node
 import numpy as np
 
 # class used to build nodes where n_players chose which action to play

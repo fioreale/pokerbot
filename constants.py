@@ -1,4 +1,4 @@
-FILE_NAME = 'Leduc_B.txt'
+FILE_NAME = 'leduc_B.txt'
 SOLVER_TIME_STEPS = 10000
 REFINER_TIME_STEPS = 1000
 

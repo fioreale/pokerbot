@@ -1,8 +1,5 @@
-import time
-
-from working_tools.game_solver.external_sampling import external_sampling
+from game_solver.external_sampling import external_sampling
 from tqdm import tqdm
-import copy
 
 
 def solver(abstraction, time_horizon, num_of_players, root):

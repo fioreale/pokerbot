@@ -1,21 +1,21 @@
 import re
 
-from tree_elements.info_set import InfoSet
-from tree_elements.nature_node import NatureNode
-from tree_elements.action_node import ActionNode
-from tree_elements.terminal_node import TerminalNode
-from tree_elements.info_structure import InfoStructure
+from game_model.info_set import InfoSet
+from game_model.nature_node import NatureNode
+from game_model.action_node import ActionNode
+from game_model.terminal_node import TerminalNode
+from game_model.info_structure import InfoStructure
 
 rx_dict = {
     # regex to identify root node
     # example in 'input - kuhn.txt': node / chance actions JQ=1.000000 JK=1.000000 QJ=1.000000 QK=1.000000 ...
-    # example in 'input - leduc5.txt': node / chance actions 99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000 ...
+    # example in 'input - leduc_5.txt': node / chance actions 99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000 ...
     # ?P<actions> matches after the keyword actions. Example: '99=2.000000 9T=4.000000 9J=4.000000 9Q=4.000000'
     'root_node': re.compile(r'node / chance actions (?P<actions>.*)'),
 
     # regex to identify any action node
     # example in 'input - kuhn.txt': node /C:JK/P1:c/P2:r player 1 actions c f
-    # example in 'input - leduc5.txt': node /C:KK/P1:c/P2:c/C:Q/P1:c player 2 actions raise4 c
+    # example in 'input - leduc_5.txt': node /C:KK/P1:c/P2:c/C:Q/P1:c player 2 actions raise4 c
     # ?P<history> matches the list of nodes that leads to the current nodes including itself after keyword node
     # Example: '/C:KK/P1:c/P2:c/C:Q/P1:c'
     # ?P<player> matches only the number of player after keyword player. Example: '1'
@@ -24,7 +24,7 @@ rx_dict = {
 
     # regex to identify a chance node in the middle of the game
     # example in 'input - kuhn.txt': no examples
-    # example in 'input - leduc5.txt': node /C:99/P1:raise2/P2:raise2/P1:c chance actions T=2.000000 J=2.000000 ...
+    # example in 'input - leduc_5.txt': node /C:99/P1:raise2/P2:raise2/P1:c chance actions T=2.000000 J=2.000000 ...
     # ?P<history> matches the list of nodes that leads to the current nodes including itself after keyword node
     # Example: '/C:99/P1:raise2/P2:raise2/P1:c'
     # ?P<actions> matches after the keyword actions. Example: 'T=2.000000 J=2.000000'
@@ -32,7 +32,7 @@ rx_dict = {
 
     # regex to identify any leaf node
     # example in 'input - kuhn.txt': node /C:JQ/P1:c/P2:c leaf payoffs 1=-1.000000 2=1.000000
-    # example in 'input - leduc5.txt': node /C:99/P1:raise2/P2:raise2/P1:c/C:K/P1:c/P2:raise4/P1:raise4/P2:c
+    # example in 'input - leduc_5.txt': node /C:99/P1:raise2/P2:raise2/P1:c/C:K/P1:c/P2:raise4/P1:raise4/P2:c
     # leaf payoffs 1=0.000000 2=0.000000
     # ?P<history> matches the list of nodes that leads to the current nodes including itself after keyword node
     # Example: '/C:99/P1:raise2/P2:raise2/P1:c/C:K/P1:c/P2:raise4/P1:raise4/P2:c'
@@ -41,7 +41,7 @@ rx_dict = {
 
     # regex to identify infoset informations
     # example in 'input - kuhn.txt': infoset /C:K?/P1:c/P2:r nodes /C:KJ/P1:c/P2:r /C:KQ/P1:c/P2:r
-    # example in 'input - leduc5.txt': infoset /?9/P1:c/P2:c/C:T/P1:raise4 nodes /C:99/P1:c/P2:c/C:T/P1:raise4
+    # example in 'input - leduc_5.txt': infoset /?9/P1:c/P2:c/C:T/P1:raise4 nodes /C:99/P1:c/P2:c/C:T/P1:raise4
     # /C:T9/P1:c/P2:c/C:T/P1:raise4 /C:J9/P1:c/P2:c/C:T/P1:raise4 ...
     # ?P<history> matches the list of nodes that leads to the current infoset leaving the unknown information
     # unspecified. Example: '/?9/P1:c/P2:c/C:T/P1:raise4'

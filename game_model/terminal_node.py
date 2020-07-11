@@ -1,4 +1,4 @@
-from tree_elements.node import Node
+from game_model.node import Node
 
 
 # class used to build terminal nodes which store the payoff value for the players

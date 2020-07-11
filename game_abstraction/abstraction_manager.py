@@ -1,12 +1,10 @@
 import operator
 
-import working_tools.abstraction_generator.infosets_navigator
-from tree_elements.info_set import InfoSet
-from working_tools.abstraction_generator import clustering_manager
-from working_tools.abstraction_generator import kmeans_calculator
+import game_abstraction.infosets_navigator
+from game_model.info_set import InfoSet
+from game_abstraction import clustering_manager, kmeans_calculator
 import numpy as np
-from working_tools.abstraction_generator.percentage_wizard import PercentageWizard
-from constants import ABSTRACTION_PERCENTAGE
+from game_abstraction.percentage_wizard import PercentageWizard
 
 
 def create_abstraction(tree, player, total_number_of_infosets, percentage, wizard_coefficient):
@@ -14,7 +12,7 @@ def create_abstraction(tree, player, total_number_of_infosets, percentage, wizar
 
     percentage_wizard = PercentageWizard(total_number_of_infosets, percentage, wizard_coefficient)
 
-    infosets_list = working_tools.abstraction_generator.infosets_navigator.get_infosets_of_tree_level(tree, int(player))
+    infosets_list = game_abstraction.infosets_navigator.get_infosets_of_tree_level(tree, int(player))
 
     initial_level = infosets_list
 
@@ -32,7 +30,7 @@ def recursive_abstraction(infosets_list, abstraction_set, percentage_wizard):
     clustered_infosets = group_infosets(kmeans_dictionary_structure)
     abstraction_set.extend(clustered_infosets)
     for infoset in clustered_infosets:
-        descendant_infosets = working_tools.abstraction_generator.infosets_navigator.get_descendants(infoset)
+        descendant_infosets = game_abstraction.infosets_navigator.get_descendants(infoset)
         if len(descendant_infosets) != 0:
             descendants_by_level = {}
             for infoset in descendant_infosets:

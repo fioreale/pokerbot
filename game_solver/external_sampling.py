@@ -1,5 +1,5 @@
-from tree_elements.terminal_node import TerminalNode
-from tree_elements.nature_node import NatureNode
+from game_model.terminal_node import TerminalNode
+from game_model.nature_node import NatureNode
 import numpy as np
 
 

@@ -1,9 +1,6 @@
 from sklearn.cluster import KMeans
 import numpy as np
 
-from tree_elements.info_set import InfoSet
-from working_tools.abstraction_generator import tree_navigator
-
 
 def k_means(cluster_table, percentage_wizard):
 

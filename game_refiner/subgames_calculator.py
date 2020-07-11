@@ -1,7 +1,7 @@
 import copy
-from tree_elements.action_node import ActionNode
-from tree_elements.terminal_node import TerminalNode
-from working_tools.abstraction_generator.infosets_navigator import get_infosets_of_tree_level
+from game_model.action_node import ActionNode
+from game_model.terminal_node import TerminalNode
+from game_abstraction.infosets_navigator import get_infosets_of_tree_level
 import numpy as np
 
 

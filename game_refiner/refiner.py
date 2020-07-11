@@ -1,13 +1,11 @@
 import copy
-import time
 
-from tqdm import tqdm
-from tree_elements.nature_node import NatureNode
-from working_tools.abstraction_generator.tree_navigator import find_tree_height
-from working_tools.game_refiner.subgames_calculator import subgame_calculator, compute_probabilities_to_subgame, \
+from game_model.nature_node import NatureNode
+from game_abstraction.tree_navigator import find_tree_height
+from game_refiner.subgames_calculator import subgame_calculator, compute_probabilities_to_subgame, \
     compress_subgame, normalize_probabilities_to_subgame
-from working_tools.game_solver.external_sampling import normalize_table
-from working_tools.game_solver.solver import solver
+from game_solver.external_sampling import normalize_table
+from game_solver.solver import solver
 
 
 def game_strategy_refiner(tree, time_steps):

@@ -1,4 +1,4 @@
-from tree_elements.terminal_node import TerminalNode
+from game_model.terminal_node import TerminalNode
 
 
 # class bcolors:

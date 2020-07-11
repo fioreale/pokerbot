@@ -1,11 +1,9 @@
-import working_tools.abstraction_generator.infosets_navigator
+import game_abstraction.infosets_navigator
 from pokerbot import FILE_NAME
-from working_tools.abstraction_generator.infoset_numbers_calculator import max_numbers_calculator, \
-    max_nodes_infoset_finder
+from game_abstraction.infoset_numbers_calculator import max_numbers_calculator, max_nodes_infoset_finder
 
 
 def create_clustering_table(infosets_list, tree_level_number):
-
     # dictionary to store the payoff space of the infosets
     cluster_table = {}
     #
@@ -15,7 +13,7 @@ def create_clustering_table(infosets_list, tree_level_number):
     # infosets_list = tree_navigator.get_infosets_of_tree_level(root, tree_level_number)
 
     # function to filter the infosets and group them by corresponding history
-    infosets_list = working_tools.abstraction_generator.infosets_navigator.infoset_group_filtering(infosets_list)
+    infosets_list = game_abstraction.infosets_navigator.infoset_group_filtering(infosets_list)
 
     # iteration over the history groups to fill the dictionary
     for history_group in infosets_list:

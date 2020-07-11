@@ -1,6 +1,6 @@
 import numpy as np
 
-from working_tools.abstraction_generator import infoset_numbers_calculator
+from game_abstraction import infoset_numbers_calculator
 
 
 class Node:

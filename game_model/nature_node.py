@@ -1,6 +1,6 @@
 import numpy as np
 
-from tree_elements.node import Node
+from game_model.node import Node
 
 
 # class used to represent the chance nodes in the tree
