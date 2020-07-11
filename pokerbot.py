@@ -74,11 +74,11 @@ if __name__ == '__main__':
     # plt.show()
 
     strategy_table = normalize_table(strategy_table)
-
-    game_strategy_refiner(tree, REFINER_TIME_STEPS)
-
     apply_strategies_to_nodes(abstraction_set, strategy_table)
 
+    if PERFORM_REFINEMENT:
+        game_strategy_refiner(tree, REFINER_TIME_STEPS)
+
     # save strategies to file
-    file_name = 'Leduc_A_YES_Abstraction_YES_Refinement_test_10ksteps'
+    file_name = 'Leduc_B_YES_Abstraction_YES_Refinement'
     file_strategies_saver(tree, file_name, PRINT_BOTH_STRATEGIES)
