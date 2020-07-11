@@ -77,5 +77,8 @@ if __name__ == '__main__':
         game_strategy_refiner(tree, REFINER_TIME_STEPS)
 
     # save strategies to file
-    file_name = 'Leduc_B_YES_Abstraction_YES_Refinement'
+    game_name = FILE_NAME
+    abstraction_boolean = 'yes_abstraction' if PERFORM_ABSTRACTION else 'no_abstraction'
+    refinement_boolean = 'yes_refinement' if PERFORM_REFINEMENT else 'no_refinement'
+    file_name = game_name[:-4] + '_' + abstraction_boolean + '_' + refinement_boolean
     file_strategies_saver(tree, file_name, PRINT_BOTH_STRATEGIES)
