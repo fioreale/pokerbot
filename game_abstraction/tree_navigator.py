@@ -2,6 +2,7 @@ import operator
 from datetime import datetime
 import sys
 from pathlib import Path
+import json
 
 
 def get_tree_level(root, level):
@@ -55,7 +56,7 @@ def file_strategies_saver(tree, file_name, print_both_strategies):
             print('infoset ' + infoset.name + ' strategies', end=' ')
             index = 0
             for action in node.actions:
-                if index == len(node.actions)-1:
+                if index == len(node.actions) - 1:
                     print(action + '=' + str(node.strategies_probabilities[index]), end='')
                 else:
                     print(action + '=' + str(node.strategies_probabilities[index]), end=' ')
@@ -74,3 +75,14 @@ def file_strategies_saver(tree, file_name, print_both_strategies):
                     index += 1
                 print()
     sys.stdout = original
+
+
+def json_regrets_saver(regrets_history):
+    with open('text_files/outputs/optimal_regrets.txt', 'w') as outfile:
+        json.dump(regrets_history, outfile)
+
+
+def json_regrets_reader():
+    with open('text_files/outputs/optimal_regrets.txt') as json_file:
+        data = json.load(json_file)
+    return data

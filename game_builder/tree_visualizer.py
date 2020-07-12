@@ -1,5 +1,7 @@
+from game_abstraction.tree_navigator import json_regrets_reader
 from game_model.terminal_node import TerminalNode
-
+from matplotlib import pyplot as plt
+import numpy as np
 
 # class bcolors:
 #     HEADER = '\033[95m'
@@ -10,6 +12,7 @@ from game_model.terminal_node import TerminalNode
 #     ENDC = '\033[0m'
 #     BOLD = '\033[1m'
 #     UNDERLINE = '\033[4m'
+
 
 class bcolors:
     HEADER = ''
@@ -113,3 +116,13 @@ def visualize_info_structure(tree, infostructure):
     print(bcolors.BOLD + bcolors.UNDERLINE + '\n\nPrinting Information Sets of Player 2' + bcolors.ENDC)
     for info_set in infostructure.info_sets2:
         visualize_infoset(tree, info_set, 1)
+
+
+def visualize_regrets(regrets_history):
+
+    optimal_regrets = json_regrets_reader()
+    regrets_difference = np.asarray(regrets_history) - np.asarray(optimal_regrets)
+
+    plt.figure()
+    plt.plot(regrets_difference, 'r')
+    plt.show()

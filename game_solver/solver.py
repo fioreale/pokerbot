@@ -51,11 +51,11 @@ def solver(abstraction, time_horizon, num_of_players, root):
             for action in regret_table[infoset].keys():
                 total_timestep_regret += regret_table[infoset][action]
 
-        difference_cumulative_regrets = total_timestep_regret - previous_cumulative_regret
-        average_timestep_difference_regret = difference_cumulative_regrets / len(regret_table.keys())
+        # difference_cumulative_regrets = total_timestep_regret - previous_cumulative_regret
+        # average_timestep_difference_regret = difference_cumulative_regrets / len(regret_table.keys())
+        #
+        # previous_cumulative_regret = total_timestep_regret
 
-        previous_cumulative_regret = total_timestep_regret
-
-        regrets_history.append(average_timestep_difference_regret)
+        regrets_history.append(total_timestep_regret)
 
     return regrets_history, strategy_table
