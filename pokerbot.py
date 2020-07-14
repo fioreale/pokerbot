@@ -50,7 +50,7 @@ if __name__ == '__main__':
                                                                      ABSTRACTION_PERCENTAGE, WIZARD_COEFFICIENT)
             abstraction_percentage = len(abstraction_set) / len(info_sets.info_sets1)
             abstraction_set.extend(info_sets.info_sets2)
-            print('PERC: ' + str(ABSTRACTION_PERCENTAGE) + ' COEFF: ' + str(WIZARD_COEFFICIENT) + 'compression '
+            print('PERC: ' + str(ABSTRACTION_PERCENTAGE) + ' COEFF: ' + str(WIZARD_COEFFICIENT) + ' compression '
                                                                                                   'percentage: ' +
                   str(abstraction_percentage))
             Path("text_files/outputs").mkdir(parents=True, exist_ok=True)
